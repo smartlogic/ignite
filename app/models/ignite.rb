@@ -8,7 +8,7 @@ class Ignite < ActiveRecord::Base
   file_column :banner_background_image, :magick => {:versions => {"thumb" => "50x50>"}}
   file_column :banner_bottom_image, :magick => {:versions => {"thumb" => "50x50>"}}
   
-  after_create :create_default_event if RAILS_ENV == "production"
+  after_create :create_default_event
   
   validates_presence_of :city, :domain
   validates_uniqueness_of :domain

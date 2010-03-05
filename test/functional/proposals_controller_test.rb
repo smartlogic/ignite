@@ -1,12 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ProposalsControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_equal "Proposals", assigns(:page_title)
-    assert_equal Speaker.active.find(:all, :conditions => {:event_id => nil}, :order => :name), assigns(:proposals)
-    assert_template 'proposals'
+  context "A public visitor" do
+    should "view proposals" do
+      get :index
+      assert_response :success
+      assert_equal "Proposals", assigns(:page_title)
+      assert_equal assigns(:proposals).all?(&:is_proposal?)
+      assert_template 'proposals'
+    end
   end
 
 

@@ -2,5 +2,7 @@
 defaults:
   install_options: --no-ri --no-rdoc
 gems:
-- name: thoughtbot-shoulda
-  version: '~> 2.10.1'
+- name: shoulda
+  version: '= 2.10.3'
+- name: factory_girl
+  version: '= 1.2.3'
