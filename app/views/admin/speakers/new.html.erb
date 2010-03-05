@@ -1,0 +1,104 @@
+<% content_for :head do -%>
+  <% javascript_tag do -%>
+    <%= render :partial => "toggle_event.js.erb" %>
+  <% end -%>
+<% end -%>
+
+<h1>New speaker</h1>
+
+<% form_for([:admin, @speaker], :html => {:multipart => true}) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :title, "Proposal Title" %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description, :style => "width:600px; height:200px;" %>
+  </p>
+  <p>
+    <%= f.label :bio %><br />
+    <%= f.text_area :bio, :style => "width:600px; height:200px;" %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>  
+  
+  <table>
+    <tr>
+      <td>
+        <p>
+          <%= f.label :ignite_id, "Ignite City" %><br/>
+          <%= f.select :ignite_id, @ignites.map{ |i| ["#{i.city}  ", i.id] }, {:include_blank => "Select City"}, {:class => "long"} %>
+          <%= observe_field "speaker_ignite_id", :url => update_admin_speaker_event_select_path, :with => :ignite_id %>
+        </p>
+      </td>
+      <td style="padding-left: 20px;"> 
+        <p>
+          <%= f.label :event_id %><br/>
+          <%= f.select :event_id, "Please select an Ignite City", {}, {:class => "long"} %>
+        </p>
+      </td>
+    </tr>
+  </table> 
+  
+  <p>
+    <%= f.label :blog_url %><br />
+    <%= f.text_field :blog_url %>
+  </p>
+  <p>
+    <%= f.label :twitter_url %><br />
+    <%= f.text_field :twitter_url %>
+  </p>
+  <p>
+    <%= f.label :linkedin_url %><br />
+    <%= f.text_field :linkedin_url %>
+  </p>
+  <p>
+    <%= f.label :personal_url %><br />
+    <%= f.text_field :personal_url %>
+  </p>
+  <p>
+    <%= f.label :company_url %><br />
+    <%= f.text_field :company_url %>
+  </p>
+  <p>
+    <%= f.label :video_url, "Youtube Video Link Url" %><br />
+    <%= f.text_field :video_url %>
+  </p>
+  <p>
+    <%= f.label :video_embed_url, "Youtube Embedded Video Url" %><br />
+    <%= f.text_field :video_embed_url %>
+  </p>
+  <p>
+    <%= f.label :position %><br />
+    <%= f.text_field :position, :size => 4 %>
+  </p>
+  <p>
+    <%= f.label :html_text %><br />
+    <%= f.text_area :html_text %>
+  </p>
+  <p>
+    <%= f.label :image %><br />
+    <%= file_column_field "speaker", :image %>
+  </p>
+  <p>
+    <%= f.label :widget_image %><br />
+    <%= file_column_field "speaker", :widget_image %>
+  </p>
+  <p>
+    <%= f.label :mouseover_image %><br />
+    <%= file_column_field "speaker", :mouseover_image %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', admin_speakers_path %>

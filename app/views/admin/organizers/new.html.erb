@@ -1,0 +1,55 @@
+<h1>New organizer</h1>
+<br/>
+<% form_for @organizer, :url => admin_organizers_path, :html => {:multipart => true}, :method => :post do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :ignite_id, "Ignite City" %><br/>
+    <%= f.collection_select :ignite_id, @ignites, :id, :city, {}, {:Class => "long"} %>
+  </p>
+  <p>
+    <%= f.label :organizer_role_id, "Role" %><br/>
+    <%= f.collection_select :organizer_role_id, @roles, :id, :title %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :bio %><br />
+    <%= f.text_area :bio %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :personal_url %><br />
+    <%= f.text_field :personal_url %>
+  </p>
+  <p>
+    <%= f.label :blog_url %><br />
+    <%= f.text_field :blog_url %>
+  </p>
+  <p>
+    <%= f.label :company_url %><br />
+    <%= f.text_field :company_url %>
+  </p>
+  <p>
+    <%= f.label :twitter_url %><br />
+    <%= f.text_field :twitter_url %>
+  </p>
+  <p>
+    <%= f.label :linkedin_url %><br />
+    <%= f.text_field :linkedin_url %>
+  </p>
+  <p>
+    <%= f.label :image %><br />
+    <%= file_column_field "organizer", :image %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', admin_organizers_path %>

@@ -1,0 +1,18 @@
+<p>
+  <%= f.label :sponsor_role_id, "Events" %><br/>
+  <%= select_tag("event_ids[]",
+      options_for_select(@events.map{ |evt| ["#{evt.ignite.city}: #{evt.name}", evt.id] }, @selected_events.map{ |evt| evt.id }),
+      {:multiple=>true, :size=>4}) %>
+</p>
+<p>
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</p>
+<p>
+  <%= f.label :link %><br />
+  <%= f.text_field :link %>
+</p>
+<p>
+  <%= f.label :image %><br />
+  <%= file_column_field "sponsor", :image %>
+</p>

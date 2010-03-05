@@ -1,0 +1,42 @@
+<% content_for :head do -%>
+  <% javascript_tag do -%>
+    <%= render :partial => "widget_js.js.erb", :locals => {:speakers => @widget_speakers} unless @widget_speakers.empty? %>
+  <% end -%>
+<% end -%>
+
+<%= render :partial => 'widget', :locals => {:speakers => @widget_speakers, :event => @event, :default => @selected_speaker} unless @widget_speakers.empty? %>
+
+<% if @widget_speakers.empty? -%>
+  <h2 style="line-height:1.2;">There are no speakers for <%=h @event.name %> yet.
+  <% unless @ignite.proposals_closed %>
+    <br/><%= link_to 'Submit a Proposal', new_proposal_path %> if you'd like to be one!
+  <% end -%>
+  </h2>
+  <br/><br/>
+<% end -%>
+
+<h2>Ignite <%=h @ignite.city %> Full Speaker Directory</h2>
+<% unless (@left.empty? && @right.empty?) -%>
+  <p>Browse all speakers from past Ignites.</p>
+  <hr />
+  <ul class="speakers">
+    <% @left.each do |speaker| -%>
+      <li>
+        <strong><%= link_to speaker.name, speaker_path(speaker)%></strong><br />
+        <%= speaker.title %>
+      </li>
+    <% end -%>
+  </ul>
+  <ul class="speakers">
+    <% @right.each do |speaker| -%>
+      <li>
+        <strong><%= link_to speaker.name, speaker_path(speaker)%></strong><br />
+        <%= speaker.title %>
+      </li>
+    <% end -%>
+  </ul>  
+  <hr />
+  <p><%= will_paginate @speakers %></p>
+<% else -%>
+  <h3>There are no speakers in the directory.</h3>
+<% end -%>

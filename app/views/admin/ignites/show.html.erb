@@ -1,0 +1,43 @@
+<p>
+  <b>City:</b>
+  <%=h @ignite.city %>
+</p>
+
+<p>
+  <b>Domain:</b>
+  <%=h @ignite.domain %>
+</p>
+
+<p>
+  <b>Twitter Account:</b>
+  <%=h @ignite.twitter_username %>
+</p>
+
+<p>
+  <b>Twitter RSS Feed URL:</b>
+  <%=h @ignite.twitter_feed_url %>
+</p>
+
+<p>
+  <b>Proposal Submissions Accepted? </b>
+  <%= @ignite.proposals_closed ? "No" : "Yes" %>
+</p>
+
+<p>
+  <b>Logo:</b><br/>
+  <%= image_tag(url_for_file_column(@ignite, :logo_image)) unless @ignite.logo_image.blank? %>
+</p>
+
+<p>
+  <b>Banner Background:</b><br/>
+  <%= image_tag(url_for_file_column(@ignite, :banner_background_image)) unless @ignite.banner_background_image.blank? %>
+</p>
+
+<p>
+  <b>Banner Bottom:</b><br/>
+  <%= image_tag(url_for_file_column(@ignite, :banner_bottom_image)) unless @ignite.banner_bottom_image.blank? %>
+</p>
+
+
+<%= link_to 'Edit', edit_admin_ignite_path(@ignite) %> |
+<%= link_to 'Back', admin_ignites_path %>

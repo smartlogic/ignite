@@ -1,0 +1,15 @@
+<%= link_to 'Submit a Proposal', new_proposal_path %>
+<h2><%= @proposal.name %></h2> 
+<h3><%= @proposal.title %></h3>
+<div id="related">
+  <%= image_tag(url_for_file_column(@proposal, "image", "profile"), :alt => "photo: #{h(@proposal.name)}") unless @proposal.image.blank? %>
+</div>
+<p><%= @proposal.description %></p>
+<h4>About <%= @proposal.name %>:</h4>
+<p class="bio"><%= @proposal.bio %></p>
+<hr />
+<div class="comments">
+  <a name="comments"></a>
+  <%= render :partial => "comments/list", :locals => {:comments => @comments} %>
+  <%= render :partial => "comments/quick_form", :locals => {:comment => @comment, :captcha => @captcha, :parent => @proposal, :controller_name => 'proposals', :action_name => 'post_comment'} %>
+</div>

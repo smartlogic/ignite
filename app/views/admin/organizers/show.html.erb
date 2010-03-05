@@ -1,0 +1,54 @@
+
+<p>
+  <b>Name:</b>
+  <%=h @organizer.name %>
+</p>
+
+<p>
+  <b>Ignite City:</b>
+  <%=h @organizer.ignite.city %>
+</p>
+
+<p>
+  <b>Bio:</b>
+  <%=h @organizer.bio %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=h @organizer.email %>
+</p>
+
+<p>
+  <b>Personal url:</b>
+  <%=h @organizer.personal_url %>
+</p>
+
+<p>
+  <b>Blog url:</b>
+  <%=h @organizer.blog_url %>
+</p>
+
+<p>
+  <b>Company url:</b>
+  <%=h @organizer.company_url %>
+</p>
+
+<p>
+  <b>Twitter url:</b>
+  <%=h @organizer.twitter_url %>
+</p>
+
+<p>
+  <b>Linkedin url:</b>
+  <%=h @organizer.linkedin_url %>
+</p>
+
+<p>
+  <b>Image:</b>
+  <%= image_tag(url_for_file_column(@organizer, :image, "profile")) unless @organizer.image.blank? %>
+</p>
+
+
+<%= link_to 'Edit', edit_admin_organizer_path(@organizer) %> |
+<%= link_to 'Back', admin_organizers_path %>

@@ -1,0 +1,243 @@
+/* general layout */
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	background: #000 url(../images/layout/bg_canvas.jpg) no-repeat;
+}
+#flash{
+  text-align:center;
+  min-width:400px;
+  margin:5px 20px 20px 20px;
+}
+#flash .error{
+  padding:5px;
+  border: red inset 2px;
+}
+#flash .notice{
+  padding:5px;
+  border: green solid 2px;
+}
+#footer {       
+	clear: both;
+	padding: 16px 0px;
+	text-align: center;
+}
+#footer img {
+	margin: 0px 15px;
+}      
+#main, #sidebar, #sponsors {
+	float: left;
+}
+#main {
+	background: #000 url(../images/layout/bg_main_bottom.jpg) repeat-x bottom left;
+	padding-bottom: 10px;    
+	min-width: 900px;
+  max-width: 1200px;
+}
+#main #content {
+	background: #fff url(../images/layout/bg_main_topshadow.jpg) no-repeat;
+	min-height: 600px;
+	padding: 36px;
+	width: 900px;
+	overflow: auto;
+}             
+#main #masthead {  
+	background: #000;
+	height: 128px;
+	position: relative;
+  color: #fff;
+  text-align: center; 
+}                
+/*#main #masthead h4,#main #masthead h5,#main #masthead p {*/
+/*	font-size: 0px;*/
+/*	line-height: 0px;*/
+/*}*/
+#main #masthead p#location {   
+	display: block;            
+	color: #fff;
+	font-size: 11px;  
+	font-weight: bold;
+	position: absolute;
+	left: 300px;    
+	line-height: 15px;
+	top: 86px;
+}
+#main #masthead p#location a,#main #masthead p#location span.links {   
+	color: #dda74e;
+}
+#sidebar {
+	width: 180px;
+}
+#sidebar a {
+	color: #db8c48;
+}
+#sidebar #logo {
+	width: 180px;
+}
+#sidebar #nav {
+	background: #000 url(../images/layout/bg_nav.jpg) no-repeat top right;
+	border: 1px solid #000;
+	margin: 17px;
+	width: 144px;
+}              
+#sidebar #nav a {
+	display: block;                           
+	color: #fff;
+	font-weight: bold;     
+	padding: 6px 5px 1px;
+	height: 23px;
+}                    
+#sidebar #nav a:hover {
+	text-decoration: none;
+} 
+#sidebar #nav a.current,#sidebar #nav a:hover {
+	color: #db8c48;
+}
+#sidebar #nav li {
+	border-bottom: 1px solid #363636;
+	list-style: none;
+	list-style-image: none; 
+	margin: 0px 5px;
+}
+#sidebar #nav li.last {
+	border-bottom: 0px;
+}
+
+.adminTable{
+  margin: 15px 0px;
+  padding: 10px;
+  border: solid #666 2px;
+  width: 650px;
+}
+
+.adminTable td{
+  border-top: solid 1px #ddd;
+  border-right: solid 1px #ddd;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* general styling */
+
+.indent{
+  margin-left: 15px;
+}
+.htmlEditor{
+  width: 820px;
+  height: 500px;
+}
+.clear {
+	clear: both;
+}
+a {
+	color: #600;
+	text-decoration: none;
+} 
+a:hover {
+	text-decoration: underline;
+} 
+a.tag {        
+	background-color: #660e0a;
+	color: #fff;  
+	font-weight: bold;           
+	padding: 2px 5px;
+}
+a img {
+	border: 0px;
+}  
+body {               
+	color: #000;
+	font: 0.75em/1.5em Arial,sans-serif;
+}   
+form input, form textarea {
+	font: 1em/1.5em Arial,sans-serif;
+}
+form input.long {
+	width: 230px;
+}
+form.standard li {
+	list-style: none;
+	list-style-image: none;
+	padding: 5px 0px;
+}
+form.standard li label {
+	clear: left;
+	display: block;
+	float: left;
+	font-weight: bold;
+	width: 80px;
+}
+form.standard textarea {
+	height: 150px;
+	width: 230px;
+}
+h2 {        
+	font-size: 1.66em;
+	margin: 0.5em 0 0.25em;
+}     
+h3 {        
+	font-size: 1.33em;
+	margin: 0.5em 0 0.25em;
+}     
+hr {
+	background-color: #ccc;
+	clear: both;
+	color: #ccc;
+	height: 1px; 
+	margin: 5px 0px;   
+}
+html {                
+	font-size: 100%;
+}      
+img {
+	vertical-align: middle;
+}
+p {
+	margin-bottom: 0.75em;
+}
+p.meta {
+	font-size: 0.83em;
+}            
+
+select.long{
+  width: 200px;
+}
+
+/* admin speakers csv menu styles */
+
+.select_segment{
+  padding-top:17px;
+  height:75px;
+}
+
+.select_segment.twoLineHeader{
+  padding-top:0px;
+  height:75px;
+  padding-bottom:17px;
+}
+
+
+.select_segment select{
+  width:236px;
+  vertical-align:bottom;
+}
+
+.select_segment h3{
+  margin-bottom:5px;
+}
+
+div.select_segment optgroup {
+  font-weight: bold;
+  color: black;
+  font-style: normal;
+}
+
+div.select_segment option{
+  font-style: normal;
+  margin-left: 20px;
+}
+.helptext {
+	color: #999999;
+}

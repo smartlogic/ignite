@@ -1,0 +1,33 @@
+<%= link_to h(@event.name), event_path(@event) %>
+<h2><%= @speaker.name %></h2> 
+<h3><%= @speaker.title %></h3>
+<div id="related">
+  <%= image_tag(url_for_file_column(@speaker, "image", "profile"), :alt => "photo: #{@speaker.name}") unless @speaker.image.blank? %>
+  <% unless @social_links.empty? -%>
+    <h3 style="margin-top:10px;margin-bottom:-10px;">Social Links</h3>
+    <ul>
+      <% @speaker.social_links.each_pair do |type, url| -%>
+        <li><strong><%= link_to type, url %></strong></li>
+      <% end -%>
+    </ul>
+  <% end -%>
+</div>
+<p><%= @speaker.description %></p>
+<h4>About <%= @speaker.name %>:</h4>
+<p class="bio"><%= @speaker.bio %></p>
+<% unless @speaker.video_embed_url.blank? -%> 
+  <div class="video">
+    <object width="350" height="283">
+      <param name="movie" value="<%= @speaker.video_embed_url %>"></param>
+      <param name="allowFullScreen" value="true"></param>
+      <param name="allowscriptaccess" value="always"></param>
+      <embed src="<%= @speaker.video_embed_url %>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="350" height="283"></embed>
+    </object>
+  </div>
+<% end -%>
+<hr />
+<div class="comments">
+  <a name="comments"></a>
+  <%= render :partial => "comments/list", :locals => {:comments => @comments} %>
+  <%= render :partial => "comments/quick_form", :locals => {:comment => @comment, :captcha => @captcha, :parent => @speaker, :controller_name => 'speakers', :action_name => 'post_comment'} %>
+</div>

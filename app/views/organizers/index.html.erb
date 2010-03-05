@@ -1,0 +1,32 @@
+<h2>Organizers</h2>
+<%= ERB::new(@organizer_index_description).result(@template.send(:binding)) %>
+
+<a href="#" class="tag">Guest Organizers</a>
+<ul id="links">
+  <% @guests.each do |guest| -%>
+  <li><%= link_to "#{guest.event.name if guest.event}: #{guest.name}", "##{@ganchors.index(guest)}" %></li>
+  <% end -%>
+</ul>         
+
+<%= link_to 'Biographies', '#', :class => "tag" %>
+<div id="bios">
+  <% @founders.each do |founder| -%>
+    <div>  
+      <a name="<%= @fanchors.index(founder) %>"></a>
+      <%= image_tag(url_for_file_column(founder, :image, "profile")) %> 
+      <p><%= founder.bio %></p> 
+    </div>
+  <% end -%>
+  <% @guests.each do |guest| -%>
+    <div>  
+      <a name="<%= @ganchors.index(guest) %>"></a>
+      <%= image_tag(url_for_file_column(guest, :image, "profile")) %> 
+      <p><%= guest.bio %></p> 
+    </div>
+  <% end -%>
+</div>
+
+</div>
+
+
+

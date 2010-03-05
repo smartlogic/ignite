@@ -1,0 +1,28 @@
+<div class="post">
+  
+  <h2><%=h @article.name %></h2> 
+  <p><%= escape_javascript @article.html_text %></p>
+  <p class="meta">
+    Posted <%= pp_date @article.created_at %> <br />
+    <% if @article.comments_allowed? -%>
+      <%= image_tag("/images/shared/icon_comment.gif" %>
+      <%= link_to "Comments (#{@article.comments.size})", article_path(@article) %>
+    <% end -%>
+  </p>
+</div>
+  
+<div id="topics">
+  <%= link_to_event %>
+  <h2><%=h @article.name %></h2> 
+  
+  <%= yield %>
+  
+  <p><%= escape_javascript @article.html_text %></p>
+  <p class="meta">
+    Posted <%= pp_date @article.created_at %> <br />
+    <% if @article.comments_allowed? -%>
+      <%= image_tag("/images/shared/icon_comment.gif" %>
+      <%= link_to "Comments (#{@article.comments.size})", article_path(@article) %>
+    <% end -%>
+  </p>
+</div>   

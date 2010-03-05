@@ -1,0 +1,12 @@
+<div id="twitter">
+  <h6>Latest Tweets<br/> </h6>
+  <ul>
+    <% tweets.each do |tweet| -%>
+      <li>
+        <%= link_to "#{@ignite.twitter_username}:", "http://www.twitter.com/#{@ignite.twitter_username}/", :class => "author" %> 
+        <%= tweet[:content] %>
+        <span class="timestamp"><%= tweet[:timestamp] %></span>
+      </li>
+    <% end -%>
+  </ul>
+</div>

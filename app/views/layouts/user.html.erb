@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title><%= "#{@page_title} | " if !!@page_title %>Ignite <%= h(@ignite.city) %></title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="description" content="Five minutes, 20 slides. What would you say? At every Ignite, 16 artists, technologists, thinkers, and personalities will take the stage to answer this challenge." />
+	<meta name="keywords" content="<%= h(@ignite.city) %>, Ignite, tech, entreprenuers, thought leaders, conference" />
+  <%= stylesheet_link_tag "base", :media => "all" %>
+	<%= javascript_include_tag "prototype" %>
+	<%= javascript_include_tag "swfobject" %>
+	<script type="text/javascript">
+		function loadCountdown(){        
+			var so = new SWFObject("/flash/countdown_20090309.swf", "countdown", "614", "89", "9", "#FFFFFF");
+			so.addVariable("date", "<%= @current_event.date.strftime("%b %e %Y %l:%M:%S %p") %>"); 
+			so.addVariable("number", "<%= @current_event.position %>");
+      so.addVariable("background_image", "<%= url_for_file_column @ignite, :banner_background_image %>");
+      so.addVariable("city", "<%= h(@ignite.city) %>");
+			so.write("countdown");	
+		}
+  </script>
+	<!--[if lte IE 6]>
+    <%= stylesheet_link_tag "ie6", :media => "all" %>
+	<![endif]-->
+  <%= yield :head %>
+</head>
+<body <%= "id=\"#{controller.controller_name}\" class=\"#{controller.action_name}\"" %> onload="loadCountdown();">
+
+	<!-- logo + nav -->
+	<div id="sidebar">
+		<h1 id="logo"><%= link_to @ignite.logo_image.blank? ? "Ignite #{h(@ignite.city)}" : image_tag(url_for_file_column(@ignite, :logo_image), :alt => "Ignite #{h(@ignite.city)}"), root_url %></h1>
+		<ol id="nav">
+			<li><%= link_to "Latest News", news_path %></li>
+			<li><%= link_to "Speakers", speakers_path %></li>
+			<li><%= link_to "Past Ignites", past_events_path %></li>
+			<li><%= link_to "Organizers", organizers_path %></li>
+			<li><%= link_to "Friends", friends_path %></li>
+			<li><%= link_to "About Ignite", about_path %></li>
+			<% if @ignite.articles.find_by_name('Sponsor Ignite').nil? -%>
+        <li class="last"><%= link_to "Proposals", proposals_path %></li>
+      <% else -%>
+        <li><%= link_to "Proposals", proposals_path %></li>
+        <li class="last"><%= link_to "Sponsor Ignite", sponsor_ignite_path %></li>
+      <% end -%>
+		</ol>
+		<!-- widgets -->
+		<%= render :partial => "/widgets/tweeter", :locals => {:tweets => @tweets} %>
+	</div>            
+
+	<!-- content area -->
+	<div id="main">         
+		<!-- countdown --> <!-- (remove this note) see js for swfobject Flash object replacement here -->
+		<h4 id="countdown">Ignite Countdown Timer Placeholder Text</h4>
+		<!-- masthead --> <!-- (remove this note) see js for image replacement here -->
+		<div id="masthead" style="background: #000 url(..<%= url_for_file_column(@ignite, :banner_bottom_image) %>) no-repeat;">       
+			<h4>Five minutes, 20 slides. What would you say?</h4>
+			<p>At every Ignite, 16 artists, technologists, thinkers, and personalities will take the stage to answer this challenge.</p>
+			<h5>Location:</h5>
+			<p id="location">  
+				<%= pp_event_location(@current_event) %><br />
+				<span class="links"><%= link_to "RSVP", @current_event.rsvp_url %> | <%= link_to 'Map and Directions', @current_event.map_url %></span>
+			</p>
+		</div>
+		<!-- content -->
+		<div id="content">
+			<% if !(flash[:notice].blank? && flash[:error].blank?) -%>
+        <div id="flash">
+          <% unless flash[:notice].blank? -%>
+            <span class="notice"><%= flash[:notice] %></span>
+          <% end -%>
+          <% unless flash[:error].blank? -%>
+            <span class="error"><%= flash[:error] %></span>
+          <% end -%>
+        </div>
+      <% end -%>
+      
+      <%= yield %>
+			
+		</div>
+	</div>       
+	
+	<!-- sponsors -->
+	<div id="sponsors">
+		<% @sponsors.each do |sponsor| -%>
+      <%= link_to image_tag(url_for_file_column(sponsor, :image), :size => "<120x60", :alt => "Sponsor: #{sponsor.name}"), sponsor.link %>
+    <% end -%>
+	</div>   
+
+  <%= render :partial => 'layouts/footer' %>
+	
+  <% if @ignite.city == "Baltimore" -%>
+    <script type="text/javascript">
+      //<![CDATA[
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+      try {
+        var pageTracker = _gat._getTracker("UA-9222451-1");
+        pageTracker._trackPageview();
+      } catch(err) {}
+      //]]>
+    </script>
+  <% end -%>
+</body>     
+</html>

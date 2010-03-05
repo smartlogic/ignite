@@ -1,0 +1,22 @@
+<h1>Listing comments</h1>
+
+<table class="adminTable">
+  <tr>
+    <th>Author</th>
+    <th>Email</th>
+    <th>Url</th>
+    <th>Content</th>
+    <th>Location</th>
+  </tr>
+
+<% for comment in @comments %>
+  <tr>
+    <td><%=h comment.author %></td>
+    <td><%= link_to(truncate(h(comment.email), :length => 14), "mailto:#{comment.email}") %></td>
+    <td><%= link_to(truncate(h(comment.url), :length => 25), comment.url) %></td>
+    <td><%=h comment.content %></td>
+    <td><%= link_to ellipse_cutoff(comment.parent.name, 40), [:admin, comment.parent] %></td>
+    <td><%= link_to 'Destroy', [:admin, comment], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>

@@ -1,0 +1,7 @@
+<h3>Comments</h3>
+<% @comments.each do |comment| -%>
+  <p>
+    <strong><%= link_to_if comment.url != "http://", h(comment.author), comment.url, :class => "author" %></strong> <span class="timestamp"><%= pp_date comment.created_at %></span> <br />
+    <%= comment.content %>
+  </p>
+<% end -%>

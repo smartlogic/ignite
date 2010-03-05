@@ -1,0 +1,37 @@
+var tmpImg = new Image();
+
+function imageSwap(sid){
+  curImg = $('speakerLink' + sid);
+  swapImg = $('swapFor' + sid);
+  tmpImg.src = curImg.src;
+  curImg.src = swapImg.src;
+  swapImg.src = tmpImg.src;
+}
+
+function onWidgetMouseover(sid){
+  $('widgetTitle').innerHTML = mySpeakers[sid].title;
+  $('widgetAuthor').innerHTML = mySpeakers[sid].author;
+  $('widgetBio').innerHTML = mySpeakers[sid].bio;
+  $('widgetDescription').innerHTML = mySpeakers[sid].description;
+  imageSwap(sid);
+}
+
+String.prototype.getWidth = function(styleObject){
+  var test = document.createElement("table");
+  document.body.appendChild(test);
+  test.style.visibility = "hidden";
+  for(var i in styleObject){
+    test.style[i] = styleObject[i];
+  }
+  test.innerHTML = this;
+  var w = test.offsetWidth;
+  document.body.removeChild(test);
+  return w;
+}
+
+var num = <%= speakers.size %>;
+
+var mySpeakers = {<%= speakers.collect{|spk|
+  spk.id.to_s + ' : {"author": "' + escape_javascript(spk.name) + '", "description": "' + ellipse_cutoff(spk.description, 125) + '", "title": "' + escape_javascript(spk.title) + '",
+                "bio" : "' + more_link(spk.bio, speaker_url(spk), 175) + '"}'
+  }.join(',') %>};

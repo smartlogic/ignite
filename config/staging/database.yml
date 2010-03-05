@@ -1,0 +1,6 @@
+staging:
+  adapter: mysql
+  database: ignite
+  username: ignite
+  password: ignite
+  host: localhost

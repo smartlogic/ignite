@@ -1,0 +1,40 @@
+== Setting up a Development Environment ==
+
+Checkout the source:
+
+  $> svn checkout https://svn.slsdev.net/ignite/trunk
+  
+Install the dependencies:
+
+  $> geminstaller
+  $> geminstaller -c config/test/geminstaller.yml
+  
+Set up apache vhost at config/development/apache.conf.  Refer to 
+config/development/apache.conf.sample.
+
+== Running Tests ==
+Ignite uses story_helper for it's test data.
+
+  $> raket db:reset db:stories:load
+  $> raket test
+  
+== Loading Production Data ==
+
+First, pull down the production data:
+
+  $> cap local:sync RAILS_ENV=production
+
+While that is working, open up /etc/hosts and add entries for the sites
+that you'll want to access locally, e.g.
+
+  127.0.0.1   ignite-dc.com.ignite.localhost ignitebaltimore.com.ignite.localhost
+  127.0.0.1   igniterailsconf.com.ignite.localhost
+  
+Note that this is not likely to be an exhaustive list.  To find all domains
+for all existing production sites, run the following SQL query:
+
+  SELECT domain FROM ignites;
+  
+Now, you will access the sites with ignite.localhost tacked onto the end of 
+the real URL's, e.g. http://ignitebaltimore.com.ignite.localhost
+

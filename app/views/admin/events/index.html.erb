@@ -1,0 +1,39 @@
+<h1>Listing events</h1>
+
+<% unless @events.empty? -%>
+  <table class="adminTable" cellspacing="0">
+    <tr>
+      <th>Ignite City</th>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Location</th>
+      <th>Organizer</th>
+    </tr>
+  
+    <% for event in @events %>
+      <tr <%= 'style="background-color:#d6ffbf;"' if event.is_featured? %>
+        <td><%=h event.ignite.city %></td>
+        <td><%=h event.name %></td>
+        <td><%=pp_date event.date %></td>
+        <td><%=h event.location_name %></td>
+        <td><%=h event.organizer.name unless event.organizer.nil? %></td>
+        <td><%= link_to 'Show', [:admin, event] %></td>
+        <td><%= link_to 'Edit', edit_admin_event_path(event) %></td>
+        <td><%= link_to 'Destroy', [:admin, event], :confirm => 'Are you sure?', :method => :delete %></td>
+        <td>
+          <% unless event.is_featured? -%>
+            <%= link_to "Set as Featured", url_for(:controller => 'admin/events', :action => 'set_feature', :id => event), :method => :put %>
+          <% else -%>
+            Featured in <%= event.ignite.city %>
+          <% end -%>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else -%>
+  <h3>There are no events in the database.</h3>
+<% end -%>
+
+<br />
+
+<%= link_to 'New event', new_admin_event_path %>

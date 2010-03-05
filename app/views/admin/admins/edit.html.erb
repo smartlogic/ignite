@@ -1,0 +1,30 @@
+<h1>Editing admin</h1>
+
+<% form_for @admin, :url => admin_admin_path, :method => :put do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :login %><br />
+    <%= f.text_field :login %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :password, "Password (Leave blank if you do not want it to change)" %><br/>
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= label_tag 'password_confirmation', 'Confirm Password' %><br/><%= f.password_field :password_confirmation %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', admin_admin_path(@admin) %> |
+<%= link_to 'Back', admin_admins_path %>

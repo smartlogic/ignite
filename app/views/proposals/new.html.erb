@@ -1,0 +1,40 @@
+<h2>Submit a Proposal</h2>
+<p>We're interested in any topic as long as it's interesting, from technology to culture to business to philosophy. The night includes time to network and chat, so be sure to bring business cards! We're always looking for new speakers, but are not interested in product demos.  Instead, present a how-to, a travelogue, something inspirational, lessons learned, or a forecast.  <strong>Speakers are limited to 20 slides, which automatically advance after 15 seconds - that's the fun of Ignite!</strong></p>
+<% form_for(@proposal, :url => url_for(:controller => 'proposals', :action => 'create'), :html => {:multipart => true, :class => "proposal"}) do |f| %>
+  <%= f.error_messages %>
+  <ul>
+    <li>
+      <%= f.label :name, "Name:" %>
+      <%= f.text_field :name, :class => "long" %>
+    </li>
+    <li>
+      <%= f.label :email, "Email:" %>
+      <%= f.text_field :email, :class => "long" %>
+    </li>
+    <li>
+      <%= f.label :personal_url, "Website:" %>
+      <%= f.text_field :personal_url, :class => "long" %>
+    </li>
+    <li>
+      <%= f.label :title, "Proposal Title:" %>
+      <%= f.text_field :title, :class => "long" %>
+    </li>
+    <li>
+      <%= f.label :description, "Description:" %>
+      <%= f.text_area :description %>
+    </li>
+    <li>
+      <%= f.label :bio, "Brief Bio:" %>
+      <%= f.text_area :bio %>
+    </li>
+    <li>
+      <%= f.label :image, "Profile Picture:" %>
+      <%= file_column_field "speaker", :image, :size => 26 %>
+    </li>
+    <br/>
+    <li><%= @captcha %></li>
+    <li>
+      <input type="submit" value="Submit your 5-min topic, "
+    </li>
+  </ul>
+<% end -%>

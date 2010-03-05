@@ -1,0 +1,26 @@
+<h1>Listing organizers</h1>
+
+<table class="adminTable">
+  <tr>
+    <th>Name</th>
+    <th>Bio</th>
+    <th>Email</th>
+    <th>Image</th>
+  </tr>
+
+<% for organizer in @organizers %>
+  <tr>
+    <td><%=h organizer.name %></td>
+    <td><%=h organizer.bio %></td>
+    <td><%=h organizer.email %></td>
+    <td><%= image_tag(url_for_file_column(organizer, "image", "thumb")) unless organizer.image.blank? %></td>
+    <td><%= link_to 'Show', admin_organizer_path(organizer) %></td>
+    <td><%= link_to 'Edit', edit_admin_organizer_path(organizer) %></td>
+    <td><%= link_to 'Destroy', admin_organizer_path(organizer), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New organizer', new_admin_organizer_path %>

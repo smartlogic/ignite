@@ -1,0 +1,36 @@
+<h1>Editing article</h1>
+<br/>
+<% form_for([:admin, @article]) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :ignite_id, "Ignite City" %><br/>
+    <%= f.collection_select :ignite_id, @ignites, :id, :city, {}, {:Class => "long"} %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :is_news %><br />
+    <%= f.check_box :is_news %>
+  </p>
+  <p>
+    <%= f.label :html_text %><br />
+    <%= f.text_area :html_text, :class => "htmlEditor" %>
+  </p>
+  <p>
+    <%= f.label :is_sticky %><br />
+    <%= f.check_box :is_sticky %>
+  </p>
+  <p>
+    <%= f.label :comments_allowed %><br />
+    <%= f.check_box :comments_allowed %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', [:admin, @article] %> |
+<%= link_to 'Back', admin_articles_path %>

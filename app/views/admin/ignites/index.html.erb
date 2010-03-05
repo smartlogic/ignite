@@ -1,0 +1,26 @@
+<h1>Listing Ignites</h1>
+
+<table class="adminTable">
+  <tr>
+    <th>City</th>
+    <th>Domain</th>
+    <th>Twitter Account</th>
+    <th>Logo</th>
+  </tr>
+
+<% for ignite in @ignites %>
+  <tr>
+    <td><%=h ignite.city %></td>
+    <td><%=h ignite.domain %></td>
+    <td><%=h ignite.twitter_username %></td>
+    <td><%= image_tag(url_for_file_column(ignite, "logo_image", "thumb")) unless ignite.logo_image.blank? %></td>
+    <td><%= link_to 'Show', admin_ignite_path(ignite) %></td>
+    <td><%= link_to 'Edit', edit_admin_ignite_path(ignite) %></td>
+    <td><%= link_to 'Destroy', admin_ignite_path(ignite), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New ignite', new_admin_ignite_path %>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Ignite Administration</title>
+  <%= javascript_include_tag("prototype") %>
+  <%= stylesheet_link_tag "scaffold", :media => "all" %>
+  <%= stylesheet_link_tag "admin", :media => "all" %>
+  <!--[if lte IE 6]>
+    <%= stylesheet_link_tag "ie6", :media => "all" %>
+	<![endif]-->
+  <%= yield :head %>
+</head>
+<body id="<%= controller.controller_name %>" class="<%= controller.action_name %>"> <!-- (remove this note) controller name + action name to namespace css styles -->
+
+	<!-- logo + nav -->
+	<div id="sidebar">
+		<h1 id="logo"><%= link_to image_tag("/images/layout/ignite-baltimore-logo.jpg", :alt => "Ignite Baltimore"), admin_url %></h1>
+		<ol id="nav">
+			<li><%= link_to "Admins", admin_admins_path %></li>
+      <li><%= link_to "Ignites", admin_ignites_path %></li>
+			<li><%= link_to "Organizer Roles", admin_organizer_roles_path %></li>
+			<li><%= link_to "Organizers", admin_organizers_path %></li>
+			<li><%= link_to "Events", admin_events_path %></li>
+			<li><%= link_to "Speakers", admin_speakers_path %></li>
+			<li><%= link_to "Proposals", proposals_admin_speakers_path %></li>
+			<li><%= link_to "Articles", admin_articles_path %></li>
+			<li><%= link_to "Comments", admin_comments_path %></li>
+      <li><%= link_to "Sponsors", admin_sponsors_path %></li>
+      <li class="last" style="height:50px;text-align:bottom;"><%= link_to "Logout #{@current_admin.name}", logout_url %></li>
+		</ol>
+	</div>
+  
+  	<!-- content area -->
+	<div id="main">         
+		<!-- masthead --> <!-- (remove this note) see js for image replacement here -->
+		<div id="masthead">       
+			<h1 style="padding-top:30px;">Ignite Admin Panel</h1>
+      <% if @page_title -%>
+        <hr style="margin:10px 125px;width:650px;color:red;" align="center"/>
+        <h1><%=h @page_title %></h1>
+      <% end -%>
+		</div>
+    <!-- content -->
+    <div id="content">
+      <% if !(flash[:notice].blank? && flash[:error].blank?) -%>
+        <div id="flash">
+          <% unless flash[:notice].blank? -%>
+            <span class="notice"><%= flash[:notice] %></span>
+          <% end -%>
+          <% unless flash[:error].blank? -%>
+            <span class="error"><%= flash[:error] %></span>
+          <% end -%>
+        </div>
+      <% end -%>
+      <%= yield %>
+      
+    </div>
+  </div>
+
+  <%= render :partial => 'layouts/footer' %>
+
+</html>

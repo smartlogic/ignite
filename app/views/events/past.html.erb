@@ -1,0 +1,16 @@
+<%= ERB::new(@past_events_description).result(@template.send(:binding)) %>
+<ul>
+  <% @events.each do |event| -%>
+    <div class="event">
+      <h3><%= link_to h(event.name), event %> <span class="date"><%= pp_date event.date %></span></h3>
+      <%= image_tag(url_for_file_column(event, :summary_image), :alt => event.name) unless event.summary_image.nil? %> 
+      <%=h event.description %>
+      <ul>
+        <li><%= link_to 'Speakers', speakers_path(:event_id => event.id) %></li>
+        <% event.content_links.each_pair do |type, url| -%>
+          <li><%= link_to type, url %></strong></li>
+        <% end -%>
+      </ul>
+    </div>
+  <% end -%>
+</ul>

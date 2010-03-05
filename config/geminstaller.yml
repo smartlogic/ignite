@@ -1,0 +1,23 @@
+---
+defaults:
+  install_options: --no-ri --no-rdoc
+gems:
+- name: rails
+  version: '= 2.2.2'
+- name: rubyist-aasm
+  version: '= 2.0.5'
+  source: 'http://gems.github.com'
+- name: mislav-will_paginate
+  version: '= 2.3.6'
+  source: 'http://gems.github.com'
+- name: rmagick
+  version: '= 2.9.1'
+- name: recaptcha
+  version: '= 0.1.54'
+  install_options: "--source http://www.loonsoft.com/recaptcha/pkg/"
+- name: sanitize
+  version: '= 1.0.4'
+- name: mbleigh-subdomain-fu
+  version: '= 0.1.0'
+- name: fastercsv
+  version: '= 1.5.0'

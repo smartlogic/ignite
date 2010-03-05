@@ -1,0 +1,12 @@
+<h3>Proposals For the Next Ignite</h3>
+<% if !@ignite.proposals_closed && @proposals.size > 20 -%>
+  <div style="width:100%;text-align:center;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div><br/>
+<% end -%>
+<ul class="indent">
+  <% @proposals.each do |proposal| -%>
+    <li><%= proposal_list_item(proposal) %></li>
+  <% end -%>
+</ul>
+<% if !@ignite.proposals_closed  -%>
+  <div style="margin-top:20px;width:100%;text-align:center;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div>
+<% end -%>

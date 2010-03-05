@@ -1,0 +1,23 @@
+<p>
+  <b>Name:</b>
+  <%=h @sponsor.name %>
+</p>
+
+<p>
+  <b>Events:</b>
+  <%=h @sponsor.events.map{|e| "#{e.ignite.city}: #{e.name}"}.join(', ') %>
+</p>
+
+<p>
+  <b>Link:</b>
+  <%=h @sponsor.link %>
+</p>
+
+<p>
+  <b>Image:</b>
+  <%= image_tag(url_for_file_column(@sponsor, :image)) unless @sponsor.image.blank? %>
+</p>
+
+
+<%= link_to 'Edit', edit_admin_sponsor_path(@sponsor) %> |
+<%= link_to 'Back', admin_sponsors_path %>

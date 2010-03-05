@@ -1,0 +1,13 @@
+# On Ubuntu, symlink this file into your /etc/apaches/sites-enabled
+# On Mac, add an Include directive to /etc/apache2/users/<username>.conf
+
+<VirtualHost *:80>
+  # Make sure these vhost declarations are in your /etc/hosts
+  ServerName ignite.localhost
+  ServerAlias *.ignite.localhost
+ 
+  # Update DocumentRoot
+  DocumentRoot /var/vhosts/ignite/current/public
+  
+  RailsEnv development
+</VirtualHost>

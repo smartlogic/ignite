@@ -1,0 +1,10 @@
+.svn
+config/development/apache.conf
+config/development/database.yml
+config/test/database.yml
+log
+public/ignite
+public/organizer
+public/speaker
+public/sponsor
+tmp

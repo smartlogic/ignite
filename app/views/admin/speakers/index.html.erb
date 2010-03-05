@@ -1,0 +1,65 @@
+<h1><%= @title %></h1>
+
+<table class="adminTable">
+  <tr>
+    <th>Ignite City</th>
+    <th>Status</th>
+    <th>Name</th>
+    <th>Title</th>
+    <%= "<th>Event</th>" unless @hide_event %>
+    <th>Position</th>
+    <th>Image</th>
+    <th>Widget Image</th>
+    <th>Mouseover image</th>
+  </tr>
+
+<% for speaker in @speakers %>
+  <tr>
+    <td><%=h speaker.ignite.city %></td>
+    <td><%= speaker.status %></td>
+    <td><%=h speaker.name %></td>
+    <td><%=h speaker.title %></td>
+    <%= "<td>#{h(speaker.event.name)}</td>" unless (@hide_event || speaker.event.nil?) %>
+    <td><%=h speaker.position %></td>
+    <td><%= image_tag(url_for_file_column(speaker, "image", "thumb")) unless speaker.image.blank? %></td>
+    <td><%= image_tag(url_for_file_column(speaker, "widget_image", "thumb")) unless speaker.widget_image.blank? %></td>
+    <td><%= image_tag(url_for_file_column(speaker, "mouseover_image", "thumb")) unless speaker.mouseover_image.blank? %></td>
+    <td><%= link_to 'Show', [:admin, speaker] %></td>
+    <td><%= link_to 'Edit', edit_admin_speaker_path(speaker) %></td>
+    <td><%= link_to 'Archive', archive_admin_speakers_url(:id => speaker.id), :confirm => 'Are you sure? Archiving removes this speaker from the public view.', :method => :delete %></td>
+    <td><%= link_to 'Delete', [:admin, speaker], :confirm => 'Are you sure? This speaker will be irreversibly deleted!', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @speakers %>
+<br />
+
+<%= link_to 'New speaker', new_admin_speaker_path %>
+<br/>
+<% if @hide_event -%>
+  <%= optgroup_settings_dropdown("Export proposals to CSV",
+    [
+      ["By Set", [
+        ["This Page Only", url_for(:controller => "admin/speakers", :action => "csv", :proposal => true, :page => params[:page], :escape => false)],
+        ["Active Proposals", url_for(:controller => "admin/speakers", :action => "csv", :proposal => true, :set => "active", :escape => false)],
+        ["All Proposals", url_for(:controller => "admin/speakers", :action => "csv", :proposal => true, :escape => false)]
+      ]],
+      ["By Ignite", 
+        @ignites.map{ |ignite| eval('[ignite.city, url_for(:controller => "admin/speakers", :action => "csv", :proposal => true, :ignite_id => ignite.id, :escape => false)]') }
+      ]
+    ]) unless @speakers.empty?
+  %>
+<% else -%>
+  <%= optgroup_settings_dropdown("Export speakers to CSV",
+    [
+      ["By Set", [
+        ["This Page Only", url_for(:controller => "admin/speakers", :action => "csv", :page => params[:page], :escape => false)],
+        ["Active Speakers", url_for(:controller => "admin/speakers", :action => "csv", :set => "active", :escape => false)],
+        ["All Speakers", url_for(:controller => "admin/speakers", :action => "csv")]
+      ]],
+      ["By Ignite", 
+        @ignites.map{ |ignite| eval('[ignite.city, url_for(:controller => "admin/speakers", :action => "csv", :ignite_id => ignite.id, :escape => false)]') }
+      ]
+    ]) unless @speakers.empty?
+  %>
+<% end -%>

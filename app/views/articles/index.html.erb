@@ -1,0 +1,9 @@
+<% unless @articles.blank? -%>
+  <%= render :partial => "standard", :collection => @articles, :as => :article %>
+<% else -%>
+  <h2>News</h2>
+  <div style="width:60%">
+    <h3>No news has been reported yet!</h3>
+    <h3>Please browse the other sections of our site using the links to your left.  News will be reported as it happens!</h3>
+  </div>
+<% end -%>

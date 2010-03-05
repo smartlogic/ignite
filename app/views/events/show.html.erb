@@ -1,0 +1,39 @@
+<h2><%=h @event.name %></h2>
+
+<div id="related">
+  <h3>About</h3>
+  <p>
+    <strong>Five minutes, 20 slides. What would you say?</strong>At every Ignite, 16 artists, technologists, thinkers, and personalities will take the stage to answer this challenge.
+  </p>
+  <h3>When & Where</h3>
+  <%= pp_location(@event) %>
+  <span id="eventInfoLinks">
+    <%= link_to "RSVP", @event.rsvp_url %>&nbsp;|&nbsp;
+    <%= link_to "Map and Directions", @event.map_url %>
+  </span>
+  <%= ERB::new(@get_involved_info).result(@template.send(:binding)) %>
+</div>
+
+<p><%=h @event.description %></p>
+
+<ul class="indent">
+  <li><strong><%= link_to 'Speakers', speakers_path(:event_id => @event.id) %></strong></li>
+  <% @event.content_links.each_pair do |type, url| -%>
+    <li><strong><%= link_to type, url %></strong></li>
+  <% end -%>
+</ul>
+
+<h3>Speakers</h3>
+<ul class="indent">
+  <% @speakers.each do |speaker| -%>
+    <li><%= speaker_list_item(speaker) %></li>
+  <% end -%>
+</ul>
+
+<hr />
+
+<div class="comments">
+  <a name="comments"></a>
+  <%= render :partial => "comments/list", :locals => {:comments => @comments} %>
+  <%= render :partial => "comments/quick_form", :locals => {:comment => @comment, :captcha => @captcha, :parent => @event, :controller_name => 'events', :action_name => 'post_comment'} %>
+</div>

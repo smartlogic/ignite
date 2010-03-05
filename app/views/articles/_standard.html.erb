@@ -1,0 +1,12 @@
+<div class="post">
+  <%= link_to "Ignite #{h(@ignite.city)}", root_path, :class => "tag" %>
+  <h2 class="articleTitle"><%= link_to h(article.name), article %></h2> 
+  <div class="articleContent"><%= article.html_text %></div>
+  <p class="meta">
+    Posted <%= pp_date article.created_at %> <br />
+    <% if article.comments_allowed? -%>
+      <%= image_tag("/images/shared/icon_comment.gif") %>
+      <%= link_to "Comments (#{article.comments.size})", article_path(article) %>
+    <% end -%>
+  </p>
+</div> 

@@ -1,0 +1,17 @@
+<div id="topics">
+  <%= link_to h(event.name), event, :class => "tag" %>
+  <h2><%= "#{h(event.name)} Speakers" %>:</h2>
+  <dl>
+    <dt><span id="widgetTitle" class="title"><%=h default.title %></span> by <span id="widgetAuthor"><%=h default.name %></span></dt>
+    <dd>
+      <p id="widgetDescription"><%=ellipse_cutoff default.description, 125 %></p>
+      <p id="widgetBio" class="bio"><%=more_link default.bio, speaker_url(default), 175 %></p>
+    </dd>
+  </dl>
+  <div id="photos">
+    <% speakers.each do |speaker| -%>
+      <%= image_tag(widget_image(speaker, "mouseover_image", "on"), :style => "display:none;", :id => "swapFor#{speaker.id}") %>
+      <%= link_to image_tag(widget_image(speaker, "widget_image", "off"), :alt => "thumbnail: #{h(speaker.name)}", :title => h(speaker.name), :id => "speakerLink#{speaker.id}"), speaker_path(speaker), :onmouseover => "onWidgetMouseover(#{speaker.id})", :onmouseout => "imageSwap(#{speaker.id})" %>
+    <% end -%>
+  </div>
+</div>

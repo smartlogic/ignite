@@ -1,0 +1,26 @@
+<h4>Leave a comment:</h4>
+<% form_for(comment, :url => url_for(:controller => controller_name, :action => action_name, :id => parent.id), :html => {:class => "standard"}) do |f| %>
+  <%= f.error_messages %>
+  <ul>
+    <li>
+      <%= f.label :author, "Name:" %>
+      <%= f.text_field :author %>
+    </li>
+    <li>
+      <%= f.label :email, "Email:" %>
+      <%= f.text_field :email %>
+    </li>
+    <li>
+      <%= f.label :url, "Website:" %>
+      <%= f.text_field :url %>
+    </li>
+    <li>
+      <%= f.label :content, "Comment:" %>
+      <%= f.text_area :content, :rows => 3 %>
+    </li>
+    <li><%= captcha %></li>
+    <li>
+      <%= submit_tag "Submit Comment" %>
+    </li>
+  </ul>
+<% end %>
