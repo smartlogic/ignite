@@ -7,9 +7,10 @@ class Event < ActiveRecord::Base
   belongs_to :ignite
   has_and_belongs_to_many :sponsors
 
-  before_destroy :clear_event_key
-
   file_column :summary_image
+
+  validates_presence_of :ignite_id
+  before_destroy :clear_event_key
 
   named_scope :past, :conditions => "is_complete = true OR date < '#{Date.today}'", :order => "date DESC"
   

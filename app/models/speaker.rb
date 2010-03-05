@@ -41,13 +41,12 @@ class Speaker < ActiveRecord::Base
   end
   
   def status
-    status = ""
     if self.archived?
-      status = "Archived"
+      "Archived"
     elsif self.event_id.blank?
-      status = "Proposal"
+      "Proposal"
     else
-      status = "Active"
+      "Active"
     end
   end
   
