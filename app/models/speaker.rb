@@ -20,6 +20,10 @@ class Speaker < ActiveRecord::Base
   
   validates_presence_of :name, :title, :description, :bio, :ignite_id
   
+  def validate
+    @errors.add(:event, "is not assigned to #{ignite.city}") if !event_id.nil? && event.ignite_id != self.ignite_id
+  end
+  
   named_scope :proposals, :conditions => {:event_id => nil}
   
   def export_columns(format=nil)
