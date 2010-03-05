@@ -83,7 +83,7 @@ class SpeakersController < BaseUserController
     @speaker = Speaker.find(params[:id])
     @comment = Comment.new(params[:comment])
     @comment.parent = @speaker
-    if (RAILS_ENV == 'test' || validate_recap(params, @comment.errors)) && @comment.save
+    if validate_captcha(params, @comment) && @comment.save
       flash[:notice] = 'Your comment has been posted.'
       redirect_to speaker_path(@speaker)
     else

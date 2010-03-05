@@ -26,7 +26,7 @@ class EventsController < BaseUserController
     @event = @ignite.events.find(params[:id])
     @comment = Comment.new(params[:comment])
     @comment.parent = @event
-    if (RAILS_ENV == 'test' || validate_recap(params, @comment.errors)) && @comment.save
+    if validate_captcha(params, @comment) && @comment.save
       flash[:notice] = 'Your comment has been posted.'
       redirect_to event_path(@event)
     else

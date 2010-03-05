@@ -76,7 +76,7 @@ class ArticlesController < BaseUserController
     @article = @ignite.articles.find(params[:id])
     @comment = Comment.new(params[:comment])
     @comment.parent = @article
-    if (RAILS_ENV == 'test' || validate_recap(params, @comment.errors)) && @comment.save
+    if validate_captcha(params, @comment) && @comment.save
       flash[:notice] = 'Your comment has been posted.'
       redirect_to article_path(@article)
     else
