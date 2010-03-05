@@ -21,7 +21,8 @@
     </li>
     <li>
       <%= f.label :description, "Description:" %>
-      <%= f.text_area :description %>
+      <%= f.text_area :description %><br/>
+      <span class="field_note">Markdown is supported for the description</span>
     </li>
     <li>
       <%= f.label :bio, "Brief Bio:" %>
@@ -34,7 +35,7 @@
     <br/>
     <li><%= @captcha %></li>
     <li>
-      <input type="submit" value="Submit your 5-min topic, "
+      <input type="submit" value="Submit your 5-min topic" />
     </li>
   </ul>
 <% end -%>

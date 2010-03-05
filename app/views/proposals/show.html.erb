@@ -1,10 +1,13 @@
-<%= link_to 'Submit a Proposal', new_proposal_path %>
+<div style="float: right">
+  <%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %>
+  <%= link_to 'View all Proposals', proposals_path, :class => 'articleTitle tag' %>
+</div>
 <h2><%= @proposal.name %></h2> 
 <h3><%= @proposal.title %></h3>
 <div id="related">
   <%= image_tag(url_for_file_column(@proposal, "image", "profile"), :alt => "photo: #{h(@proposal.name)}") unless @proposal.image.blank? %>
 </div>
-<p><%= @proposal.description %></p>
+<p><%= Markdown.new(@proposal.description).to_html %></p>
 <h4>About <%= @proposal.name %>:</h4>
 <p class="bio"><%= @proposal.bio %></p>
 <hr />

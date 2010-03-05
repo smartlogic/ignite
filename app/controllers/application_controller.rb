@@ -1,3 +1,4 @@
+require 'rdiscount'
 class ApplicationController < ActionController::Base
   include ReCaptcha::AppHelper
   include AuthenticatedSystem
@@ -24,7 +25,7 @@ class ApplicationController < ActionController::Base
   end
   
   def validate_captcha(params, model)
-    return true if Rails.env.test?
+    return true if Rails.env.test? || Rails.env.development?
     validate_recap(params, model.errors)
   end
   
