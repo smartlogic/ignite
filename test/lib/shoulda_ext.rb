@@ -64,5 +64,17 @@ module Shoulda
         assert_no_flash(stream)
       end
     end
+    
+    def should_not_render_new_proposal_link
+      should "not render a link to submit a proposal" do
+        assert_select "a", :text => "Submit a Proposal", :count => 0
+      end
+    end
+    
+    def should_render_new_proposal_link
+      should "render a link to submit a proposal" do
+        assert_select "a", :text => "Submit a Proposal", :count => 1
+      end
+    end
   end
 end

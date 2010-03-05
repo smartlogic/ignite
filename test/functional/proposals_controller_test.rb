@@ -19,6 +19,19 @@ class ProposalsControllerTest < ActionController::TestCase
       should "only show speakers that are actually proposals" do
         assert assigns(:proposals).all?(&:is_proposal?)
       end
+      should_render_new_proposal_link
+    end
+
+    context "when proposals have been closed" do
+      setup do
+        @baltimore.update_attributes!(:proposals_closed => true)
+      end
+      context "ON GET to index" do
+        setup do
+          get :index
+        end
+        should_not_render_new_proposal_link
+      end
     end
     
     context "ON GET to new" do
@@ -31,6 +44,7 @@ class ProposalsControllerTest < ActionController::TestCase
         assert_equal "Submit a Proposal", assigns(:page_title)
       end
     end
+    
     
     context "ON POST to create that is successful" do
       setup do
@@ -67,6 +81,19 @@ class ProposalsControllerTest < ActionController::TestCase
         should_assign_to(:comments)
         should "have a page title of My Proposal | Proposals" do
           assert_equal "My Proposal | Proposals", assigns(:page_title)
+        end
+        should_render_new_proposal_link
+      end
+      
+      context "when proposal submissions have been closed" do
+        setup do
+          @baltimore.update_attributes!(:proposals_closed => true)
+        end
+        context "ON GET to show" do
+          setup do
+            get :show, :id => @proposal
+          end
+          should_not_render_new_proposal_link
         end
       end
     
