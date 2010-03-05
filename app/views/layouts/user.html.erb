@@ -57,7 +57,11 @@
 			<h5>Location:</h5>
 			<p id="location">  
 				<%= pp_event_location(@current_event) %><br />
-				<span class="links"><%= link_to "RSVP", @current_event.rsvp_url %> | <%= link_to 'Map and Directions', @current_event.map_url %></span>
+				<span class="links">
+				  <% if @current_event.rsvp_url.blank? -%>
+				    <%= link_to "RSVP", @current_event.rsvp_url %> | 
+				  <% end -%>
+				  <%= link_to 'Map and Directions', @current_event.map_url %></span>
 			</p>
 		</div>
 		<!-- content -->

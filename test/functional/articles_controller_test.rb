@@ -1,6 +1,22 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ArticlesControllerTest < ActionController::TestCase
+  context "A public visitor to Ignite Baltimore" do
+    setup do
+      @baltimore = Factory(:ignite, :city => 'Baltimore', :domain => 'ignitebaltimore.localhost')
+      set_host(@baltimore)
+    end
+    
+    should "render RSVP link in layout when an RSVP URL has been provided" do
+      @ignite.update_attributes!(:rsvp_url => 'http://www.google.com')
+      assert_select 'a', :text => 'RSVP', :count => 1
+    end
+    
+    should "not render RSVP link in layout when an RSVP URL has not been provided" do
+      assert_select 'a', :text => 'RSVP', :count => 0
+    end
+  end
+  
   test "should get index" do
     get :index
     assert_response :success
