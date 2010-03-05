@@ -36,9 +36,9 @@ class ProposalsController < BaseUserController
     @proposal = Speaker.new(params[:speaker].merge(:ignite => @ignite))
 
     respond_to do |format|
-      if (RAILS_ENV == 'test' || validate_recap(params, @proposal.errors)) && @proposal.save
+      if validate_captcha(params, @proposal) && @proposal.save
         flash[:notice] = 'Your Proposal was successfully submitted.'
-        format.html { redirect_to article_path(@ignite.articles.find_by_name('Proposal Submitted')) }
+        format.html { redirect_to proposal_path(@proposal) }
         format.xml  { render :xml => @proposal, :status => :created, :location => @proposal }
       else
         @captcha = get_captcha

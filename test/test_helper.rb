@@ -7,16 +7,24 @@ require 'shoulda'
 require 'factory_girl'
 Dir.glob(File.join(RAILS_ROOT, 'test', 'factories', '**/*.rb')).each{|f| require f}
 
+def test_lib(file)
+  File.join(File.dirname(__FILE__), 'lib', file)
+end
+
+require test_lib('assertions')
+require test_lib('shoulda_ext')
+
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
   # Add more helper methods to be used by all tests here...
   include StoryAccessors::Methods
+  extend Shoulda::IgniteMacros
 end
-
 
 module ActionController
   class TestCase
+    include IgniteAssertions
     
     # allows us to use the self.log_in function to log in a certain user
     @@scoped_session = {}

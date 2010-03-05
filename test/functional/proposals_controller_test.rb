@@ -1,58 +1,91 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ProposalsControllerTest < ActionController::TestCase
-  context "A public visitor" do
-    should "view proposals" do
-      get :index
-      assert_response :success
-      assert_equal "Proposals", assigns(:page_title)
-      assert_equal assigns(:proposals).all?(&:is_proposal?)
-      assert_template 'proposals'
+  context "A public visitor to Ignite Baltimore" do
+    setup do
+      @baltimore = Factory(:ignite, :city => 'Baltimore', :domain => 'ignitebaltimore.localhost')
+      set_host(@baltimore)
+    end
+    
+    context "ON GET to index" do
+      setup do
+        get :index
+      end
+      should_respond_with :success
+      should_render_template 'proposals'
+      should "have a page title of Proposals" do
+        assert_equal "Proposals", assigns(:page_title)
+      end
+      should "only show speakers that are actually proposals" do
+        assert assigns(:proposals).all?(&:is_proposal?)
+      end
+    end
+    
+    context "ON GET to new" do
+      setup do
+        get :new
+      end
+      should_respond_with :success
+      should_render_template 'new'
+      should "have a page title of Submit a Proposal" do
+        assert_equal "Submit a Proposal", assigns(:page_title)
+      end
+    end
+    
+    context "ON POST to create that is successful" do
+      setup do
+        post :create, :speaker => Factory.attributes_for(:speaker, :event_id => nil)
+        @proposal = Speaker.last
+      end
+      should_redirect_to("proposal page") { proposal_path(@proposal) }
+      should_change("number of proposals", :by => 1) { @baltimore.speakers.proposals.count }
+      should_flash(:notice)
+    end
+    
+    context "ON POST to create that is unsuccessful" do
+      setup do
+        post :create, :speaker => Factory.attributes_for(:speaker, :name => nil)
+      end
+      should_respond_with :success
+      should_not_change("number of proposals") { @baltimore.speakers.proposals.count }
+      should_render_template 'new'
+    end
+    
+    context "with a proposal" do
+      setup do
+        @proposal = Factory(:proposal, :ignite => @baltimore, :name => "My Proposal")
+      end
+
+      context "ON GET to show" do
+        setup do
+          get :show, :id => @proposal
+        end
+        should_respond_with :success
+        should_render_template 'show'
+        should_assign_to(:proposal) { @proposal }
+        should_assign_to(:captcha)
+        should_assign_to(:comments)
+        should "have a page title of My Proposal | Proposals" do
+          assert_equal "My Proposal | Proposals", assigns(:page_title)
+        end
+      end
+    
+      context "ON POST to post_comment that is successful" do
+        setup do
+          post :post_comment, {:id => @proposal.id, :comment => Factory.attributes_for(:comment) }
+        end
+        should_redirect_to("proposal path") { proposal_path(@proposal) }
+        should_change("comment count", :by => 1) { @proposal.comments.count }
+      end
+      
+      context "ON POST to post_comment that fails" do
+        setup do
+          post :post_comment, {:id => @proposal.id, :comment => Factory.attributes_for(:comment, :author => nil)}
+        end
+        should_respond_with :success
+        should_render_template 'show'
+        should_not_change("comment count") { @proposal.comments.count }
+      end
     end
   end
-
-
-  test "should get new" do
-    get :new
-    assert_response :success
-    assert_template 'new'
-    assert_equal "Submit a Proposal", assigns(:page_title)
-  end
-
-  test "should create proposal" do
-    assert_difference('Speaker.count') do
-      post :create, :speaker => {:name => "some unique name", :title => "i am a title", :description => "this is a desc",
-                                 :bio => "born, grew up, lived", :email => "blah@slsdev.net" }
-    end
-    assert_redirected_to article_path(submission_article)
-  end
-
-  test "should show proposal" do
-    get :show, :id => proposal.id
-    assert_response :success
-    assert_equal assigns(:proposal), proposal
-    assert_equal proposal.comments, assigns(:comments)
-    assert assigns(:captcha)
-    assert_template 'show'
-    assert_equal "#{proposal.name} | Proposals", assigns(:page_title)
-  end
-  
-  test "should post comment to proposal" do
-    exp_comments_cnt = proposal.comments.size + 1
-    assert_difference 'Comment.count' do
-      post :post_comment, {:id => proposal.id, :comment => {:author => "me", :email => "none", :url => "none", :content => "asdfasdfasdf"} }
-    end
-    assert_equal proposal.comments(true).size, exp_comments_cnt
-    assert_redirected_to proposal_path(proposal)
-  end
-  
-  test "should fail to post comment because of no name" do
-    exp_comments_cnt = proposal.comments.size
-    assert_no_difference 'Comment.count' do
-      post :post_comment, {:id => proposal.id, :comment => {} }
-    end
-    assert_equal proposal.comments(true).size, exp_comments_cnt
-    assert_template 'show'
-  end
-
 end

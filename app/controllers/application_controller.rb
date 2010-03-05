@@ -23,4 +23,9 @@ class ApplicationController < ActionController::Base
     @tlogger.send(severity, msg)
   end
   
+  def validate_captcha(params, model)
+    return true if Rails.env.test?
+    validate_recap(params, model.errors)
+  end
+  
 end
