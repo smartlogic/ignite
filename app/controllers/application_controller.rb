@@ -4,10 +4,6 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable
   
   helper :all # include all helpers, all the time
-
-  # See ActionController::RequestForgeryProtection for details
-  # Uncomment the :secret if you're not using the cookie session store
-  protect_from_forgery  :secret => '8e33ba29d7eebd7d106b1015ce7a3ca0'
   
   $last_twitter_update = Time.now
   
