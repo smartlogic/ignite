@@ -1,54 +1,81 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class EventsControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert assigns(:events)
-    assert_template 'index'
-    assert_equal "Events", assigns(:page_title)
-  end
-  
-  test "should get past events" do
-    get :past
-    assert_response :success
-    assert_equal baltimore.events.past, assigns(:events)
-    assert_template 'past'
-    assert_equal "Past Events", assigns(:page_title)
-  end
+  context "A public visitor to Ignite Baltimore" do
+    setup do
+      @baltimore = Factory(:ignite, :city => 'Baltimore', :domain => 'ignitebaltimore.localhost')
+      @current_event = @baltimore.featured_event
+      set_host(@baltimore)
+    end
 
-  test "should show current event" do
-    get :show, :id => ignite2.id
-    assert_response :success
-    assert_equal ignite2, assigns(:event)
-    assert_equal ignite2.speakers, assigns(:speakers)
-    assert_equal ignite2.comments, assigns(:comments)
-    assert_template 'show'
-    assert_equal "#{ignite2.name} | Events", assigns(:page_title)
-  end
-  
-  test "should show past event" do
-    get :show, :id => ignite1.id
-    assert_response :success
-    assert_equal ignite1, assigns(:event)
-    assert_template 'show'
-    assert_equal "#{ignite1.name} | Events", assigns(:page_title)
-  end
-  
-  test "should post comment to event" do
-    exp_comments_cnt = ignite1.comments.size + 1
-    assert_difference 'Comment.count' do
-      post :post_comment, {:id => ignite1.id, :comment => {:author => "me", :email => "none", :url => "none", :content => "asdfasdfasdf"} }
+    context "on GET to index" do
+      setup do
+        get :index
+      end
+      should_respond_with :success
+      should_render_template 'index'
+      should "set page title to Events" do
+        assert_equal "Events", assigns(:page_title)
+      end
     end
-    assert_equal ignite1.comments(true).size, exp_comments_cnt
-  end
-  
-  test "should fail to post comment because of no name" do
-    exp_comments_cnt = ignite1.comments.size
-    assert_no_difference 'Comment.count' do
-      post :post_comment, {:id => ignite1.id, :comment => {} }
+    
+    context "with 2 past events and one current one" do
+      setup do
+        @past_event     = Factory(:past_event, :ignite => @baltimore, :date => Date.today - 30)
+        @past_event2    = Factory(:past_event, :ignite => @baltimore, :date => Date.today - 60)
+        
+        [@current_event, @past_event, @past_event2].each do |evt|
+          2.times { Factory(:speaker, :event => evt, :ignite => @baltimore) }
+        end
+      end
+      
+      context "on GET to past" do
+        setup do
+          get :past
+        end
+        should_respond_with :success
+        should_render_template 'past'
+        should "only show the past events" do
+          assert_equal 2, assigns(:events).size
+          assert assigns(:events).all? {|event| event.past?}
+        end
+        should "sort events in descending order" do
+          assert_equal [@past_event, @past_event2], assigns(:events)
+        end
+      end
+      
+      context "on GET to show for current event" do
+        setup do
+          get :show, :id => @current_event.id
+        end
+        should_respond_with :success
+        should_render_template 'show'
+        should "only show current event's speakers" do
+          assert assigns(:speakers).all? {|evt| evt.event == @current_event}
+        end
+        should "set the title" do
+          assert_equal "#{@current_event.name} | Events", assigns(:page_title)
+        end
+      end
     end
-    assert_equal ignite1.comments(true).size, exp_comments_cnt
+    
+    context "on POST to post_comment that is successful" do
+      setup do
+        post :post_comment, {:id => @current_event.id, :comment => Factory.attributes_for(:comment) }
+      end
+      should_redirect_to("event page") { event_path(@current_event) }
+      should_flash(:notice)
+      should_change("number of comments", :by => 1) { @current_event.comments.count }
+    end
+    
+    context "on POST to post_comment that fails" do
+      setup do
+        post :post_comment, {:id => @current_event.id, :comment => Factory.attributes_for(:comment, :author => nil)}
+      end
+      should_respond_with :success
+      should_render_template 'show'
+      should_not_change("number of comments") { @current_event.comments.count }
+    end
   end
 
 end

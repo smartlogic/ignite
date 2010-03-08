@@ -1,7 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
   
   map.resources :articles, :collection => {:post_comment => :post, :news => :get, :top_news => :get, :about => :get, :affiliates => :get}, :only => [:index, :news, :show, :post_comment]
-  map.resources :events, :collection => {:past => :get, :post_comment => :post}, :only => [:index, :show, :past, :post_comment]
+  
+  map.resources :events, :collection => {:past => :get, :post_comment => :post}, :only => [:index, :show, :past, :post_comment] do |event|
+    event.resources :speakers, :only => [:index, :show]
+  end
+  
   map.resources :organizers, :only => [:index, :show]
   map.resources :speakers, :only => [:index, :show], :collection => {:post_comment => :post}
   map.resources :proposals, :only => [:index, :show, :new, :create], :collection => {:post_comment => :post}

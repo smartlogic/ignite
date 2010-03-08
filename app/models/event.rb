@@ -16,6 +16,10 @@ class Event < ActiveRecord::Base
     { :conditions => ["is_complete = 1 OR date < ?", Date.today], :order => "date DESC" }
   }
   
+  def past?
+    self.is_complete? || self.date < Date.today
+  end
+  
   def content_links
     links = {}
     ['images_url', 'videos_url', 'sponsors_url'].each do |link|
@@ -25,7 +29,7 @@ class Event < ActiveRecord::Base
     end
     links
   end
-
+  
   private
     def clear_event_key
       evt = Event.find(:first, :conditions => "ignite_id = #{ignite.id} AND id != #{self.id}", :order => "date DESC")
