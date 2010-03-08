@@ -12,7 +12,9 @@ class Event < ActiveRecord::Base
   validates_presence_of :ignite_id
   before_destroy :clear_event_key
 
-  named_scope :past, :conditions => "is_complete = true OR date < '#{Date.today}'", :order => "date DESC"
+  named_scope :past, lambda {
+    { :conditions => ["is_complete = 1 OR date < ?", Date.today], :order => "date DESC" }
+  }
   
   def content_links
     links = {}
