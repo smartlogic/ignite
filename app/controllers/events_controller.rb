@@ -2,7 +2,7 @@ class EventsController < BaseUserController
   include ReCaptcha::ViewHelper
 
   def index
-    @events = @ignite.events.find(:all, :order => "date DESC")
+    @events = @ignite.events.by_date_desc
     eid = @ignite.articles.find_by_name('EventsIndexDescription')
     @events_index_description = eid ? eid.html_text : "<h3>Create an article named \"EventsIndexDescription\" to replace this text.</h3>"
     @page_title = "Events"
@@ -16,7 +16,7 @@ class EventsController < BaseUserController
   end
 
   def past
-    @events = @ignite.events.past
+    @events = @ignite.events.past.by_date_desc
     @page_title = "Past Events"
     ped = @ignite.articles.find_by_name('PastEventsDescription')
     @past_events_description = ped ? ped.html_text : "<h3>Create an article named \"PastEventsDescription\" to replace this text.</h3>"

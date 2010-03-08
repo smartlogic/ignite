@@ -12,6 +12,7 @@ class Event < ActiveRecord::Base
   validates_presence_of :ignite_id
   before_destroy :clear_event_key
 
+  named_scope :by_date_desc, :order => "date DESC"
   named_scope :past, lambda {
     { :conditions => ["is_complete = 1 OR date < ?", Date.today], :order => "date DESC" }
   }

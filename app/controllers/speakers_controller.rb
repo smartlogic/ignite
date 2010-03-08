@@ -1,17 +1,11 @@
 class SpeakersController < BaseUserController
   include ReCaptcha::ViewHelper
+  before_filter :load_event, :only => [:index]
   before_filter :authenticate_url, :only => [:edit, :update, :destroy]
-  
 
   def index
-    @event = params[:event_id] ? @ignite.events.find(params[:event_id]) : @ignite.featured_event
-    unless @event.nil?
-      @widget_speakers = Speaker.find(:all, :conditions => {:aasm_state => "active", :event_id => @event.id }, :order => :position, :limit => 16)
-      @selected_speaker = @widget_speakers[rand(@widget_speakers.size)]
-    else
-      @widget_speakers = []
-      @select_speaker = nil
-    end
+    @widget_speakers = Speaker.find(:all, :conditions => {:aasm_state => "active", :event_id => @event.id }, :order => :position, :limit => 16)
+    @selected_speaker = @widget_speakers[rand(@widget_speakers.size)]
     @speakers = @ignite.speakers.paginate(:all, :conditions => "aasm_state = 'active' AND event_id IS NOT NULL", :order => :name, :page => params[:page], :per_page => 16)
     
     # set up the left and right columns of speakers
@@ -100,5 +94,9 @@ class SpeakersController < BaseUserController
     # proposals ala Craigslist.  For now just block them out.
     def authenticate_url
       false
+    end
+    
+    def load_event
+      @event = params[:event_id] ? @ignite.events.find(params[:event_id]) : @ignite.featured_event
     end
 end

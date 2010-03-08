@@ -21,8 +21,8 @@ class EventsControllerTest < ActionController::TestCase
     
     context "with 2 past events and one current one" do
       setup do
-        @past_event     = Factory(:past_event, :ignite => @baltimore, :date => Date.today - 30)
-        @past_event2    = Factory(:past_event, :ignite => @baltimore, :date => Date.today - 60)
+        @past_event     = Factory(:past_event, :ignite => @baltimore, :date => Date.today - 60)
+        @past_event2    = Factory(:past_event, :ignite => @baltimore, :date => Date.today - 30)
         
         [@current_event, @past_event, @past_event2].each do |evt|
           2.times { Factory(:speaker, :event => evt, :ignite => @baltimore) }
@@ -40,7 +40,7 @@ class EventsControllerTest < ActionController::TestCase
           assert assigns(:events).all? {|event| event.past?}
         end
         should "sort events in descending order" do
-          assert_equal [@past_event, @past_event2], assigns(:events)
+          assert_equal [@past_event2, @past_event], assigns(:events)
         end
       end
       
