@@ -1,99 +1,96 @@
 class Admin::EventsController < Admin::BaseAdminController
-  before_filter :load_ignites, :only => [:edit, :new, :create, :update]
-  def load_ignites
-    @ignites = Ignite.all
-  end
+  before_filter :load_event, :only => [:show, :edit, :update, :destroy, :set_feature]
+  before_filter :load_organizers, :only => [:new, :edit]
   
-
   def index
-    @events = Event.find(:all, :order => "date DESC")
+    @events = @ignite.events.by_date_desc
   end
 
   def show
-    @event = Event.find(params[:id])
+
   end
 
   def new
     @event = Event.new
-    @organizers = Organizer.all
-  end
-
-  def edit
-    @event = Event.find(params[:id])
-    @organizers = Organizer.all
   end
 
   def create
-    @event = Event.new(params[:event])
-    
+    @event = Event.new(params[:event].merge(:ignite => @ignite))
     respond_to do |format|
       if @event.save
-        if @event.is_featured?
-          Event.find(:all, :conditions => ["ignite_id = ? AND id != ?", @event.ignite_id, @event.id]).each do |evt|
-            evt.update_attribute(:is_featured, false)
-          end
-        end
         flash[:notice] = 'Event was successfully created.'
         format.html { redirect_to admin_event_path(@event) }
         format.xml  { render :xml => @event, :status => :created, :location => @event }
       else
-        format.html { render :action => "new" }
+        format.html { 
+          load_organizers
+          render :action => "new" 
+        }
         format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  def update
-    @event = Event.find(params[:id])
+  def edit
     
+  end
+
+  def update
     respond_to do |format|
-      if @event.update_attributes(params[:event])
+      if @event.update_attributes(params[:event].merge(:ignite => @ignite))
         @event.update_attribute(:date, @event.date + 18.hours) if @event.date.hour == 0
-        if @event.is_featured?
-          Event.find(:all, :conditions => "ignite_id = #{@event.ignite.id} AND id != #{@event.id}").each do |evt|
-            evt.update_attribute(:is_featured, false)
-          end
-        end
         flash[:notice] = 'Event was successfully updated.'
         format.html { redirect_to admin_event_path(@event) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { 
+          load_organizers
+          render :action => "edit" 
+        }
         format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   def destroy
-    @event = Event.find(params[:id])
     @event.destroy
 
     respond_to do |format|
-      format.html { redirect_to(admin_events_url) }
+      format.html {
+        flash[:notice] = "Event destroyed"
+        redirect_to(admin_events_path)
+      }
       format.xml  { head :ok }
     end
   rescue StandardError => ex
-    flash[:error] = ex
-    @events = Event.all
-    render :action => 'index'
+    flash[:error] = ex.message
+    redirect_to admin_events_path
   end
   
   def set_feature
-    @event = Event.find(params[:id])
-
     respond_to do |format|
-      if @event.update_attribute(:is_featured, true)
-        Event.find(:all, :conditions => "ignite_id = #{@event.ignite.id} AND id != #{@event.id}").each do |evt|
-          evt.update_attribute(:is_featured, false)
-        end
-        flash[:notice] = 'Event was successfully updated.'
-        format.html { redirect_to admin_events_url }
+      if @event.update_attributes(:is_featured => true)
+        format.html { 
+          flash[:notice] = 'Event is now featured.'
+          redirect_to admin_events_url 
+        }
         format.xml  { head :ok }
       else
-        flash[:error]
-        format.html { redirect_to admin_events_url }
+        format.html { 
+          flash[:error] = "Unable to feature event."
+          redirect_to admin_events_url
+        }
         format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
       end
     end
   end
+  
+  private
+    def load_event
+      @event = @ignite.events.find(params[:id])
+    end
+    
+    def load_organizers
+      @organizers = @ignite.organizers
+    end
 end

@@ -1,5 +1,5 @@
 class Ignite < ActiveRecord::Base
-  has_many :events, :order => :position, :dependent => :destroy
+  has_many :events, :dependent => :destroy
   has_many :articles, :dependent => :destroy
   has_many :speakers, :dependent => :destroy
   has_many :organizers, :dependent => :destroy

@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :admins
     admin.resources :articles
     admin.resources :comments, :only => [:index, :destroy]
-    admin.resources :events, :collection => {:set_feature => :put}
+    admin.resources :events, :member => {:set_feature => :put}
     admin.resources :organizer_roles
     admin.resources :organizers
     admin.resources :speakers, :collection => {:archive => :delete, :proposals => :get, :csv => :get}

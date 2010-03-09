@@ -1,85 +1,76 @@
-  <p>
-    <%= f.label :ignite_id, "Ignite City" %><br/>
-    <%= f.collection_select :ignite_id, @ignites, :id, :city, {}, {:Class => "long"} %>
-  </p>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :position %><br />
-    <%= f.text_field :position %>
-  </p>
-  <p>
-    <%= f.label :date %><br />
-    <%= f.datetime_select :date %>
-  </p>
-  <p>
-    <%= f.label :is_featured, "Make this event Featured" %><br />
-    <%= f.check_box :is_featured %>
-  </p>
-  <p>
-    <%= f.label :is_complete, "Mark this event as completed (will show up in \"Past Events\" seciton)" %><br />
-    <%= f.check_box :is_complete %>
-  </p>
-  <p>
-    <%= f.label :location_name %><br />
-    <%= f.text_field :location_name %>
-  </p>
-  <p>
-    <%= f.label :address_line1, "Street Address" %><br />
-    <%= f.text_field :address_line1 %>
-  </p>
-  <p>
-    <%= f.label :address_line2, "Apt/Ste #" %><br />
-    <%= f.text_field :address_line2 %>
-  </p>
-  <p>
-    <%= f.label :city %><br />
-    <%= f.text_field :city %>
-  </p>
-  <p>
-    <%= f.label :state %><br />
-    <%= state_select :event, :state %>
-  </p>
-  <p>
-    <%= f.label :zip %><br />
-    <%= f.text_field :zip %>
-  </p>
-  <p>
-    <%= f.label :description %><br />
-    <%= f.text_area :description, :style => "width:600px; height:200px;" %>
-  </p>
-  <p>
-    <%= f.label :sponsors_url, "Sponsors URL" %><br />
-    <%= f.text_field :sponsors_url %>
-  </p>
-  <p>
-    <%= f.label :videos_url, "Videos URL" %><br />
-    <%= f.text_field :videos_url %>
-  </p>
-  <p>
-    <%= f.label :images_url, "Images URL" %><br />
-    <%= f.text_field :images_url %>
-  </p>
-  <p>
-    <%= f.label :rsvp_url, "RSVP URL" %><br />
-    <%= f.text_field :rsvp_url %>
-  </p>
-  <p>
-    <%= f.label :map_url, "Map and Directions URL" %><br />
-    <%= f.text_field :map_url %>
-  </p>
-  <p>
-    <%= f.label :organizer_id, "Organizer" %><br />
-    <%= f.collection_select :organizer_id, @organizers, :id, :name %>
-  </p>
-  <p>
-    <%= f.label :summary_image %><br/>
-    <%= file_column_field "event", :summary_image %>
-  </p>
-  <p>
-    <%= f.label :summary_image_caption %><br/>
-    <%= f.text_field :summary_image_caption %>
-  </p>
-  
+<p>
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</p>
+<p>
+  <%= f.label :date %><br />
+  <%= f.datetime_select :date %>
+</p>
+<p>
+  <%= f.label :is_featured, "Make this event Featured" %><br />
+  <%= f.check_box :is_featured %>
+</p>
+<p>
+  <%= f.label :is_complete, "Mark this event as completed (will show up in \"Past Events\" seciton)" %><br />
+  <%= f.check_box :is_complete %>
+</p>
+<p>
+  <%= f.label :location_name %><br />
+  <%= f.text_field :location_name %>
+</p>
+<p>
+  <%= f.label :address_line1, "Street Address" %><br />
+  <%= f.text_field :address_line1 %>
+</p>
+<p>
+  <%= f.label :address_line2, "Apt/Ste #" %><br />
+  <%= f.text_field :address_line2 %>
+</p>
+<p>
+  <%= f.label :city %><br />
+  <%= f.text_field :city %>
+</p>
+<p>
+  <%= f.label :state %><br />
+  <%= state_select :event, :state %>
+</p>
+<p>
+  <%= f.label :zip %><br />
+  <%= f.text_field :zip %>
+</p>
+<p>
+  <%= f.label :description %><br />
+  <%= f.text_area :description, :style => "width:600px; height:200px;" %>
+</p>
+<p>
+  <%= f.label :sponsors_url, "Sponsors URL" %><br />
+  <%= f.text_field :sponsors_url %>
+</p>
+<p>
+  <%= f.label :videos_url, "Videos URL" %><br />
+  <%= f.text_field :videos_url %>
+</p>
+<p>
+  <%= f.label :images_url, "Images URL" %><br />
+  <%= f.text_field :images_url %>
+</p>
+<p>
+  <%= f.label :rsvp_url, "RSVP URL" %><br />
+  <%= f.text_field :rsvp_url %>
+</p>
+<p>
+  <%= f.label :map_url, "Map and Directions URL" %><br />
+  <%= f.text_field :map_url %>
+</p>
+<p>
+  <%= f.label :organizer_id, "Organizer" %><br />
+  <%= f.collection_select :organizer_id, @organizers, :id, :name %>
+</p>
+<p>
+  <%= f.label :summary_image %><br/>
+  <%= file_column_field "event", :summary_image %>
+</p>
+<p>
+  <%= f.label :summary_image_caption %><br/>
+  <%= f.text_field :summary_image_caption %>
+</p>

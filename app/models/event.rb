@@ -1,7 +1,5 @@
 class Event < ActiveRecord::Base
-  acts_as_list :scope => :ignite
-  
-  has_many :speakers, :order => :position
+  has_many :speakers, :order => :position, :dependent => :destroy
   has_many :comments, :as => :parent, :dependent => :destroy
   belongs_to :organizer
   belongs_to :ignite
@@ -10,7 +8,9 @@ class Event < ActiveRecord::Base
   file_column :summary_image
 
   validates_presence_of :ignite_id
-  before_destroy :clear_event_key
+
+  before_save :ensure_only_one_event_featured
+  before_destroy :disallow_only_event_to_be_destroyed
 
   named_scope :by_date_desc, :order => "date DESC"
   named_scope :past, lambda {
@@ -32,15 +32,21 @@ class Event < ActiveRecord::Base
   end
   
   private
-    def clear_event_key
-      evt = Event.find(:first, :conditions => "ignite_id = #{ignite.id} AND id != #{self.id}", :order => "date DESC")
+    def disallow_only_event_to_be_destroyed
+      evt = self.ignite.events.find(:first, :conditions => "id != #{self.id}", :order => "date DESC")
       if evt.nil?
         raise(StandardError, "You cannot delete the only candidate for #{ignite.city}'s featured event!")
-        return false
       else
         evt.update_attribute(:is_featured, true)
-        speakers.each {|speaker| speaker.update_attribute(:event_id, nil)}
       end
     end
 
+    def ensure_only_one_event_featured
+      if self.is_featured?
+        self.ignite.events.update_all("is_featured = 0")
+      elsif !self.is_featured? && self.is_featured_changed?
+        errors.add_to_base("at least one event must be featured")
+        false
+      end
+    end
 end

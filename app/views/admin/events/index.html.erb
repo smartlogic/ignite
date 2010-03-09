@@ -21,10 +21,10 @@
         <td><%= link_to 'Edit', edit_admin_event_path(event) %></td>
         <td><%= link_to 'Destroy', [:admin, event], :confirm => 'Are you sure?', :method => :delete %></td>
         <td>
-          <% unless event.is_featured? -%>
-            <%= link_to "Set as Featured", url_for(:controller => 'admin/events', :action => 'set_feature', :id => event), :method => :put %>
+          <% if event.is_featured? -%>
+            Featured
           <% else -%>
-            Featured in <%= event.ignite.city %>
+            <%= link_to "Set as Featured", set_feature_admin_event_path(event), :method => :put %>
           <% end -%>
         </td>
       </tr>

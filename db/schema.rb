@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090420135350) do
+ActiveRecord::Schema.define(:version => 20100308024839) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -72,7 +72,6 @@ ActiveRecord::Schema.define(:version => 20090420135350) do
     t.string   "images_url"
     t.string   "summary_image_caption"
     t.integer  "ignite_id"
-    t.integer  "position"
   end
 
   add_index "events", ["organizer_id"], :name => "index_events_on_organizer_id"

@@ -39,8 +39,8 @@ module ActionController
     def log_in(user)
       old_scoped_user = @@scoped_user
       @@scoped_user = user
+      return if !block_given?
       yield
-    ensure
       @@scoped_user = old_scoped_user
     end
     

@@ -1,13 +1,11 @@
 <p>
   <b>Name: </b>
-  <%= @event.name %>
+  <%= h @event.name %>
 </p>
-
 <p>
   <b>Ignite City:</b>
   <%=h @event.ignite.city %>
 </p>
-
 <p>
   <b>Date: </b>
   <%=pp_date @event.date %>, <%= @event.date.strftime("%l:%M%P") %> 
@@ -42,7 +40,7 @@
 </p>
 <p>
   <b>Description: </b>
-  <%=h @event.description %>
+  <%= Markdown.new(@event.description || '').to_html %>
 </p>
 <p>
   <b>RSVP URL: </b>
@@ -54,7 +52,7 @@
 </p>
 <p>
   <b>Organizer: </b>
-  <%=h @event.organizer.name %>
+  <%=h @event.organizer.name rescue "None" %>
 </p>
   
   

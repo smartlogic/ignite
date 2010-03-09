@@ -1,73 +1,116 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
 class Admin::EventsControllerTest < ActionController::TestCase
-
-  test "should get index" do
-    log_in ggentzke  do
-      get :index
+  context "An admin is logged into Ignite Baltimore" do
+    setup do
+      @admin = Factory(:admin)
+      @baltimore = Factory(:ignite, :city => 'Baltimore', :domain => 'ignitebaltimore.localhost')
+      @event = @baltimore.featured_event
+      set_host(@baltimore)
+      log_in @admin
     end
-    assert_response :success
-    assert_not_nil assigns(:events)
-  end
-
-  test "should get new" do
-    log_in(ggentzke) do
-      get :new
-    end
-    assert_response :success
-  end
-
-  test "should create event" do
-    assert_difference('Event.count') do
-      log_in(ggentzke) do
-        post :create, :event => { :name => "some unique name", :description => "this is a desc", :date => DateTime.parse("2/5/2009")}
-      end
-    end
-
-    assert_redirected_to admin_event_path(assigns(:event))
-  end
-
-  test "should show event" do
-    log_in(ggentzke) do
-      get :show, :id => ignite2.id
-    end
-    assert_response :success
-  end
-
-  test "should get edit" do
-    log_in(ggentzke) do
-      get :edit, :id => ignite2.id
-    end
-    assert_response :success
-  end
-
-  test "should update event" do
-    log_in(ggentzke) do
-      put :update, :id => ignite2.id, :event => { }
-    end
-    assert_redirected_to admin_event_path(assigns(:event))
-  end
-
-  test "should destroy event" do
-    assert_difference('Event.count', -1) do
-      log_in(ggentzke) do
-        delete :destroy, :id => ignite2.id
-      end
-    end
-
-    assert_redirected_to admin_events_path
-  end
-  
-  test "should make an event featured and mark others as not featured" do
-    assert_equal baltimore.featured_event, ignite2
-    assert !ignite1.is_featured?
     
-    log_in(ggentzke) do
-      put :set_feature, :id => ignite1.id
+    context "with 2 Baltimore events and 1 DC event" do
+      setup do
+        @dc = Factory(:ignite, :city => 'DC')
+        Factory(:event, :ignite => @baltimore, :date => Date.today + 60)
+      end
+
+      context "on GET to index" do
+        setup do
+          get :index
+        end
+        should_respond_with :success
+        should_render_template 'index'
+        should "only load baltimore events" do
+          assert_equal 2, assigns(:events).size
+          assert assigns(:events).all? {|evt| evt.ignite == @baltimore}
+        end
+      end
     end
-    assert_equal baltimore.featured_event, ignite1
-    assert !ignite2.reload.is_featured?
-    assert_redirected_to admin_events_url
-  end
+
+    context "on GET to new" do
+      setup do
+        get :new
+      end
+      should_respond_with :success
+      should_render_template 'new'
+    end
   
+    context "on POST to create that is successful" do
+      setup do
+        post :create, :event => Factory.attributes_for(:event, :ignite => nil)
+      end
+      should_redirect_to("event path") { admin_event_path(assigns(:event)) }
+      should_flash(:notice)
+      should_change("number of events", :by => 1) { @baltimore.events.count }
+    end
+    
+    context "on POST to create that fails" do
+      # nothing should make it fail yet
+    end
+  
+    context "on GET to show" do
+      setup do
+        get :show, :id => @event.id
+      end
+      should_respond_with :success
+      should_render_template 'show'
+    end
+
+    context "on GET to edit" do
+      setup do
+        get :edit, :id => @event.id
+      end
+      should_respond_with :success
+      should_render_template 'edit'
+    end
+  
+    context "on PUT to update that is successful" do
+      setup do
+        put :update, :id => @event.id, :event => Factory.attributes_for(:event, :ignite => nil)
+      end
+      should_redirect_to("event path") { admin_event_path(@event) }
+      should_flash(:notice)
+    end
+  
+    context "on PUT to update that fails" do
+      # nothing will make it fail right now
+      # setup do
+      #   put :update, :id => @event.id, :event => Factory.attributes_for(:event, :ignite => nil, :name => nil)
+      # end
+      # should_respond_with :success
+      # should_render_template 'edit'
+    end
+  
+    context "on DELETE to destroy that is successful" do
+      setup do
+        @second_event = Factory(:event, :ignite => @event.ignite)
+        delete :destroy, :id => @event.id
+      end
+      should_redirect_to("events path") { admin_events_path }
+      should_flash(:notice)
+    end
+  
+    context "on DELETE to destroy that fails" do
+      setup do
+        delete :destroy, :id => @event.id
+      end
+      should_redirect_to("events path") { admin_events_path }
+      should_flash(:error)
+    end
+  
+    context "on PUT to set_feature" do
+      setup do
+        @unfeatured_event = Factory(:event, :ignite => @event.ignite)
+        put :set_feature, :id => @unfeatured_event.id
+      end
+      should_redirect_to("events path") { admin_events_path }
+      should_flash(:notice)
+      should "feature the event" do
+        assert Event.find(@unfeatured_event.id).is_featured?
+        assert !Event.find(@event.id).is_featured?
+      end
+    end
+  end
 end
