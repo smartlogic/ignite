@@ -3,6 +3,7 @@ class Ignite < ActiveRecord::Base
   has_many :articles, :dependent => :destroy
   has_many :speakers, :dependent => :destroy
   has_many :organizers, :dependent => :destroy
+  has_many :admins, :dependent => :destroy
   
   file_column :logo_image, :magick => {:versions => {"thumb" => "50x50>"}}
   file_column :banner_background_image, :magick => {:versions => {"thumb" => "50x50>"}}

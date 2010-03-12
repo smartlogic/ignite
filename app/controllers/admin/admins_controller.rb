@@ -1,9 +1,10 @@
 class Admin::AdminsController < Admin::BaseAdminController
+  before_filter :find_all_admins, :only => [:index]
+  before_filter :find_admin, :only => [:show, :edit, :update, :destroy]
+  
   # GET /admins
   # GET /admins.xml
   def index
-    @admins = Admin.find(:all)
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @admins }
@@ -13,8 +14,6 @@ class Admin::AdminsController < Admin::BaseAdminController
   # GET /admins/1
   # GET /admins/1.xml
   def show
-    @admin = Admin.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @admin }
@@ -30,11 +29,6 @@ class Admin::AdminsController < Admin::BaseAdminController
       format.html # new.html.erb
       format.xml  { render :xml => @admin }
     end
-  end
-
-  # GET /admins/1/edit
-  def edit
-    @admin = Admin.find(params[:id])
   end
 
   # POST /admins
@@ -54,11 +48,14 @@ class Admin::AdminsController < Admin::BaseAdminController
     end
   end
 
+  # GET /admins/1/edit
+  def edit
+
+  end
+
   # PUT /admins/1
   # PUT /admins/1.xml
   def update
-    @admin = Admin.find(params[:id])
-
     respond_to do |format|
       if @admin.update_attributes(params[:admin])
         flash[:notice] = 'Admin was successfully updated.'
@@ -74,7 +71,6 @@ class Admin::AdminsController < Admin::BaseAdminController
   # DELETE /admins/1
   # DELETE /admins/1.xml
   def destroy
-    @admin = Admin.find(params[:id])
     @admin.destroy
 
     respond_to do |format|
@@ -82,4 +78,21 @@ class Admin::AdminsController < Admin::BaseAdminController
       format.xml  { head :ok }
     end
   end
+  
+  protected
+    def find_all_admins
+      @admins = Admin.find(:all, :conditions => ["ignite_id = ? OR ignite_id IS NULL", @ignite.id])
+    end
+    
+    def find_admin
+      @admin = if current_admin.superadmin?
+        Admin.find_by_id(params[:id])
+      else
+        @ignite.admins.find(params[:id])
+      end
+      if @admin.nil? || (@admin.superuser? && !current_admin.superadmin?)
+        flash[:error] = "Access Denied"
+        redirect_to admin_admins_path
+      end
+    end
 end

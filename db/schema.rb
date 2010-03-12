@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090420135350) do
+ActiveRecord::Schema.define(:version => 20100312153054) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -21,9 +21,11 @@ ActiveRecord::Schema.define(:version => 20090420135350) do
     t.datetime "updated_at"
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
+    t.integer  "ignite_id"
   end
 
   add_index "admins", ["login"], :name => "index_admins_on_login", :unique => true
+  add_index "admins", ["ignite_id"], :name => "index_admins_on_ignite_id"
 
   create_table "articles", :force => true do |t|
     t.string   "name"
@@ -168,18 +170,20 @@ ActiveRecord::Schema.define(:version => 20090420135350) do
     t.string "aasm_state"
   end
 
+  add_foreign_key "admins", ["ignite_id"], "ignites", ["id"], :name => "admins_ibfk_1"
+
   add_foreign_key "articles", ["ignite_id"], "ignites", ["id"], :name => "articles_ibfk_1"
 
-  add_foreign_key "events", ["organizer_id"], "organizers", ["id"], :name => "events_ibfk_1"
   add_foreign_key "events", ["ignite_id"], "ignites", ["id"], :name => "events_ibfk_2"
+  add_foreign_key "events", ["organizer_id"], "organizers", ["id"], :name => "events_ibfk_1"
 
-  add_foreign_key "events_sponsors", ["event_id"], "events", ["id"], :name => "events_sponsors_ibfk_1"
   add_foreign_key "events_sponsors", ["sponsor_id"], "sponsors", ["id"], :name => "events_sponsors_ibfk_2"
+  add_foreign_key "events_sponsors", ["event_id"], "events", ["id"], :name => "events_sponsors_ibfk_1"
 
-  add_foreign_key "organizers", ["organizer_role_id"], "organizer_roles", ["id"], :name => "organizers_ibfk_1"
   add_foreign_key "organizers", ["ignite_id"], "ignites", ["id"], :name => "organizers_ibfk_2"
+  add_foreign_key "organizers", ["organizer_role_id"], "organizer_roles", ["id"], :name => "organizers_ibfk_1"
 
-  add_foreign_key "speakers", ["event_id"], "events", ["id"], :name => "speakers_ibfk_1"
   add_foreign_key "speakers", ["ignite_id"], "ignites", ["id"], :name => "speakers_ibfk_2"
+  add_foreign_key "speakers", ["event_id"], "events", ["id"], :name => "speakers_ibfk_1"
 
 end

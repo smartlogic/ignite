@@ -1,99 +1,84 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class AdminTest < ActiveSupport::TestCase
-
-  def test_should_create_admin
-    assert_difference 'Admin.count' do
-      admin = create_admin
-      assert !admin.new_record?, "#{admin.errors.full_messages.to_sentence}"
+  context "With a saved admin" do
+    setup do
+      @admin = Factory(:admin)
+    end
+    subject { @admin }
+    should_validate_presence_of :login, :email
+    
+    context "when updating a non-password field" do
+      setup do
+        @admin.update_attributes!(:name => "Something else")
+      end
+      should_not_change("crypted password") { @admin.crypted_password }
+      should_not_change("salt") { @admin.salt }
+    end
+    
+    context 'when ignite_id is blank' do
+      setup do
+        @admin.ignite_id = nil
+      end
+      should 'be a superadmin' do
+        assert @admin.superadmin?
+      end
+    end
+    
+    context 'when ignite_id is set' do
+      setup do
+        @admin.ignite = Factory(:ignite)
+      end
+      should 'not be a superadmin' do
+        assert !@admin.superadmin?
+      end
+    end
+  end
+  
+  context "With an unsaved admin" do
+    setup do
+      @admin = Factory.build(:admin)
+    end
+    should "require a password" do
+      assert @admin.valid?, "Precondition failed"
+      @admin.password = nil
+      assert !@admin.valid?
     end
   end
 
-  def test_should_require_login
-    assert_no_difference 'Admin.count' do
-      u = create_admin(:login => nil)
-      assert u.errors.on(:login)
+  context '#authenticate' do
+    setup do 
+      @admin = Factory(:admin, :login => 'user', :password => 'passpass', :password_confirmation => 'passpass')
+    end
+    should 'succeed with correct password' do
+      assert_equal @admin, Admin.authenticate('user', 'passpass')
+    end
+    should 'not succeed with incorrect password' do
+      assert_nil Admin.authenticate('user', 'notpass')
     end
   end
-
-  def test_should_require_password
-    assert_no_difference 'Admin.count' do
-      u = create_admin(:password => nil)
-      assert u.errors.on(:password)
+  
+  context 'remembering a login' do
+    setup do
+      @admin = Factory(:admin)
     end
-  end
-
-  def test_should_require_password_confirmation
-    assert_no_difference 'Admin.count' do
-      u = create_admin(:password_confirmation => nil)
-      assert u.errors.on(:password_confirmation)
+    context 'on #remember_me' do
+      setup do
+        @admin.remember_me
+      end
+      should 'set token' do
+        assert_not_nil @admin.remember_token
+        assert_not_nil @admin.remember_token_expires_at
+      end
+      
+      context 'on #forget_me' do
+        setup do
+          @admin.forget_me
+        end
+        should 'unset token' do
+          assert_nil @admin.remember_token
+        end
+      end
     end
-  end
-
-  def test_should_require_email
-    assert_no_difference 'Admin.count' do
-      u = create_admin(:email => nil)
-      assert u.errors.on(:email)
-    end
-  end
-
-  def test_should_reset_password
-    ggentzke.update_attributes(:password => 'new password', :password_confirmation => 'new password')
-    assert_equal ggentzke, Admin.authenticate('ggentzke', 'new password')
-  end
-
-  def test_should_not_rehash_password
-    ggentzke.update_attributes(:login => 'ggentzke2')
-    assert_equal ggentzke, Admin.authenticate('ggentzke2', 'ggentzke')
-  end
-
-  def test_should_authenticate_admin
-    assert_equal ggentzke, Admin.authenticate('ggentzke', 'ggentzke')
-  end
-
-  def test_should_set_remember_token
-    ggentzke.remember_me
-    assert_not_nil ggentzke.remember_token
-    assert_not_nil ggentzke.remember_token_expires_at
-  end
-
-  def test_should_unset_remember_token
-    ggentzke.remember_me
-    assert_not_nil ggentzke.remember_token
-    ggentzke.forget_me
-    assert_nil ggentzke.remember_token
-  end
-
-  def test_should_remember_me_for_one_week
-    before = 1.week.from_now.utc
-    ggentzke.remember_me_for 1.week
-    after = 1.week.from_now.utc
-    assert_not_nil ggentzke.remember_token
-    assert_not_nil ggentzke.remember_token_expires_at
-    assert ggentzke.remember_token_expires_at.between?(before, after)
-  end
-
-  def test_should_remember_me_until_one_week
-    time = 1.week.from_now.utc
-    ggentzke.remember_me_until time
-    assert_not_nil ggentzke.remember_token
-    assert_not_nil ggentzke.remember_token_expires_at
-    assert_equal ggentzke.remember_token_expires_at, time
-  end
-
-  def test_should_remember_me_default_two_weeks
-    before = 2.weeks.from_now.utc
-    ggentzke.remember_me
-    after = 2.weeks.from_now.utc
-    assert_not_nil ggentzke.remember_token
-    assert_not_nil ggentzke.remember_token_expires_at
-    assert ggentzke.remember_token_expires_at.between?(before, after)
-  end
-
-protected
-  def create_admin(options = {})
-    record = Admin.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire69', :password_confirmation => 'quire69' }.merge(options))
-    record.save
-    record
   end
 end
