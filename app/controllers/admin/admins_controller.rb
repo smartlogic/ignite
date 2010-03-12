@@ -1,7 +1,8 @@
 class Admin::AdminsController < Admin::BaseAdminController
   before_filter :find_all_admins, :only => [:index]
   before_filter :find_admin, :only => [:show, :edit, :update, :destroy]
-  load_and_authorize_resource :except => [:index, :new, :create]
+  # OPTIMIZE I feel like this can be done better -- feels like I'm opting out of what CanCan should do for me
+  load_and_authorize_resource :except => [:index, :new, :create, :destroy]
   
   # GET /admins
   # GET /admins.xml
@@ -60,7 +61,7 @@ class Admin::AdminsController < Admin::BaseAdminController
     respond_to do |format|
       if @admin.update_attributes(params[:admin])
         flash[:notice] = 'Admin was successfully updated.'
-        format.html { redirect_to admin_admin_path(@admin) }
+        format.html { redirect_to admin_admins_path }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -72,10 +73,19 @@ class Admin::AdminsController < Admin::BaseAdminController
   # DELETE /admins/1
   # DELETE /admins/1.xml
   def destroy
+    if @admin == current_admin
+      flash[:error] = "You cannot remove yourself"
+      redirect_to admin_admins_path
+      return
+    end
+    
     @admin.destroy
 
     respond_to do |format|
-      format.html { redirect_to(admin_admins_url) }
+      format.html { 
+        flash[:notice] = "#{@admin.login} has been removed"
+        redirect_to(admin_admins_url) 
+      }
       format.xml  { head :ok }
     end
   end
