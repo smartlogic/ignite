@@ -1,6 +1,7 @@
 class Admin::AdminsController < Admin::BaseAdminController
   before_filter :find_all_admins, :only => [:index]
   before_filter :find_admin, :only => [:show, :edit, :update, :destroy]
+  load_and_authorize_resource :except => [:index, :new, :create]
   
   # GET /admins
   # GET /admins.xml
@@ -35,11 +36,11 @@ class Admin::AdminsController < Admin::BaseAdminController
   # POST /admins.xml
   def create
     @admin = Admin.new(params[:admin])
-
+    @admin.ignite = @ignite
     respond_to do |format|
       if @admin.save
         flash[:notice] = 'Admin was successfully created.'
-        format.html { redirect_to admin_admin_path(@admin) }
+        format.html { redirect_to admin_admins_path }
         format.xml  { render :xml => @admin, :status => :created, :location => @admin }
       else
         format.html { render :action => "new" }
@@ -81,18 +82,14 @@ class Admin::AdminsController < Admin::BaseAdminController
   
   protected
     def find_all_admins
-      @admins = Admin.find(:all, :conditions => ["ignite_id = ? OR ignite_id IS NULL", @ignite.id])
+      @admins = Admin.find(:all, :conditions => ["ignite_id = ? OR ignite_id IS NULL", @ignite.id], :order => 'login')
     end
     
     def find_admin
       @admin = if current_admin.superadmin?
         Admin.find_by_id(params[:id])
       else
-        @ignite.admins.find(params[:id])
-      end
-      if @admin.nil? || (@admin.superuser? && !current_admin.superadmin?)
-        flash[:error] = "Access Denied"
-        redirect_to admin_admins_path
+        @ignite.admins.find_by_id(params[:id])
       end
     end
 end

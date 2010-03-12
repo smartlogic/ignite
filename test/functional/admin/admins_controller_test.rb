@@ -62,6 +62,41 @@ class Admin::AdminsControllerTest < ActionController::TestCase
     end
   end
   
+  context 'With an admin logged in' do
+    setup do
+      @ignite = Factory(:ignite)
+      @admin = Factory(:admin, :ignite => @ignite)
+      set_host @ignite
+      log_in @admin
+    end
+    
+    context 'on GET to new' do
+      setup do
+        get :new
+      end
+      should_respond_with :success
+      should_render_template 'new'
+    end
+    
+    context 'on POST to create that is successful' do
+      setup do
+        post :create, :admin => Factory.attributes_for(:admin, :ignite => nil)
+      end
+      should_redirect_to("index") { admin_admins_path }
+      should_flash(:notice)
+      should_change("number of admins", :by => 1) { @ignite.admins.count }
+    end
+    
+    context 'on POST to create that fails' do
+      setup do
+        post :create, :admin => Factory.attributes_for(:admin, :login => nil)
+      end
+      should_respond_with :success
+      should_render_template 'new'
+      should_not_change("number of admins") { @ignite.admins.count }
+    end
+  end
+  
   # test "should get index" do
   #   log_in ggentzke do
   #     get :index
