@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100312153054) do
+ActiveRecord::Schema.define(:version => 20100312212745) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -102,10 +102,6 @@ ActiveRecord::Schema.define(:version => 20100312153054) do
     t.boolean  "proposals_closed",        :default => false
   end
 
-  create_table "organizer_roles", :force => true do |t|
-    t.string "title"
-  end
-
   create_table "organizers", :force => true do |t|
     t.string   "name"
     t.text     "bio"
@@ -116,13 +112,11 @@ ActiveRecord::Schema.define(:version => 20100312153054) do
     t.string   "twitter_url"
     t.string   "linkedin_url"
     t.string   "image"
-    t.integer  "organizer_role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "ignite_id"
   end
 
-  add_index "organizers", ["organizer_role_id"], :name => "index_organizers_on_organizer_role_id"
   add_index "organizers", ["ignite_id"], :name => "index_organizers_on_ignite_id"
 
   create_table "sessions", :force => true do |t|
@@ -181,7 +175,6 @@ ActiveRecord::Schema.define(:version => 20100312153054) do
   add_foreign_key "events_sponsors", ["event_id"], "events", ["id"], :name => "events_sponsors_ibfk_1"
 
   add_foreign_key "organizers", ["ignite_id"], "ignites", ["id"], :name => "organizers_ibfk_2"
-  add_foreign_key "organizers", ["organizer_role_id"], "organizer_roles", ["id"], :name => "organizers_ibfk_1"
 
   add_foreign_key "speakers", ["ignite_id"], "ignites", ["id"], :name => "speakers_ibfk_2"
   add_foreign_key "speakers", ["event_id"], "events", ["id"], :name => "speakers_ibfk_1"

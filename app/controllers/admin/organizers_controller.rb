@@ -1,32 +1,22 @@
 class Admin::OrganizersController < Admin::BaseAdminController
-  before_filter :load_ignites, :only => [:edit, :new, :create, :update]
-  def load_ignites
-    @ignites = Ignite.all
-  end
+  before_filter :load_organizer, :only => [:show, :edit, :update, :destroy]
   
-
   def index
     @page_title = "Listing Organizers"
-    @organizers = Organizer.find(:all, :order => "ignite_id, name")
+    @organizers = @ignite.organizers.find(:all, :order => "ignite_id, name")
   end
 
-
   def show
-    @organizer = Organizer.find(params[:id])
+    
   end
 
   def new
-    @roles = OrganizerRole.all
     @organizer = Organizer.new
-  end
-
-  def edit
-    @roles = OrganizerRole.all
-    @organizer = Organizer.find(params[:id])
   end
 
   def create
     @organizer = Organizer.new(params[:organizer])
+    @organizer.ignite = @ignite
 
     respond_to do |format|
       if @organizer.save
@@ -40,9 +30,11 @@ class Admin::OrganizersController < Admin::BaseAdminController
     end
   end
 
-  def update
-    @organizer = Organizer.find(params[:id])
+  def edit
+    
+  end
 
+  def update
     respond_to do |format|
       if @organizer.update_attributes(params[:organizer])
         flash[:notice] = 'Organizer was successfully updated.'
@@ -56,12 +48,19 @@ class Admin::OrganizersController < Admin::BaseAdminController
   end
 
   def destroy
-    @organizer = Organizer.find(params[:id])
     @organizer.destroy
 
     respond_to do |format|
-      format.html { redirect_to(admin_organizers_url) }
+      format.html { 
+        flash[:notice] = "#{@organizer.name} was removed"
+        redirect_to(admin_organizers_url) 
+      }
       format.xml  { head :ok }
     end
   end
+  
+  protected
+    def load_organizer
+      @organizer = Organizer.find(params[:id])
+    end
 end

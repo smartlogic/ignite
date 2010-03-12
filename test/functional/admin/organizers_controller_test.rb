@@ -1,59 +1,101 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
 class Admin::OrganizersControllerTest < ActionController::TestCase
-  test "should get index" do
-    log_in(ggentzke) do
-      get :index
+  context 'With an admin logged in' do
+    setup do
+      @ignite = Factory(:ignite)
+      @admin = Factory(:admin, :ignite => @ignite)
+      set_host @ignite
+      log_in @admin
     end
-    assert_response :success
-    assert_not_nil assigns(:organizers)
-  end
-
-  test "should get new" do
-    log_in(ggentzke) do
-      get :new
-    end
-    assert_response :success
-  end
-
-  test "should create organizer" do
-    assert_difference('Organizer.count') do
-      log_in(ggentzke) do
-        post :create, :organizer => {:ignite => baltimore}
+    
+    context 'with an organizer' do
+      setup do
+        @organizer = Factory(:organizer, :ignite => @ignite)
+      end
+    
+      context 'on GET to index' do
+        setup do
+          get :index
+        end
+        should_respond_with :success
+        should_render_template 'index'
+      end
+      
+      context 'on GET to show' do
+        setup do
+          get :show, :id => @organizer.id
+        end
+        should_respond_with :success
+        should_render_template 'show'
+      end
+      
+      context 'on GET to edit' do
+        setup do
+          get :edit, :id => @organizer.id
+        end
+        should_respond_with :success
+        should_render_template 'edit'
+      end
+      
+      context 'on PUT to update that is successful' do
+        setup do
+          put :update, :id => @organizer.id, :organizer => Factory.attributes_for(:organizer)\
+        end
+        should_redirect_to('show') { admin_organizer_path(@organizer) }
+        should_flash(:notice)
+      end
+      
+      context 'on PUT to update that fails' do
+        setup do
+          put :update, :id => @organizer.id, :organizer => Factory.attributes_for(:organizer, :name => false)
+        end
+        should_respond_with :success
+        should_render_template 'edit'
+      end
+      
+      context 'on DELETE to destroy' do
+        setup do
+          delete :destroy, :id => @organizer.id
+        end
+        should_redirect_to('index') { admin_organizers_path }
+        should_flash(:notice)
       end
     end
-
-    assert_redirected_to admin_organizer_path(assigns(:organizer))
-  end
-
-  test "should show organizer" do
-    log_in(ggentzke) do
-      get :show, :id => david.id
-    end
-    assert_response :success
-  end
-
-  test "should get edit" do
-    log_in(ggentzke) do
-      get :edit, :id => david.id
-    end
-    assert_response :success
-  end
-
-  test "should update organizer" do
-    log_in(ggentzke) do
-      put :update, :id => david.id, :organizer => { }
-    end
-    assert_redirected_to admin_organizer_path(assigns(:organizer))
-  end
-
-  test "should destroy organizer" do
-    assert_difference('Organizer.count', -1) do
-      log_in(ggentzke) do
-        delete :destroy, :id => david.id
+    
+    context 'on GET to index without any organizers' do
+      setup do
+        get :index
       end
+      should_respond_with :success
     end
-
-    assert_redirected_to admin_organizers_path
+    
+    context 'on GET to new' do
+      setup do
+        get :new
+      end
+      should_respond_with :success
+      should_render_template 'new'
+    end
+    
+    context 'on POST to create that is successful' do
+      setup do
+        post :create, :organizer => Factory.attributes_for(:organizer)
+      end
+      should_redirect_to('show') { admin_organizer_path(Organizer.last) }
+      should_flash(:notice)
+      should_change('number of organizers', :by => 1) { @ignite.organizers.count }
+    end
+    
+    context 'on POST to create that fails' do
+      setup do
+        post :create, :organizer => Factory.attributes_for(:organizer, :name => nil)
+      end
+      should_respond_with :success
+      should_render_template 'new'
+      should_not_change('number of organizers') { @ignite.organizers.count }
+    end
+    
+    should "be able to assign organizers to events"
   end
 end

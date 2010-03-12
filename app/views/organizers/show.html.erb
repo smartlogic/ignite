@@ -40,7 +40,7 @@
 
 <p>
   <b>Image:</b>
-  <%= image_tag(url_for_file_column(@organizer, :image, "profile")) %>
+  <%= image_tag(url_for_file_column(@organizer, :image, "profile")) unless @organizer.image.blank? %>
 </p>
 
 <%= link_to 'Back', organizers_path %>

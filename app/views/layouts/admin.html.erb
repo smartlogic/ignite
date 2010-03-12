@@ -17,16 +17,15 @@
 	<div id="sidebar">
 		<h1 id="logo"><%= link_to image_tag("/images/layout/ignite-baltimore-logo.jpg", :alt => "Ignite Baltimore"), admin_url %></h1>
 		<ol id="nav">
-			<li><%= link_to "Admins", admin_admins_path %></li>
-      <li><%= link_to "Ignites", admin_ignites_path %></li>
-			<li><%= link_to "Organizer Roles", admin_organizer_roles_path %></li>
+			<li><%= link_to "Admins",     admin_admins_path %></li>
+      <li><%= link_to "Ignites",    admin_ignites_path %></li>
 			<li><%= link_to "Organizers", admin_organizers_path %></li>
-			<li><%= link_to "Events", admin_events_path %></li>
-			<li><%= link_to "Speakers", admin_speakers_path %></li>
-			<li><%= link_to "Proposals", proposals_admin_speakers_path %></li>
-			<li><%= link_to "Articles", admin_articles_path %></li>
-			<li><%= link_to "Comments", admin_comments_path %></li>
-      <li><%= link_to "Sponsors", admin_sponsors_path %></li>
+			<li><%= link_to "Events",     admin_events_path %></li>
+			<li><%= link_to "Speakers",   admin_speakers_path %></li>
+			<li><%= link_to "Proposals",  proposals_admin_speakers_path %></li>
+			<li><%= link_to "Articles",   admin_articles_path %></li>
+			<li><%= link_to "Comments",   admin_comments_path %></li>
+      <li><%= link_to "Sponsors",   admin_sponsors_path %></li>
       <li class="last" style="height:50px;text-align:bottom;"><%= link_to "Logout #{@current_admin.name}", logout_url %></li>
 		</ol>
 	</div>

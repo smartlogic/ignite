@@ -2,15 +2,6 @@
 <br/>
 <% form_for @organizer, :url => admin_organizers_path, :html => {:multipart => true}, :method => :post do |f| %>
   <%= f.error_messages %>
-
-  <p>
-    <%= f.label :ignite_id, "Ignite City" %><br/>
-    <%= f.collection_select :ignite_id, @ignites, :id, :city, {}, {:Class => "long"} %>
-  </p>
-  <p>
-    <%= f.label :organizer_role_id, "Role" %><br/>
-    <%= f.collection_select :organizer_role_id, @roles, :id, :title %>
-  </p>
   <p>
     <%= f.label :name %><br />
     <%= f.text_field :name %>

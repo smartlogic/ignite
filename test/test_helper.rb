@@ -18,7 +18,6 @@ class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
   # Add more helper methods to be used by all tests here...
-  include StoryAccessors::Methods
   extend Shoulda::IgniteMacros
 end
 
@@ -32,7 +31,6 @@ module ActionController
           
     def setup
       log_out
-      set_host(baltimore)
     end
     
     # Used within a test to log in a specific user for a single test
