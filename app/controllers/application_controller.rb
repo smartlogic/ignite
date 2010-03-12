@@ -43,4 +43,8 @@ class ApplicationController < ActionController::Base
       validate_recap(params, model.errors)
     end
     
+    # [CanCan] override default of current_user
+    def current_ability
+      Ability.new(current_admin)
+    end
 end

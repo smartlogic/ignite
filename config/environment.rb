@@ -82,3 +82,4 @@ ExceptionNotifier.exception_recipients = %w(glenn@smartlogicsolutions.com)
 ExceptionNotifier.sender_address = %("Application Error" <ignite.error@slsdev.net>)
 
 require 'will_paginate'
+require 'cancan'

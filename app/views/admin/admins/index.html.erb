@@ -13,12 +13,12 @@
     <td><%=h admin.login %></td>
     <td><%=h admin.email %></td>
     <td>
-      <% if can_edit?(admin) -%>
+      <% if can?(:edit, admin) -%>
         <%= link_to 'Edit', edit_admin_admin_path(admin) %>
       <% end -%>
     </td>
     <td>
-      <% if can_remove?(admin) -%>
+      <% if can?(:destroy, admin) -%>
         <%= link_to 'Remove', admin_admin_path(admin), :confirm => 'Are you sure?', :method => :delete %>
       <% end -%>
     </td>
