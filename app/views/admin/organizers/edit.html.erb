@@ -2,14 +2,20 @@
 <br/>
 <% form_for @organizer, :url => admin_organizer_path, :html => {:multipart => true}, :method => :put do |f| %>
   <%= f.error_messages %>
-
   <p>
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
   <p>
+    Ignite Events<br />
+    <% @events.each do |event| -%>
+      <%= check_box_tag "organizer[event_ids][]", event.id, @organizer.events.include?(event), :id => "organizer_event_id_#{event.id}" %>
+      <%= label_tag "organizer_event_id_#{event.id}", h(event.name) %>
+    <% end -%>
+  </p>
+  <p>
     <%= f.label :bio %><br />
-    <%= f.text_area :bio %>
+    <%= f.text_area :bio, :cols => 100 %>
   </p>
   <p>
     <%= f.label :email %><br />

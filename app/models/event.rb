@@ -4,7 +4,9 @@ class Event < ActiveRecord::Base
   belongs_to :organizer
   belongs_to :ignite
   has_and_belongs_to_many :sponsors
+  has_and_belongs_to_many :organizers
 
+  acts_as_list :scope => :ignite
   file_column :summary_image
 
   validates_presence_of :ignite_id
@@ -16,6 +18,10 @@ class Event < ActiveRecord::Base
   named_scope :past, lambda {
     { :conditions => ["is_complete = 1 OR date < ?", Date.today], :order => "date DESC" }
   }
+  
+  def name
+    "Ignite #{ignite.city} \##{self.position}"
+  end
   
   def past?
     self.is_complete? || self.date < Date.today

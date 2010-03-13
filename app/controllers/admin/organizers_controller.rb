@@ -1,5 +1,6 @@
 class Admin::OrganizersController < Admin::BaseAdminController
   before_filter :load_organizer, :only => [:show, :edit, :update, :destroy]
+  before_filter :load_events, :only => [:new, :edit]
   
   def index
     @page_title = "Listing Organizers"
@@ -24,7 +25,10 @@ class Admin::OrganizersController < Admin::BaseAdminController
         format.html { redirect_to admin_organizer_path(@organizer) }
         format.xml  { render :xml => @organizer, :status => :created, :location => @organizer }
       else
-        format.html { render :action => "new" }
+        format.html { 
+          load_events
+          render :action => "new" 
+        }
         format.xml  { render :xml => @organizer.errors, :status => :unprocessable_entity }
       end
     end
@@ -36,12 +40,16 @@ class Admin::OrganizersController < Admin::BaseAdminController
 
   def update
     respond_to do |format|
+      params[:organizer][:event_ids] ||= []
       if @organizer.update_attributes(params[:organizer])
         flash[:notice] = 'Organizer was successfully updated.'
         format.html { redirect_to admin_organizer_path(@organizer) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { 
+          load_events
+          render :action => "edit" 
+        }
         format.xml  { render :xml => @organizer.errors, :status => :unprocessable_entity }
       end
     end
@@ -62,5 +70,9 @@ class Admin::OrganizersController < Admin::BaseAdminController
   protected
     def load_organizer
       @organizer = Organizer.find(params[:id])
+    end
+    
+    def load_events
+      @events = @ignite.events
     end
 end

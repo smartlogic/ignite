@@ -1,5 +1,6 @@
 class Organizer < ActiveRecord::Base
   belongs_to :ignite
+  has_and_belongs_to_many :events
   
   before_save :clean_attrs
   
@@ -7,7 +8,7 @@ class Organizer < ActiveRecord::Base
   
   validates_presence_of :ignite_id, :name
   
-  attr_accessible :name, :bio, :email, :personal_url, :blog_url, :company_url, :twitter_url, :linkedin_url, :image
+  attr_accessible :name, :bio, :email, :personal_url, :blog_url, :company_url, :twitter_url, :linkedin_url, :image, :event_ids
   
   private    
     def clean_attrs

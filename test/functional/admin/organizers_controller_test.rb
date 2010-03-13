@@ -12,6 +12,7 @@ class Admin::OrganizersControllerTest < ActionController::TestCase
     context 'with an organizer' do
       setup do
         @organizer = Factory(:organizer, :ignite => @ignite)
+        @organizer.events << @ignite.featured_event
       end
     
       context 'on GET to index' do
@@ -40,10 +41,17 @@ class Admin::OrganizersControllerTest < ActionController::TestCase
       
       context 'on PUT to update that is successful' do
         setup do
-          put :update, :id => @organizer.id, :organizer => Factory.attributes_for(:organizer)\
+          put :update, :id => @organizer.id, :organizer => Factory.attributes_for(:organizer, :event_ids => [@ignite.featured_event.id])
         end
         should_redirect_to('show') { admin_organizer_path(@organizer) }
         should_flash(:notice)
+      end
+      
+      context 'on PUT to update that removes all events' do
+        setup do
+          put :update, :id => @organizer.id, :organizer => Factory.attributes_for(:organizer)
+        end
+        should_change("number of events assigned", :to => 0) { @organizer.events.count }
       end
       
       context 'on PUT to update that fails' do
@@ -95,7 +103,5 @@ class Admin::OrganizersControllerTest < ActionController::TestCase
       should_render_template 'new'
       should_not_change('number of organizers') { @ignite.organizers.count }
     end
-    
-    should "be able to assign organizers to events"
   end
 end
