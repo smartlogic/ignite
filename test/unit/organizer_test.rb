@@ -10,15 +10,16 @@ class OrganizerTest < ActiveSupport::TestCase
     
     context "with an event" do
       setup do
+        # organizers are auto-assigned to an event
         @event = Factory(:event, :ignite => @organizer.ignite)
       end
       
       should "be able to add an event" do
-        @organizer.events << @event
+        @organizer.events.replace []
+        assert_nothing_raised { @organizer.events << @event }
       end
       
       should "not be able to add the same event twice" do
-        @organizer.events << @event
         assert_raise(ActiveRecord::StatementInvalid) { @organizer.events << @event }
       end
     end
@@ -28,9 +29,8 @@ class OrganizerTest < ActiveSupport::TestCase
     setup do
       @organizer = Factory(:organizer)
       @event = Factory(:event, :ignite => @organizer.ignite)
-      @organizer.events << @event
     end
-    should 'be able to delete' do
+    should 'be able to destroy it' do
       assert_nothing_raised { @organizer.destroy }
       assert_equal 0, @event.reload.organizers.count
     end
