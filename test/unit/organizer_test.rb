@@ -23,4 +23,16 @@ class OrganizerTest < ActiveSupport::TestCase
       end
     end
   end
+  
+  context 'a saved organizer assigned to an event' do
+    setup do
+      @organizer = Factory(:organizer)
+      @event = Factory(:event, :ignite => @organizer.ignite)
+      @organizer.events << @event
+    end
+    should 'be able to delete' do
+      assert_nothing_raised { @organizer.destroy }
+      assert_equal 0, @event.reload.organizers.count
+    end
+  end
 end

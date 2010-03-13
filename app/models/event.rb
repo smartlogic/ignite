@@ -13,6 +13,7 @@ class Event < ActiveRecord::Base
 
   before_save :ensure_only_one_event_featured
   before_destroy :disallow_only_event_to_be_destroyed
+  after_create :assign_all_organizers
 
   named_scope :by_date_desc, :order => "date DESC"
   named_scope :past, lambda {
@@ -54,5 +55,9 @@ class Event < ActiveRecord::Base
         errors.add_to_base("at least one event must be featured")
         false
       end
+    end
+    
+    def assign_all_organizers
+      self.organizers.replace(self.ignite.organizers(true))
     end
 end

@@ -21,6 +21,23 @@ class EventTest < ActiveSupport::TestCase
       @event.date = Date.today + 30
       assert !@event.past?
     end
+    
+    context 'with two organizers for the same ignite' do
+      setup do
+        @organizer1 = Factory(:organizer, :ignite => @event.ignite)
+        @organizer2 = Factory(:organizer, :ignite => @event.ignite)
+      end
+      context 'when saving' do
+        setup do
+          @event.save!
+        end
+        should "assign both organizers to the event" do
+          assert_equal 2, @event.organizers.count
+          assert @organizer1.reload.events.include?(@event)
+          assert @organizer2.reload.events.include?(@event)
+        end
+      end
+    end
   end
   
   context "With a featured and unfeatured event" do
@@ -67,6 +84,17 @@ class EventTest < ActiveSupport::TestCase
       should_change("number of features", :by => -1) { @featured_event.ignite.events.count }
       should "make the unfeatured event featured" do
         assert Event.find(@unfeatured_event).is_featured?
+      end
+    end
+    
+    context 'with an organizer assigned to the unfeatured event' do
+      setup do
+        @organizer = Factory(:organizer, :ignite => @unfeatured_event.ignite)
+        @unfeatured_event.organizers << @organizer
+      end
+      should 'be able to destroy it' do
+        assert_nothing_raised { @unfeatured_event.destroy }
+        assert_equal 0, @organizer.reload.events.count
       end
     end
   end
