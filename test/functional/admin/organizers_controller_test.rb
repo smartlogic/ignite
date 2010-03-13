@@ -47,13 +47,6 @@ class Admin::OrganizersControllerTest < ActionController::TestCase
         should_flash(:notice)
       end
       
-      context 'on PUT to update that removes all events' do
-        setup do
-          put :update, :id => @organizer.id, :organizer => Factory.attributes_for(:organizer)
-        end
-        should_change("number of events assigned", :to => 0) { @organizer.events.count }
-      end
-      
       context 'on PUT to update that fails' do
         setup do
           put :update, :id => @organizer.id, :organizer => Factory.attributes_for(:organizer, :name => false)

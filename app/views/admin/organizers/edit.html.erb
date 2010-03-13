@@ -8,10 +8,7 @@
   </p>
   <p>
     Ignite Events<br />
-    <% @events.each do |event| -%>
-      <%= check_box_tag "organizer[event_ids][]", event.id, @organizer.events.include?(event), :id => "organizer_event_id_#{event.id}" %>
-      <%= label_tag "organizer_event_id_#{event.id}", h(event.name) %>
-    <% end -%>
+    <%= habtm_checkboxes(@organizer, :event_ids, @events, :name) %>
   </p>
   <p>
     <%= f.label :bio %><br />

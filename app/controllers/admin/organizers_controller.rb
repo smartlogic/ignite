@@ -40,7 +40,6 @@ class Admin::OrganizersController < Admin::BaseAdminController
 
   def update
     respond_to do |format|
-      params[:organizer][:event_ids] ||= []
       if @organizer.update_attributes(params[:organizer])
         flash[:notice] = 'Organizer was successfully updated.'
         format.html { redirect_to admin_organizer_path(@organizer) }
