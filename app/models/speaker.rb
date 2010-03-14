@@ -4,14 +4,13 @@ class Speaker < ActiveRecord::Base
   
   belongs_to :event
   has_many :comments, :as => :parent, :dependent => :destroy
+
+  validates_presence_of :name, :title, :description, :bio, :event_id
   
   acts_as_list :scope => "event_id"
   file_column :image, :magick => {:versions => {"thumb" => "50x50>", "profile" => "180x250>"}}
   file_column :widget_image, :magick => {:geometry => "68x68", :versions => {"thumb" => "50x50>"}}
   file_column :mouseover_image, :magick => {:geometry => "68x68", :versions => {"thumb" => "50x50>"}}
-
-  before_save :clean_attrs
-  validates_presence_of :name, :title, :description, :bio, :event_id
     
   aasm_column :aasm_state
   aasm_state  :proposal, :display => 'Active Proposals'
@@ -27,6 +26,7 @@ class Speaker < ActiveRecord::Base
     transitions :to => :speaker, :from => [:archived, :proposal]
   end
 
+  # TODO : fix
   def status
     if self.archived?
       "Archived"
@@ -50,16 +50,4 @@ class Speaker < ActiveRecord::Base
     end
     links
   end
-    
-  private
-    def clean_attrs
-      %w(bio description email name title html_text).each do |attr|
-        self.send("#{attr}=", ContentCleaner.clean(self.send(attr))) unless self.send(attr).nil?
-      end
-
-      ['company_url', 'personal_url', 'blog_url', 'twitter_url', 'linkedin_url'].each do |attr|
-        self.send("#{attr}=", ContentCleaner.fix_link(self.send(attr))) unless self.send(attr).nil?
-      end
-    end
-  
 end

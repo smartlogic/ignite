@@ -4,14 +4,14 @@
   <% end -%>
   <%= link_to 'View all Proposals', proposals_path, :class => 'articleTitle tag' %>
 </div>
-<h2><%= @proposal.name %></h2> 
-<h3><%= @proposal.title %></h3>
+<h2><%= h(@proposal.name) %></h2> 
+<h3><%= h(@proposal.title) %></h3>
 <div id="related">
   <%= image_tag(url_for_file_column(@proposal, "image", "profile"), :alt => "photo: #{h(@proposal.name)}") unless @proposal.image.blank? %>
 </div>
 <p><%= Markdown.new(@proposal.description).to_html %></p>
-<h4>About <%= @proposal.name %>:</h4>
-<p class="bio"><%= @proposal.bio %></p>
+<h4>About <%= h(@proposal.name) %>:</h4>
+<p class="bio"><%= Markdown.new(@proposal.bio).to_html %></p>
 <hr />
 <div class="comments">
   <a name="comments"></a>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100314033702) do
+ActiveRecord::Schema.define(:version => 20100314151859) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -152,7 +152,6 @@ ActiveRecord::Schema.define(:version => 20100314033702) do
     t.string   "company_url"
     t.string   "video_url"
     t.integer  "position"
-    t.text     "html_text"
     t.string   "image"
     t.string   "mouseover_image"
     t.string   "aasm_state"

@@ -10,12 +10,12 @@
 
 <p>
   <b>Ignite:</b>
-  <%=h @speaker.event.name %>
+  <%= @speaker.event.name %>
 </p>
 
 <p>
   <b>Position:</b>
-  <%=h @speaker.position %>
+  <%= @speaker.position %>
 </p>
 
 <p>
@@ -25,12 +25,12 @@
 
 <p>
   <b>Description:</b>
-  <%= @speaker.description %>
+  <%= Markdown.new(@speaker.description).to_html %>
 </p>
 
 <p>
   <b>Bio:</b>
-  <%= @speaker.bio %>
+  <%= Markdown.new(@speaker.bio).to_html %>
 </p>
 
 <p>
@@ -40,37 +40,37 @@
 
 <p>
   <b>Blog url:</b>
-  <%=h @speaker.blog_url %>
+  <%= @speaker.blog_url %>
 </p>
 
 <p>
   <b>Twitter url:</b>
-  <%=h @speaker.twitter_url %>
+  <%= @speaker.twitter_url %>
 </p>
 
 <p>
   <b>Linkedin url:</b>
-  <%=h @speaker.linkedin_url %>
+  <%= @speaker.linkedin_url %>
 </p>
 
 <p>
   <b>Personal url:</b>
-  <%=h @speaker.personal_url %>
+  <%= @speaker.personal_url %>
 </p>
 
 <p>
   <b>Company url:</b>
-  <%=h @speaker.company_url %>
+  <%= @speaker.company_url %>
 </p>
 
 <p>
   <b>Video url:</b>
-  <%=h @speaker.video_url %>
+  <%= @speaker.video_url %>
 </p>
 
 <p>
   <b>Video Embed url:</b>
-  <%=h @speaker.video_embed_url %>
+  <%= @speaker.video_embed_url %>
 </p>
 
 <p>
