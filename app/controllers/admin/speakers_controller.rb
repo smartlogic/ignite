@@ -1,5 +1,9 @@
+require 'ostruct'
 class Admin::SpeakersController < Admin::BaseAdminController
   before_filter :load_ignites, :only => [:index, :proposals, :edit, :new, :create, :update]
+  before_filter :load_events
+  before_filter :load_states
+  
   def load_ignites
     @ignites = Ignite.all
   end
@@ -39,10 +43,8 @@ class Admin::SpeakersController < Admin::BaseAdminController
   end
   
   def proposals
-    @speakers = Speaker.paginate(:all, :conditions => "event_id IS NULL", :order => "ignite_id, name", :page => params[:page], :per_page => 16)
-    @hide_event = true
-    @title = "Listing Proposals"
-    render :action => 'index'
+    @proposals = @event.speakers.send(@state).paginate(:all, :order => "name", :page => params[:page], :per_page => 16)
+    @title = "Proposals | #{@ignite.city}"
   end
 
   def show
@@ -102,5 +104,15 @@ class Admin::SpeakersController < Admin::BaseAdminController
     end
     redirect_to admin_speakers_url
   end
-  
+
+  protected
+    def load_events
+      @event = Event.find_by_id(params[:event]) || @ignite.featured_event
+      @events = @ignite.events
+    end
+    
+    def load_states
+      @state = params[:state] || 'active'
+      @states = ["active", "archived"].map {|state| OpenStruct.new(:state => state, :label => state.capitalize)}
+    end
 end

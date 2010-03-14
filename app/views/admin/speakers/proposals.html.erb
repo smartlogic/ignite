@@ -1,0 +1,21 @@
+<h1><%= @state.capitalize %> Proposals for <%= @event.name %></h1>
+<br/>
+
+<% form_tag("/admin/speakers/proposals") do %>
+  <p>
+    View 
+    <select id="state" name="state">
+      <%= options_from_collection_for_select(@states, :state, :label, @state) %>
+    </select>
+    Proposals for
+    <select id="event" name="event">
+      <%= options_from_collection_for_select(@events, :id, :name, @event.id) %>
+    </select>
+    <input type="submit" value="Show" />
+  </p>
+<% end -%>
+<% if !@proposals.empty? -%>
+  <%= render(:partial => 'speakers', :locals => {:speakers => @proposals}) %>
+<% else -%>
+  <p>No <%= @state %> proposals.</p>
+<% end -%>
