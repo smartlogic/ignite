@@ -44,15 +44,7 @@ class AbilityTest < ActiveSupport::TestCase
     should 'not edit an organizer for another ignite' do
       assert @ability.cannot?(:manage, Factory(:organizer))
     end
-    
-    # Speaker
-    should 'edit a speaker for their ignite' do
-      assert @ability.can?(:manage, Factory(:speaker, :ignite => @admin.ignite, :event => Factory(:event, :ignite => @admin.ignite)))
-    end
-    should 'not edit a speaker for another ignite' do
-      assert @ability.cannot?(:manage, Factory(:speaker))
-    end
-    
+        
     # Article
     should 'edit an article for their ignite' do
       assert @ability.can?(:manage, Factory(:article, :ignite => @admin.ignite))

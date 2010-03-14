@@ -21,8 +21,8 @@
       <li><%= link_to "Ignites",    admin_ignites_path %></li>
 			<li><%= link_to "Organizers", admin_organizers_path %></li>
 			<li><%= link_to "Events",     admin_events_path %></li>
-			<li><%= link_to "Speakers",   admin_speakers_path %></li>
-			<li><%= link_to "Proposals",  proposals_admin_speakers_path %></li>
+			<li><%= link_to "Speakers",   admin_speakers_path(:state => 'speaker') %></li>
+			<li><%= link_to "Proposals",  admin_speakers_path(:state => 'proposal') %></li>
 			<li><%= link_to "Articles",   admin_articles_path %></li>
 			<li><%= link_to "Comments",   admin_comments_path %></li>
       <li><%= link_to "Sponsors",   admin_sponsors_path %></li>

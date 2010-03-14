@@ -1,13 +1,46 @@
 require 'ostruct'
 class Admin::SpeakersController < Admin::BaseAdminController
-  before_filter :load_ignites, :only => [:index, :proposals, :edit, :new, :create, :update]
-  before_filter :load_events
-  before_filter :load_states
+  before_filter :load_speaker, :only => [:show, :edit, :update, :destroy, :archive]
+  before_filter :load_events, :only => [:index]
+  before_filter :load_states, :only => [:index]
   
-  def load_ignites
-    @ignites = Ignite.all
+  def index
+    @proposals = @event.speakers.send(@state.name).find(:all, :order => "name")
+    @title = "Proposals | #{@ignite.city}"
   end
   
+  def show
+    
+  end
+
+  def edit
+
+  end
+
+  def update
+    if @speaker.update_attributes(params[:speaker])
+      flash[:notice] = 'Speaker was successfully updated.'
+      redirect_to admin_speaker_path(@speaker)
+    else
+      render :action => "edit"
+    end
+  end
+
+  def destroy
+    @speaker.destroy
+    
+    redirect_to(admin_speakers_url)
+  end
+  
+  def archive
+    if @speaker.archive!
+      flash[:notice] = 'Speaker was successfully archived.'
+    else
+      flash[:error] = "Speaker could not be archived."
+    end
+    redirect_to admin_speakers_url
+  end
+
   def csv
     speakers=[]
     if params[:proposal] and !!params[:proposal]
@@ -36,83 +69,19 @@ class Admin::SpeakersController < Admin::BaseAdminController
               :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment; filename=speaker_report_#{Time.now.strftime "%m_%d_%Y"}.csv")
   end
   
-  def index
-    @speakers = Speaker.paginate(:all, :conditions => "event_id IS NOT NULL", :order => "ignite_id, name", :page => params[:page], :per_page => 16)
-    @hide_event = false
-    @title = "Listing Speakers"
-  end
-  
-  def proposals
-    @proposals = @event.speakers.send(@state).paginate(:all, :order => "name", :page => params[:page], :per_page => 16)
-    @title = "Proposals | #{@ignite.city}"
-  end
-
-  def show
-    @speaker = Speaker.find(params[:id])
-  end
-
-  def new
-    @speaker = Speaker.new
-  end
-
-  def edit
-    @speaker = Speaker.find(params[:id])
-    @events = @speaker.ignite.events
-  end
-
-  def update_event_select
-    @events = Ignite.find(params[:ignite_id]).events
-    render :update do |page|
-      page.replace_html 'speaker_event_id', "<option value=\"\">Unassigned Proposal</option>" + options_from_collection_for_select(@events, 'id', 'name')
-    end
-  end
-
-  def create
-    @speaker = Speaker.new(params[:speaker])
-    if @speaker.save
-      flash[:notice] = 'Speaker was successfully created.'
-      redirect_to admin_speaker_path(@speaker)
-    else
-      render :action => "new"
-    end
-  end
-
-  def update
-    @speaker = Speaker.find(params[:id])
-    event_id = params[:speaker].delete("event_id")
-    if @speaker.update_attributes(params[:speaker].merge(:event_id => event_id))
-      flash[:notice] = 'Speaker was successfully updated.'
-      redirect_to admin_speaker_path(@speaker)
-    else
-      render :action => "edit"
-    end
-  end
-
-  def destroy
-    @speaker = Speaker.find(params[:id])
-    @speaker.destroy
-    
-    redirect_to(admin_speakers_url)
-  end
-  
-  def archive
-    @speaker = Speaker.find(params[:id])
-    if @speaker.archive!
-      flash[:notice] = 'Speaker was successfully archived.'
-    else
-      flash[:error] = "Speaker could not be archived."
-    end
-    redirect_to admin_speakers_url
-  end
-
   protected
+    def load_speaker
+      @speaker = @ignite.speakers.find(params[:id])
+    end
+    
     def load_events
       @event = Event.find_by_id(params[:event]) || @ignite.featured_event
       @events = @ignite.events
     end
     
     def load_states
-      @state = params[:state] || 'active'
-      @states = ["active", "archived"].map {|state| OpenStruct.new(:state => state, :label => state.capitalize)}
+      state_name = params[:state] || 'proposal'
+      @state = Speaker.aasm_states.detect {|aasm_state| aasm_state.name.to_s == state_name}
+      @states = Speaker.aasm_states
     end
 end

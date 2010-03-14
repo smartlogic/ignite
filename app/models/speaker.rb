@@ -2,29 +2,40 @@ require 'exportable'
 class Speaker < ActiveRecord::Base
   include AASM
   
-  before_save :clean_attrs
-  
   belongs_to :event
-  belongs_to :ignite
-  acts_as_list :scope => "event_id"
   has_many :comments, :as => :parent, :dependent => :destroy
   
-  aasm_column :aasm_state
-  aasm_state :active
-  aasm_initial_state :active
-  aasm_state :archived
-  
+  acts_as_list :scope => "event_id"
   file_column :image, :magick => {:versions => {"thumb" => "50x50>", "profile" => "180x250>"}}
   file_column :widget_image, :magick => {:geometry => "68x68", :versions => {"thumb" => "50x50>"}}
   file_column :mouseover_image, :magick => {:geometry => "68x68", :versions => {"thumb" => "50x50>"}}
+
+  before_save :clean_attrs
+  validates_presence_of :name, :title, :description, :bio, :event_id
+    
+  aasm_column :aasm_state
+  aasm_state  :proposal, :display => 'Active Proposals'
+  aasm_state  :archived, :display => 'Archived Proposals'
+  aasm_state  :speaker,  :display => 'Speakers'
+  aasm_initial_state :proposal
   
-  validates_presence_of :name, :title, :description, :bio, :ignite_id
-  
-  def validate
-    @errors.add(:event, "is not assigned to #{ignite.city}") if !event_id.nil? && event.ignite_id != self.ignite_id
+  aasm_event :archive do
+    transitions :to => :archived, :from => :proposal
   end
   
-  named_scope :proposals, :conditions => {:event_id => nil}
+  aasm_event :activate do
+    transitions :to => :speaker, :from => [:archived, :proposal]
+  end
+
+  def status
+    if self.archived?
+      "Archived"
+    elsif self.proposal?
+      "Proposal"
+    else
+      "Speaker"
+    end
+  end
   
   def export_columns(format=nil)
     %w[name title aasm_state ignite_id event_id description bio company_url personal_url blog_url twitter_url linkedin_url]
@@ -39,39 +50,16 @@ class Speaker < ActiveRecord::Base
     end
     links
   end
-  
-  def is_proposal?
-    event.nil?
-  end
-  
-  def status
-    if self.archived?
-      "Archived"
-    elsif self.event_id.blank?
-      "Proposal"
-    else
-      "Active"
-    end
-  end
-  
-  aasm_event :archive do
-    transitions :to => :archived, :from => :active
-  end
-  
-  aasm_event :activate do
-    transitions :to => :active, :from => :archived
-  end
-  
+    
   private
-  
-  def clean_attrs
-    %w(bio description email name title html_text).each do |attr|
-      self.send("#{attr}=", ContentCleaner.clean(self.send(attr))) unless self.send(attr).nil?
-    end
+    def clean_attrs
+      %w(bio description email name title html_text).each do |attr|
+        self.send("#{attr}=", ContentCleaner.clean(self.send(attr))) unless self.send(attr).nil?
+      end
 
-    ['company_url', 'personal_url', 'blog_url', 'twitter_url', 'linkedin_url'].each do |attr|
-      self.send("#{attr}=", ContentCleaner.fix_link(self.send(attr))) unless self.send(attr).nil?
+      ['company_url', 'personal_url', 'blog_url', 'twitter_url', 'linkedin_url'].each do |attr|
+        self.send("#{attr}=", ContentCleaner.fix_link(self.send(attr))) unless self.send(attr).nil?
+      end
     end
-  end
   
 end

@@ -1,36 +1,25 @@
-<% if !speakers.empty? -%>
-  <table class="adminTable">
-    <tr>
-      <th>Ignite City</th>
-      <th>Status</th>
-      <th>Name</th>
-      <th>Title</th>
-      <th>Event</th>
-      <th>Position</th>
-      <th>Image</th>
-      <th>Widget Image</th>
-      <th>Mouseover image</th>
-    </tr>
+<table class="adminTable">
+  <tr>
+    <th>Name</th>
+    <th>Title</th>
+    <th>Position</th>
+    <th>Image</th>
+    <th>Widget Image</th>
+    <th>Mouseover image</th>
+  </tr>
 
-  <% for speaker in speakers %>
-    <tr>
-      <td><%=h speaker.ignite.city %></td>
-      <td><%= speaker.status %></td>
-      <td><%=h speaker.name %></td>
-      <td><%=h speaker.title %></td>
-      <td><%= speaker.event ? h(speaker.event.name) : '' %></td>
-      <td><%= speaker.position %></td>
-      <td><%= image_tag(url_for_file_column(speaker, "image", "thumb")) unless speaker.image.blank? %></td>
-      <td><%= image_tag(url_for_file_column(speaker, "widget_image", "thumb")) unless speaker.widget_image.blank? %></td>
-      <td><%= image_tag(url_for_file_column(speaker, "mouseover_image", "thumb")) unless speaker.mouseover_image.blank? %></td>
-      <td><%= link_to 'Show', [:admin, speaker] %></td>
-      <td><%= link_to 'Edit', edit_admin_speaker_path(speaker) %></td>
-      <td><%= link_to 'Archive', archive_admin_speakers_url(:id => speaker.id), :confirm => 'Are you sure? Archiving removes this speaker from the public view.', :method => :delete %></td>
-      <td><%= link_to 'Delete', [:admin, speaker], :confirm => 'Are you sure? This speaker will be irreversibly deleted!', :method => :delete %></td>
-    </tr>
-  <% end %>
-  </table>
-  <%= will_paginate speakers %>
-<% else -%>
-  <p>No speakers</p>
-<% end -%>
+<% for speaker in speakers %>
+  <tr>
+    <td><%=h speaker.name %></td>
+    <td><%=h speaker.title %></td>
+    <td><%= speaker.position %></td>
+    <td><%= image_tag(url_for_file_column(speaker, "image", "thumb")) unless speaker.image.blank? %></td>
+    <td><%= image_tag(url_for_file_column(speaker, "widget_image", "thumb")) unless speaker.widget_image.blank? %></td>
+    <td><%= image_tag(url_for_file_column(speaker, "mouseover_image", "thumb")) unless speaker.mouseover_image.blank? %></td>
+    <td><%= link_to 'Show', [:admin, speaker] %></td>
+    <td><%= link_to 'Edit', edit_admin_speaker_path(speaker) %></td>
+    <td><%= link_to 'Archive', archive_admin_speakers_url(:id => speaker.id), :confirm => 'Are you sure? Archiving removes this speaker from the public view.', :method => :delete %></td>
+    <td><%= link_to 'Delete', [:admin, speaker], :confirm => 'Are you sure? This speaker will be irreversibly deleted!', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>

@@ -1,36 +1,22 @@
-<h1><%= @title %></h1>
-
-<% if !@speakers.empty? -%>
-  <%= render(:partial => 'speakers', :locals => {:speakers => @speakers}) %>
-<% else -%>
-  <p>No active speakers</p>
-<% end -%>
-
+<h1><%= @state.display_name %> for <%= @event.name %></h1>
 <br/>
-<% if @hide_event -%>
-  <%= optgroup_settings_dropdown("Export proposals to CSV",
-    [
-      ["By Set", [
-        ["This Page Only", url_for(:controller => "admin/speakers", :action => "csv", :proposal => true, :page => params[:page], :escape => false)],
-        ["Active Proposals", url_for(:controller => "admin/speakers", :action => "csv", :proposal => true, :set => "active", :escape => false)],
-        ["All Proposals", url_for(:controller => "admin/speakers", :action => "csv", :proposal => true, :escape => false)]
-      ]],
-      ["By Ignite", 
-        @ignites.map{ |ignite| eval('[ignite.city, url_for(:controller => "admin/speakers", :action => "csv", :proposal => true, :ignite_id => ignite.id, :escape => false)]') }
-      ]
-    ]) unless @speakers.empty?
-  %>
-<% else -%>
-  <%= optgroup_settings_dropdown("Export speakers to CSV",
-    [
-      ["By Set", [
-        ["This Page Only", url_for(:controller => "admin/speakers", :action => "csv", :page => params[:page], :escape => false)],
-        ["Active Speakers", url_for(:controller => "admin/speakers", :action => "csv", :set => "active", :escape => false)],
-        ["All Speakers", url_for(:controller => "admin/speakers", :action => "csv")]
-      ]],
-      ["By Ignite", 
-        @ignites.map{ |ignite| eval('[ignite.city, url_for(:controller => "admin/speakers", :action => "csv", :ignite_id => ignite.id, :escape => false)]') }
-      ]
-    ]) unless @speakers.empty?
-  %>
+
+<% form_tag("/admin/speakers", :method => 'get') do %>
+  <p>
+    View 
+    <select id="state" name="state">
+      <%= options_from_collection_for_select(@states, :name, :display_name, @state.name) %>
+    </select>
+    for
+    <select id="event" name="event">
+      <%= options_from_collection_for_select(@events, :id, :name, @event.id) %>
+    </select>
+    <input type="submit" value="Show" />
+  </p>
 <% end -%>
+<% if !@proposals.empty? -%>
+  <%= render(:partial => 'speakers', :locals => {:speakers => @proposals}) %>
+<% else -%>
+  <p>No <%= @state.display_name %>.</p>
+<% end -%>
+

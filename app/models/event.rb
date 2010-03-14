@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  has_many :speakers, :order => :position, :dependent => :destroy
+  has_many :speakers, :dependent => :destroy
   has_many :comments, :as => :parent, :dependent => :destroy
   belongs_to :organizer
   belongs_to :ignite

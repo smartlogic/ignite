@@ -19,7 +19,7 @@ class Ability
           admin == this_user && action == :destroy  # or we're trying to destroy ourself
       end
       
-      cannot :manage, [Event, Organizer, Speaker, Article] do |action, obj|
+      cannot :manage, [Event, Organizer, Article] do |action, obj|
         obj.ignite != this_user.ignite
       end
     end

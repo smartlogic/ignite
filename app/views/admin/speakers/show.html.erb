@@ -4,10 +4,14 @@
 </p>
 
 <p>
-  <b>Ignite City:</b>
-  <%=h @speaker.ignite.city %>
+  <b>Status:</b>
+  <%= @speaker.aasm_state %>
 </p>
 
+<p>
+  <b>Ignite:</b>
+  <%=h @speaker.event.name %>
+</p>
 
 <p>
   <b>Position:</b>
@@ -32,16 +36,6 @@
 <p>
   <b>Email:</b>
   <%= @speaker.email %>
-</p>
-
-<p>
-  <b>Ignite City:</b>
-  <%= h(@speaker.ignite.city) %>
-</p>
-
-<p>
-  <b>Event:</b>
-  <%= @speaker.event.nil? ? "<span style=\"color:red;\">Not Assigned to an Event</style>" : h(@speaker.event.name) %>
 </p>
 
 <p>
