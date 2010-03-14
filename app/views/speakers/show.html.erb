@@ -1,29 +1,15 @@
-<%= link_to h(@event.name), event_path(@event) %>
-<h2><%= @speaker.name %></h2> 
-<h3><%= @speaker.title %></h3>
+<%= link_to h(@event.name), event_path(@event), :class => 'tag' %>
 <div id="related">
   <%= image_tag(url_for_file_column(@speaker, "image", "profile"), :alt => "photo: #{@speaker.name}") unless @speaker.image.blank? %>
-  <% unless @social_links.empty? -%>
-    <h3 style="margin-top:10px;margin-bottom:-10px;">Social Links</h3>
-    <ul>
-      <% @speaker.social_links.each_pair do |type, url| -%>
-        <li><strong><%= link_to type, url %></strong></li>
-      <% end -%>
-    </ul>
-  <% end -%>
+  <%= render :partial => 'speaker_links', :locals => {:speaker => @speaker} %>
 </div>
-<p><%= @speaker.description %></p>
-<h4>About <%= @speaker.name %>:</h4>
-<p class="bio"><%= @speaker.bio %></p>
-<% unless @speaker.video_embed_url.blank? -%> 
-  <div class="video">
-    <object width="350" height="283">
-      <param name="movie" value="<%= @speaker.video_embed_url %>"></param>
-      <param name="allowFullScreen" value="true"></param>
-      <param name="allowscriptaccess" value="always"></param>
-      <embed src="<%= @speaker.video_embed_url %>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="350" height="283"></embed>
-    </object>
-  </div>
+<h2><%= @speaker.name %></h2> 
+<h3><%= @speaker.title %></h3>
+<p><%= Markdown.new(@speaker.description).to_html %></p>
+<h4>About <%= h @speaker.name %>:</h4>
+<p class="bio"><%= Markdown.new(@speaker.bio).to_html %></p>
+<% unless @speaker.video_embed_url.blank? -%>
+  <%= render(:partial => 'speakers/embedded_video', :locals => {:speaker => @speaker}) %>
 <% end -%>
 <hr />
 <div class="comments">

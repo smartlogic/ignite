@@ -1,0 +1,9 @@
+<% links = speaker_links(speaker) -%>
+<% unless links.empty? -%>
+  <h3 style="margin-top:10px;margin-bottom:-10px;">Speaker Links</h3>
+  <ul>
+    <% links.each_pair do |type, url| -%>
+      <li><strong><%= link_to type, url %></strong></li>
+    <% end -%>
+  </ul>
+<% end -%>

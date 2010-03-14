@@ -48,14 +48,4 @@ class Speaker < ActiveRecord::Base
   def export_columns(format=nil)
     %w[name title aasm_state event_id description bio company_url personal_url blog_url twitter_url linkedin_url]
   end
-  
-  def social_links
-    links = {}
-    ['company_url', 'personal_url', 'blog_url', 'twitter_url', 'linkedin_url'].each do |link|
-      unless(self.send(link).blank? || self.send(link).match(/^http:\/+$/))
-        links[link.match(/^(\w+)_url/)[1].capitalize] = self.send(link)
-      end
-    end
-    links
-  end
 end

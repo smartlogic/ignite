@@ -53,6 +53,12 @@ body {
 	min-height: 600px;
 	padding: 36px; 
 }
+
+#main #content ul {
+  margin-left: 35px;
+  margin-bottom: 10px;
+}
+
 #main #countdown {
 	display: block;
 	height: 89px;
@@ -367,6 +373,7 @@ div.post ul{
 }
 #speakers ul.speakers {
 	float: left;
+	margin-left: 0px !important;
 	margin-right: 2%;
 	width: 46%;
 }
@@ -398,6 +405,7 @@ div.post ul{
 }
 #speakers.show #related ul {
 	margin-top: 15px;
+	margin-left: 0px;
 }
 #speakers.show #related ul li {
 	list-style-image: url(../images/shared/bullet.gif);

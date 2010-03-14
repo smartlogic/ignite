@@ -13,29 +13,11 @@ module ApplicationHelper
   end
   
   def ellipse_cutoff(string, limit=25)
-    ret = ""
     if string.length > limit
-      ret = string[0,limit-3] + '...'
+      string[0,limit] + '...'
     else
-      ret = string
+      string
     end
-    return escape_javascript(ret)
-  end
-  
-  def more_link(string, link, limit=25)
-    ret = ""
-    if string.length > limit
-      ret = string[0,limit-3] + link_to("... Read more", link)
-    else
-      ret = string
-    end
-    return escape_javascript(ret)
-  end
-  
-  def insert_article_text(text, prepend="", append="")
-    ret = ""
-    ret = prepend << text << append
-    return ret
   end
   
 end

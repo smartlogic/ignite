@@ -8,30 +8,24 @@ function imageSwap(sid){
   swapImg.src = tmpImg.src;
 }
 
-function onWidgetMouseover(sid){
-  $('widgetTitle').innerHTML = mySpeakers[sid].title;
-  $('widgetAuthor').innerHTML = mySpeakers[sid].author;
-  $('widgetBio').innerHTML = mySpeakers[sid].bio;
-  $('widgetDescription').innerHTML = mySpeakers[sid].description;
+function onWidgetMouseover(sid) {
+  var speaker = mySpeakers.detect(function(sp) {
+    return sp["speaker"].id === sid;
+  })["speaker"];
+  $('widgetTitle').update(speaker.title);
+  $('widgetAuthor').update(speaker.name);
+  $('widgetBio').update(readMore(speaker, speaker.bio, 175));
+  $('widgetDescription').update(ellipsize(speaker.description, 200));
   imageSwap(sid);
+  
 }
 
-String.prototype.getWidth = function(styleObject){
-  var test = document.createElement("table");
-  document.body.appendChild(test);
-  test.style.visibility = "hidden";
-  for(var i in styleObject){
-    test.style[i] = styleObject[i];
-  }
-  test.innerHTML = this;
-  var w = test.offsetWidth;
-  document.body.removeChild(test);
-  return w;
+function ellipsize(str, size) {
+  return str.substring(0, size) + "...";
 }
 
-var num = <%= speakers.size %>;
+function readMore(speaker, str, size) {
+  return ellipsize(str, size) + "<a href='/speakers/" + speaker.id + "'>Read More</a>";
+}
 
-var mySpeakers = {<%= speakers.collect{|spk|
-  spk.id.to_s + ' : {"author": "' + escape_javascript(spk.name) + '", "description": "' + ellipse_cutoff(spk.description, 125) + '", "title": "' + escape_javascript(spk.title) + '",
-                "bio" : "' + more_link(spk.bio, speaker_url(spk), 175) + '"}'
-  }.join(',') %>};
+var mySpeakers = <%= speakers.to_json(:only => [:id, :name, :title, :description, :bio]) %>;

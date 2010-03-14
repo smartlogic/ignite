@@ -4,15 +4,17 @@ class SpeakersController < BaseUserController
   before_filter :authenticate_url, :only => [:edit, :update, :destroy]
 
   def index
-    @widget_speakers = Speaker.find(:all, :conditions => {:aasm_state => "active", :event_id => @event.id }, :order => :position, :limit => 16)
+    @widget_speakers = @event.speakers.speaker.find(:all, :order => :position, :limit => 16)
     @selected_speaker = @widget_speakers[rand(@widget_speakers.size)]
-    @speakers = @ignite.speakers.paginate(:all, :conditions => "aasm_state = 'active' AND event_id IS NOT NULL", :order => :name, :page => params[:page], :per_page => 16)
+    
+    # past speakers
+    @past_speakers = @ignite.speakers.speaker.paginate(:all, :order => :name, :page => params[:page], :per_page => 16)
     
     # set up the left and right columns of speakers
     @left = []
     @right = []
-    (0...@speakers.size).each do |i|
-      (i%2 == 0) ? @left << @speakers[i] : @right << @speakers[i]
+    (0...@past_speakers.size).each do |i|
+      (i%2 == 0) ? @left << @past_speakers[i] : @right << @past_speakers[i]
     end
   end
   
@@ -23,16 +25,11 @@ class SpeakersController < BaseUserController
   # GET /speakers/1
   # GET /speakers/1.xml
   def show
-    @speaker = Speaker.active.find(params[:id])
-    if @speaker.is_proposal?
-      flash[:notice] = "No speaker was found with that ID."
-      redirect_to speakers_path and return
-    end
+    @speaker = @ignite.speakers.find(params[:id])
     @event = @speaker.event
     @comments = @speaker.comments
     @comment = Comment.new
     @captcha = get_captcha
-    @social_links = @speaker.social_links
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @speaker }
