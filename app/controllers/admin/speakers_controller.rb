@@ -1,8 +1,11 @@
 require 'ostruct'
 class Admin::SpeakersController < Admin::BaseAdminController
-  before_filter :load_speaker, :only => [:show, :edit, :update, :destroy, :archive]
+  before_filter :load_speaker, :only => [:show, :edit, :update, :destroy, :archive, :unarchive, :reconsider, :choose]
+  before_filter :load_url_params, :only => [:index, :archive, :destroy, :archive, :unarchive, :reconsider, :choose]
   before_filter :load_events, :only => [:index]
   before_filter :load_states, :only => [:index]
+  
+  helper_method :url_params
   
   def index
     @proposals = @event.speakers.send(@state.name).find(:all, :order => "name")
@@ -28,17 +31,32 @@ class Admin::SpeakersController < Admin::BaseAdminController
 
   def destroy
     @speaker.destroy
-    
-    redirect_to(admin_speakers_url)
+    flash[:notice] = "#{@speaker.title} has been removed."
+    redirect_to admin_speakers_path(url_params)
   end
   
   def archive
-    if @speaker.archive!
-      flash[:notice] = 'Speaker was successfully archived.'
-    else
-      flash[:error] = "Speaker could not be archived."
-    end
-    redirect_to admin_speakers_url
+    @speaker.archive!
+    flash[:notice] = "Proposal #{@speaker.title} has been archived."
+    redirect_to admin_speakers_path(url_params)
+  end
+  
+  def unarchive
+    @speaker.unarchive!
+    flash[:notice] = "Proposal #{@speaker.title} has been unarchived."
+    redirect_to admin_speakers_path(url_params)
+  end
+  
+  def reconsider
+    @speaker.reconsider!
+    flash[:notice] = "Speaker #{@speaker.title} is now being reconsidered as a proposal."
+    redirect_to admin_speakers_path(url_params)
+  end
+  
+  def choose
+    @speaker.choose!
+    flash[:notice] = "Proposal #{@speaker.title} has been seleted for #{@event.name}."
+    redirect_to admin_speakers_path(url_params)
   end
 
   def csv
@@ -75,13 +93,20 @@ class Admin::SpeakersController < Admin::BaseAdminController
     end
     
     def load_events
-      @event = Event.find_by_id(params[:event]) || @ignite.featured_event
       @events = @ignite.events
     end
     
     def load_states
-      state_name = params[:state] || 'proposal'
-      @state = Speaker.aasm_states.detect {|aasm_state| aasm_state.name.to_s == state_name}
       @states = Speaker.aasm_states
+    end
+    
+    def load_url_params
+      @event = Event.find_by_id(params[:event]) || @ignite.featured_event
+      state_name = params.fetch(:state) { 'proposal' }
+      @state = Speaker.aasm_states.detect {|aasm_state| aasm_state.name.to_s == state_name}
+    end
+    
+    def url_params
+      {:state => @state.name, :event => @event.id}
     end
 end

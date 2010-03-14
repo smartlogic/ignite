@@ -19,11 +19,19 @@ class Speaker < ActiveRecord::Base
   aasm_initial_state :proposal
   
   aasm_event :archive do
-    transitions :to => :archived, :from => :proposal
+    transitions :from => :proposal, :to => :archived
   end
   
-  aasm_event :activate do
-    transitions :to => :speaker, :from => [:archived, :proposal]
+  aasm_event :unarchive do
+    transitions :from => :archived, :to => :proposal
+  end
+  
+  aasm_event :reconsider do
+    transitions :from => :speaker, :to => :proposal
+  end
+  
+  aasm_event :choose do
+    transitions :from => :proposal, :to => :speaker
   end
 
   # TODO : fix
@@ -38,7 +46,7 @@ class Speaker < ActiveRecord::Base
   end
   
   def export_columns(format=nil)
-    %w[name title aasm_state ignite_id event_id description bio company_url personal_url blog_url twitter_url linkedin_url]
+    %w[name title aasm_state event_id description bio company_url personal_url blog_url twitter_url linkedin_url]
   end
   
   def social_links

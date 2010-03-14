@@ -6,6 +6,7 @@
     <th>Image</th>
     <th>Widget Image</th>
     <th>Mouseover image</th>
+    <th>Actions</th>
   </tr>
 
 <% for speaker in speakers %>
@@ -16,9 +17,18 @@
     <td><%= image_tag(url_for_file_column(speaker, "image", "thumb")) unless speaker.image.blank? %></td>
     <td><%= image_tag(url_for_file_column(speaker, "widget_image", "thumb")) unless speaker.widget_image.blank? %></td>
     <td><%= image_tag(url_for_file_column(speaker, "mouseover_image", "thumb")) unless speaker.mouseover_image.blank? %></td>
-    <td><%= link_to 'Edit', edit_admin_speaker_path(speaker) %></td>
-    <td><%= link_to 'Archive', archive_admin_speakers_url(:id => speaker.id), :confirm => 'Are you sure? Archiving removes this speaker from the public view.', :method => :delete %></td>
-    <td><%= link_to 'Delete', [:admin, speaker], :confirm => 'Are you sure? This speaker will be irreversibly deleted!', :method => :delete %></td>
+    <td>
+      <%= link_to 'Edit', edit_admin_speaker_path(speaker) %><br />
+      <% if speaker.archived? -%>
+        <%= link_to 'Unarchive', unarchive_admin_speaker_path(speaker, url_params), :method => :put %><br />
+      <% elsif speaker.proposal? -%>
+        <%= link_to 'Choose', choose_admin_speaker_path(speaker, url_params) %><br />
+        <%= link_to 'Archive', archive_admin_speaker_path(speaker, url_params), :confirm => 'Are you sure? Archiving removes this speaker from the public view.', :method => :put %><br />
+      <% elsif speaker.speaker? -%>
+        <%= link_to 'Reconsider', reconsider_admin_speaker_path(speaker, url_params), :method => :put %><br/>
+      <% end -%>
+      <%= link_to 'Delete', admin_speaker_path(speaker, url_params), :confirm => 'Are you sure? This speaker will be irreversibly deleted!', :method => :delete %>
+    </td>
   </tr>
 <% end %>
 </table>

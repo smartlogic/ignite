@@ -15,7 +15,10 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :comments, :only => [:index, :destroy]
     admin.resources :events, :member => {:set_feature => :put}
     admin.resources :organizers
-    admin.resources :speakers, :collection => {:archive => :delete, :csv => :get}, :except => [:new, :create]
+    admin.resources :speakers, 
+      :except => [:new, :create],
+      :member => {:archive => :put, :unarchive => :put, :reconsider => :put, :choose => :put}, 
+      :collection => {:csv => :get}
     admin.resources :ignites, :has_many => :events
     admin.resources :sponsors
   end

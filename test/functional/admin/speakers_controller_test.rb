@@ -100,9 +100,62 @@ class Admin::SpeakersControllerTest < ActionController::TestCase
         should_render_template 'edit'
       end
       
-      should "destroy a speaker"
-      should "archive a proposal"
-      should "mark a proposal as a speaker"
+      context 'on DELETE to destroy' do
+        setup do
+          delete :destroy, :id => @proposal1.id, :state => 'archived', :event => @event.id
+        end
+        should_redirect_to("index with filters") { admin_speakers_path(:state => 'archived', :event => @event.id) }
+        should_flash(:notice)
+        should_change("number of speakers", :by => -1) { @event.speakers.count }
+      end
+      
+      context 'on PUT to archive' do
+        setup do
+          put :archive, :id => @proposal1.id, :state => 'proposal', :event => @event.id
+          @proposal1.reload
+        end
+        should_redirect_to("index with filters") { admin_speakers_path(:state => 'proposal', :event => @event.id) }
+        should_flash(:notice)
+        should_change("number of active proposals", :by => -1) { @event.speakers.proposal.count }
+        should_change("number of archived proposals", :by => 1) { @event.speakers.archived.count }
+        should_change("state of proposal", :from => 'proposal', :to => 'archived') { @proposal1.aasm_state }
+      end
+      
+      context 'on PUT to unarchive' do
+        setup do
+          put :unarchive, :id => @archived.id, :state => 'archived', :event => @event.id
+          @archived.reload
+        end
+        should_redirect_to("index with filters") { admin_speakers_path(:state => 'archived', :event => @event.id) }
+        should_flash(:notice)
+        should_change("number of archived proposals", :by => -1) { @event.speakers.archived.count }
+        should_change("number of active proposals", :by => 1) { @event.speakers.proposal.count }
+        should_change("state of proposal", :from => 'archived', :to => 'proposal') { @archived.aasm_state }
+      end
+      
+      context 'on PUT to reconsider' do
+        setup do
+          put :reconsider, :id => @speaker.id, :state => 'speaker', :event => @event.id
+          @speaker.reload
+        end
+        should_redirect_to("index with filters") { admin_speakers_path(:state => 'speaker', :event => @event.id) }
+        should_flash(:notice)
+        should_change("number of speakers", :by => -1) { @event.speakers.speaker.count }
+        should_change("number of proposals", :by => 1) { @event.speakers.proposal.count }
+        should_change("state of speaker", :from => 'speaker', :to => 'proposal') { @speaker.aasm_state }
+      end
+      
+      context 'on PUT to choose' do
+        setup do
+          put :choose, :id => @proposal1.id, :state => 'proposal', :event => @event.id
+          @proposal1.reload
+        end
+        should_redirect_to("index with filters") { admin_speakers_path(:state => 'proposal', :event => @event.id) }
+        should_flash(:notice)
+        should_change("number of speakers", :by => 1) { @event.speakers.speaker.count }
+        should_change("number of proposals", :by => -1) { @event.speakers.proposal.count }
+        should_change("state of proposal", :from => 'proposal', :to => 'speaker') { @proposal1.aasm_state }
+      end
     end
   end
   
