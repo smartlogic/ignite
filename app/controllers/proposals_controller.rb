@@ -1,15 +1,17 @@
 class ProposalsController < BaseUserController
   include ReCaptcha::ViewHelper
+  
+  before_filter :load_event
 
   def index
     @page_title = "Proposals"
-    @proposals = Speaker.find(:all, :conditions => "ignite_id = #{@ignite.id} AND aasm_state = 'active' AND event_id IS NULL", :order => :name)
+    @proposals = @event.speakers.proposal.find(:all, :order => :name)
   end
 
   # GET /proposals/1
   # GET /proposals/1.xml
   def show
-    @proposal = Speaker.active.find(params[:id])
+    @proposal = @event.speakers.proposal.find(params[:id])
     @page_title = "#{@proposal.name} | Proposals"
     @comments = @proposal.comments
     @comment = Comment.new
@@ -33,7 +35,7 @@ class ProposalsController < BaseUserController
   end
 
   def create
-    @proposal = Speaker.new(params[:speaker].merge(:ignite => @ignite))
+    @proposal = Speaker.new(params[:speaker].merge(:event => @event, :aasm_state => 'proposal'))
 
     respond_to do |format|
       if validate_captcha(params, @proposal) && @proposal.save
@@ -61,5 +63,10 @@ class ProposalsController < BaseUserController
       render :action => "show"
     end
   end
+  
+  private
+    def load_event
+      @event = @ignite.featured_event
+    end
 
 end

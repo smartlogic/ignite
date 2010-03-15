@@ -158,16 +158,4 @@ class Admin::SpeakersControllerTest < ActionController::TestCase
       end
     end
   end
-  
-  # test "should destroy speaker with dependent comments" do
-  #   assert chris.comments.size > 0
-  #   exp_comment_cnt = Comment.count - chris.comments.size
-  #   assert_difference('Speaker.count', -1) do
-  #     log_in(ggentzke) do
-  #       delete :destroy, :id => chris.id
-  #     end
-  #   end
-  #   assert_equal exp_comment_cnt, Comment.count
-  #   assert_redirected_to admin_speakers_path
-  # end
 end

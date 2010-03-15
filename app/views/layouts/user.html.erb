@@ -36,9 +36,9 @@
 			<li><%= link_to "Friends", friends_path %></li>
 			<li><%= link_to "About Ignite", about_path %></li>
 			<% if @ignite.articles.find_by_name('Sponsor Ignite').nil? -%>
-        <li class="last"><%= link_to "Proposals", proposals_path %></li>
+        <li class="last"><%= link_to "Proposals", proposals_speakers_path %></li>
       <% else -%>
-        <li><%= link_to "Proposals", proposals_path %></li>
+        <li><%= link_to "Proposals", proposals_speakers_path %></li>
         <li class="last"><%= link_to "Sponsor Ignite", sponsor_ignite_path %></li>
       <% end -%>
 		</ol>

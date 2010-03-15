@@ -73,7 +73,7 @@ module Shoulda
     
     def should_render_new_proposal_link
       should "render a link to submit a proposal" do
-        assert_select "a", :text => "Submit a Proposal", :count => 1
+        assert_select "a", :text => "Submit a Proposal"
       end
     end
   end

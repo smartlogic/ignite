@@ -67,25 +67,76 @@ class SpeakersControllerTest < ActionController::TestCase
       should_respond_with :success
       should_render_template 'show'
     end
+    
+    context 'with 2 comments on a speaker' do
+      setup do
+        2.times { Factory(:comment, :parent => @current_speaker1) }
+      end
+      context 'on GET to show' do
+        setup do
+          get :show, :id => @current_speaker1.id
+        end
+        should_respond_with :success
+        should_render_template 'show'
+        should 'show 2 comments' do
+          assert_equal 2, assigns(:comments).size
+        end
+      end
+    end
+    
+    context 'on POST to post_comment that is successful' do
+      setup do
+        post :post_comment, :id => @current_speaker1.id, :comment => Factory.attributes_for(:comment)
+      end
+      should_redirect_to('speaker') { speaker_path(@current_speaker1) }
+      should_flash(:notice)
+      should_change('number of comments', :by => 1) { @current_speaker1.comments.count }
+    end
+    
+    context 'on POST to post_comment that fails' do
+      setup do
+        post :post_comment, :id => @current_speaker1.id, :comment => Factory.attributes_for(:comment, :author => nil)
+      end
+      should_respond_with :success
+      should_render_template 'show'
+    end
   end
   
-  # 
-  # test "should post comment to speaker" do
-  #   exp_comments_cnt = brian.comments.size + 1
-  #   assert_difference 'Comment.count' do
-  #     post :post_comment, {:id => brian.id, :comment => {:author => "me", :email => "none", :url => "none", :content => "asdfasdfasdf"} }
-  #   end
-  #   assert_equal brian.comments(true).size, exp_comments_cnt
-  #   assert_redirected_to speaker_url(brian)
-  # end
-  # 
-  # test "should fail to post comment because of no name" do
-  #   exp_comments_cnt = brian.comments.size
-  #   assert_no_difference 'Comment.count' do
-  #     post :post_comment, {:id => brian.id, :comment => {} }
-  #   end
-  #   assert_equal brian.comments(true).size, exp_comments_cnt
-  #   assert_template 'show'
-  # end
+  context 'With an event that has two proposals' do
+    setup do
+      @ignite = Factory(:ignite, :city => 'Baltimore', :domain => 'ignitebaltimore.localhost')
+      @event  = @ignite.featured_event
+      set_host(@ignite)
+      
+      @proposal1 = Factory(:proposal, :event => @event)
+      @proposal2 = Factory(:proposal, :event => @event)
+    end
 
+    context 'on GET to proposals' do
+      setup do
+        get :proposals
+      end
+      should_respond_with :success
+      should_render_template 'proposals'
+      should "have a page title" do
+        assert_equal "Proposals | #{@event.name}", assigns(:page_title)
+      end
+      should "only show speakers that are actually proposals" do
+        assert assigns(:proposals).all?(&:proposal?)
+      end
+      should_render_new_proposal_link
+    end
+    
+    context "when proposals have been closed" do
+      setup do
+        @ignite.update_attributes!(:proposals_closed => true)
+      end
+      context "ON GET to proposals" do
+        setup do
+          get :proposals
+        end
+        should_not_render_new_proposal_link
+      end
+    end
+  end
 end

@@ -1,16 +1,13 @@
 <%= link_to h(@event.name), event_path(@event), :class => 'tag' %>
-<div id="related">
-  <%= image_tag(url_for_file_column(@speaker, "image", "profile"), :alt => "photo: #{@speaker.name}") unless @speaker.image.blank? %>
-  <%= render :partial => 'speaker_links', :locals => {:speaker => @speaker} %>
+
+<%= render(:partial => 'speakers/speaker', :locals => {:speaker => @speaker}) %>
+
+<div>
+  <% unless @ignite.proposals_closed? -%>
+    <%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %>
+  <% end -%>
+  <%= link_to 'View all Proposals', proposals_path, :class => 'articleTitle tag' %>
 </div>
-<h2><%= @speaker.name %></h2> 
-<h3><%= @speaker.title %></h3>
-<p><%= Markdown.new(@speaker.description).to_html %></p>
-<h4>About <%= h @speaker.name %>:</h4>
-<p class="bio"><%= Markdown.new(@speaker.bio).to_html %></p>
-<% unless @speaker.video_embed_url.blank? -%>
-  <%= render(:partial => 'speakers/embedded_video', :locals => {:speaker => @speaker}) %>
-<% end -%>
 <hr />
 <div class="comments">
   <a name="comments"></a>

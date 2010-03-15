@@ -1,6 +1,7 @@
 class SpeakersController < BaseUserController
   include ReCaptcha::ViewHelper
-  before_filter :load_event, :only => [:index]
+  before_filter :load_event, :only => [:index, :proposals]
+  before_filter :prepare_show, :only => [:show]
   before_filter :authenticate_url, :only => [:edit, :update, :destroy]
 
   def index
@@ -19,15 +20,13 @@ class SpeakersController < BaseUserController
   end
   
   def proposals
-    @proposals = Speaker.find(:all, :conditions => "aasm_state = 'active' AND event_id IS NULL", :order => :name)
+    @page_title = "Proposals | #{@event.name}"
+    @proposals = @event.speakers.find(:all, :order => :name)
   end
 
   # GET /speakers/1
   # GET /speakers/1.xml
   def show
-    @speaker = @ignite.speakers.find(params[:id])
-    @event = @speaker.event
-    @comments = @speaker.comments
     @comment = Comment.new
     @captcha = get_captcha
     respond_to do |format|
@@ -36,40 +35,6 @@ class SpeakersController < BaseUserController
     end
   end
 
-  # GET /speakers/1/edit
-  def edit
-    @speaker = Speaker.find(params[:id])
-  end
-
-  # PUT /speakers/1
-  # PUT /speakers/1.xml
-  def update
-    @speaker = Speaker.find(params[:id])
-
-    respond_to do |format|
-      if @speaker.update_attributes(params[:speaker])
-        flash[:notice] = 'Speaker was successfully updated.'
-        format.html { redirect_to(@speaker) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @speaker.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /speakers/1
-  # DELETE /speakers/1.xml
-  def destroy
-    @speaker = Speaker.find(params[:id])
-    @speaker.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(speakers_url) }
-      format.xml  { head :ok }
-    end
-  end
-  
   def post_comment
     @speaker = Speaker.find(params[:id])
     @comment = Comment.new(params[:comment])
@@ -78,10 +43,7 @@ class SpeakersController < BaseUserController
       flash[:notice] = 'Your comment has been posted.'
       redirect_to speaker_path(@speaker)
     else
-      @event = @speaker.event.nil? ? Event.first : @speaker.event
-      @comments = @speaker.comments
-      @social_links = @speaker.social_links
-      @captcha = get_captcha
+      prepare_show
       render :action => "show"
     end
   end
@@ -95,5 +57,11 @@ class SpeakersController < BaseUserController
     
     def load_event
       @event = params[:event_id] ? @ignite.events.find(params[:event_id]) : @ignite.featured_event
+    end
+    
+    def prepare_show
+      @speaker = @ignite.speakers.find(params[:id])
+      @event = @speaker.event
+      @comments = @speaker.comments
     end
 end

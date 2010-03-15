@@ -1,0 +1,12 @@
+<div id="related">
+  <%= image_tag(url_for_file_column(speaker, "image", "profile"), :alt => "photo: #{speaker.name}") unless speaker.image.blank? %>
+  <%= render :partial => 'speakers/speaker_links', :locals => {:speaker => speaker} %>
+</div>
+<h2><%= speaker.name %></h2> 
+<h3><%= speaker.title %></h3>
+<p><%= Markdown.new(speaker.description).to_html %></p>
+<h4>About <%= h speaker.name %>:</h4>
+<p class="bio"><%= Markdown.new(speaker.bio).to_html %></p>
+<% unless speaker.video_embed_url.blank? -%>
+  <%= render(:partial => 'speakers/embedded_video', :locals => {:speaker => speaker}) %>
+<% end -%>

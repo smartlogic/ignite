@@ -1,0 +1,15 @@
+<h2>Proposals for <%= @event.name %></h2>
+<% if @ignite.proposals_closed? -%>
+  <p>Proposals are not currently being accepted for <%= @event.name %>.</p>
+<% else -%>
+  <div style="float: right;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div><br style="clear: both" />
+<% end -%>
+<ul class="indent">
+  <% @proposals.each do |proposal| -%>
+    <li><%= link_to(h(proposal.title), speaker_path(proposal)) %> - <%= h(proposal.name) %></li>
+  <% end -%>
+</ul>
+<br />
+<% unless @ignite.proposals_closed? -%>
+  <div style="float: right;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div><br style="clear: both" />
+<% end -%>
