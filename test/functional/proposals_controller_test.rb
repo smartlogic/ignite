@@ -24,7 +24,7 @@ class ProposalsControllerTest < ActionController::TestCase
         post :create, :speaker => Factory.attributes_for(:speaker, :event_id => nil)
         @proposal = Speaker.last
       end
-      should_redirect_to("proposal page") { proposal_path(@proposal) }
+      should_redirect_to("proposal page") { speaker_path(@proposal) }
       should_change("number of proposals", :by => 1) { @event.speakers.proposal.count }
       should_flash(:notice)
     end
