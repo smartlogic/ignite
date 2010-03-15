@@ -4,10 +4,6 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :ignite_id, "Ignite City" %><br/>
-    <%= f.collection_select :ignite_id, @ignites, :id, :city, {}, {:Class => "long"} %>
-  </p>
-  <p>
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>

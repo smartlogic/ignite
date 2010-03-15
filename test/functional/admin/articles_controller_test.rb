@@ -1,59 +1,79 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
 class Admin::ArticlesControllerTest < ActionController::TestCase
-  test "should get index" do
-    log_in ggentzke do
-      get :index
+  context 'With an admin logged in' do
+    setup do
+      @admin = Factory(:admin)
+      @ignite = Factory(:ignite, :city => 'Baltimore', :domain => 'ignitebaltimore.localhost')
+      set_host(@ignite)
+      log_in @admin
     end
-    assert_response :success
-    assert_not_nil assigns(:articles)
-  end
-
-  test "should get new" do
-    log_in ggentzke do
-      get :new
-    end
-    assert_response :success
-  end
-
-  test "should create article" do
-    assert_difference('Article.count') do
-      log_in ggentzke do
-        post :create, :article => { }
+    
+    context 'with 2 articles' do
+      setup do
+        @article1 = Factory(:article, :ignite => @ignite)
+        @article2 = Factory(:article, :ignite => @ignite)
+      end
+      
+      context 'on GET to index' do
+        setup do
+          get :index
+        end
+        should_respond_with :success
+        should_render_template 'index'
+        should "return 2 articles" do
+          assert_equal 2, assigns(:articles).size
+        end
+      end
+      
+      context 'on GET to show' do
+        setup do
+          get :show, :id => @article1.id
+        end
+        should_respond_with :success
+        should_render_template 'show'
+      end
+      
+      context 'on GET to edit' do
+        setup do
+          get :edit, :id => @article1.id
+        end
+        should_respond_with :success
+        should_render_template 'edit'
+      end
+      
+      context 'on PUT to update' do
+        setup do
+          put :update, :id => @article1.id, :article => Factory.attributes_for(:article, :ignite => nil)
+        end
+        should_redirect_to('article path') { admin_article_path(@article1) }
+        should_flash(:notice)
+      end
+      
+      context 'on DELETE to destroy' do
+        setup do
+          delete :destroy, :id => @article1.id
+        end
+        should_redirect_to('articles index') { admin_articles_path }
+        should_flash(:notice)
       end
     end
-
-    assert_redirected_to admin_article_path(assigns(:article))
-  end
-
-  test "should show article" do
-    log_in ggentzke do
-      get :show, :id => regular_article.id
-    end
-    assert_response :success
-  end
-
-  test "should get edit" do
-    log_in ggentzke do
-      get :edit, :id => regular_article.id
-    end
-    assert_response :success
-  end
-
-  test "should update article" do
-    log_in ggentzke do
-      put :update, :id => regular_article.id, :article => { }
-    end
-    assert_redirected_to admin_article_path(assigns(:article))
-  end
-
-  test "should destroy article" do
-    assert_difference('Article.count', -1) do
-      log_in ggentzke do
-        delete :destroy, :id => news_article.id
+    
+    context 'on GET to new' do
+      setup do
+        get :new
       end
+      should_respond_with :success
+      should_render_template 'new'
     end
-
-    assert_redirected_to admin_articles_path
+    
+    context 'on POST to create that is successful' do
+      setup do
+        post :create, :article => Factory.attributes_for(:article, :ignite => nil)
+      end
+      should_redirect_to('article path') { admin_article_path(Article.last) }
+      should_flash(:notice)
+      should_change('number of articles') { @ignite.articles.count }
+    end
   end
 end

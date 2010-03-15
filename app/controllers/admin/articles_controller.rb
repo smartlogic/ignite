@@ -1,29 +1,21 @@
 class Admin::ArticlesController < Admin::BaseAdminController
-  before_filter :load_ignites, :only => [:edit, :new, :create, :update]
-  def load_ignites
-    @ignites = Ignite.all
-  end
+  before_filter :load_article, :only => [:show, :edit, :update, :destroy]
   
-
   def index
-    @articles = Article.find(:all, :order => "ignite_id ASC, created_at DESC")
+    @articles = @ignite.articles.find(:all, :order => "created_at DESC")
   end
 
   def show
-    @article = Article.find(params[:id])
+    
   end
 
   def new
     @article = Article.new
   end
 
-
-  def edit
-    @article = Article.find(params[:id])
-  end
-
   def create
     @article = Article.new(params[:article])
+    @article.ignite = @ignite
 
     respond_to do |format|
       if @article.save
@@ -37,11 +29,13 @@ class Admin::ArticlesController < Admin::BaseAdminController
     end
   end
 
+  def edit
+    
+  end
+
   # PUT /articles/1
   # PUT /articles/1.xml
   def update
-    @article = Article.find(params[:id])
-
     respond_to do |format|
       if @article.update_attributes(params[:article])
         flash[:notice] = 'Article was successfully updated.'
@@ -57,12 +51,19 @@ class Admin::ArticlesController < Admin::BaseAdminController
   # DELETE /articles/1
   # DELETE /articles/1.xml
   def destroy
-    @article = Article.find(params[:id])
     @article.destroy
-
+    
     respond_to do |format|
-      format.html { redirect_to(admin_articles_url) }
+      format.html { 
+        flash[:notice] = "#{@article.name} has been removed."
+        redirect_to(admin_articles_url) 
+      }
       format.xml  { head :ok }
     end
   end
+  
+  private
+    def load_article
+      @article = @ignite.articles.find(params[:id])
+    end
 end
