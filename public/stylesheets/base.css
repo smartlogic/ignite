@@ -214,6 +214,7 @@ form.proposal #recaptcha_widget_div{
 h2 {        
 	font-size: 1.66em;
 	margin: 0.5em 0 0.25em;
+	line-height: 1.25em;
 }     
 h3 {        
 	font-size: 1.33em;
@@ -346,7 +347,7 @@ p.bio {
 	border-bottom: 1px solid #ccc;
 	margin-bottom: 18px;
 }            
-div.post ul{
+div.post ul, div.post ol{
 	margin-left: 15px;
 }
 #news div.comments p {
