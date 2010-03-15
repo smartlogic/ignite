@@ -25,7 +25,7 @@ class EventsControllerTest < ActionController::TestCase
         @past_event2    = Factory(:past_event, :ignite => @baltimore, :date => Date.today - 30)
         
         [@current_event, @past_event, @past_event2].each do |evt|
-          2.times { Factory(:speaker, :event => evt, :ignite => @baltimore) }
+          2.times { Factory(:speaker, :event => evt) }
         end
       end
       
