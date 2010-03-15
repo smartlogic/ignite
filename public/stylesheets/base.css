@@ -203,7 +203,7 @@ form.proposal textarea {
 	height: 150px;
 	width: 310px;
 }
-form.proposal li span.field_note {
+span.field_note {
   margin-left: 95px;
   font-size: 85%;
   color: #DB8C48;
