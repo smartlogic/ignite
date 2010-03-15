@@ -14,7 +14,7 @@
     <td><%=h comment.author %></td>
     <td><%= link_to(truncate(h(comment.email), :length => 14), "mailto:#{comment.email}") %></td>
     <td><%= link_to(truncate(h(comment.url), :length => 25), comment.url) %></td>
-    <td><%=h comment.content %></td>
+    <td><%= Markdown.new(comment.content).to_html %></td>
     <td><%= link_to ellipse_cutoff(comment.parent.name, 40), [:admin, comment.parent] %></td>
     <td><%= link_to 'Destroy', [:admin, comment], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

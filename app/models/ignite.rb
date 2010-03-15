@@ -2,6 +2,7 @@ class Ignite < ActiveRecord::Base
   has_many :events, :dependent => :destroy
   has_many :speakers, :through => :events
   has_many :articles, :dependent => :destroy
+  has_many :article_comments, :through => :articles, :source => 'comments'
   has_many :organizers, :dependent => :destroy
   has_many :admins, :dependent => :destroy
   

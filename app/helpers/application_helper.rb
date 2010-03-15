@@ -13,6 +13,7 @@ module ApplicationHelper
   end
   
   def ellipse_cutoff(string, limit=25)
+    return "" if string.nil?
     if string.length > limit
       string[0,limit] + '...'
     else

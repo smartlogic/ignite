@@ -2,7 +2,7 @@ class Admin::CommentsController < Admin::BaseAdminController
   # GET /comments
   # GET /comments.xml
   def index
-    @comments = Comment.find(:all, :order => "created_at DESC")
+    @comments = @ignite.article_comments.find(:all, :order => "created_at DESC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,11 +13,14 @@ class Admin::CommentsController < Admin::BaseAdminController
   # DELETE /comments/1
   # DELETE /comments/1.xml
   def destroy
-    @comment = Comment.find(params[:id])
+    @comment = @ignite.article_comments.find(params[:id])
     @comment.destroy
 
     respond_to do |format|
-      format.html { redirect_to admin_comments_url }
+      format.html { 
+        flash[:notice] = "Comment removed."
+        redirect_to admin_comments_url 
+      }
       format.xml  { head :ok }
     end
   end
