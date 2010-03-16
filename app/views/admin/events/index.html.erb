@@ -7,17 +7,14 @@
       <th>Name</th>
       <th>Date</th>
       <th>Location</th>
-      <th>Organizer</th>
     </tr>
   
     <% for event in @events %>
       <tr <%= 'style="background-color:#d6ffbf;"' if @ignite.featured_event == event %>
         <td><%=h event.ignite.city %></td>
-        <td><%=h event.name %></td>
+        <td><%= link_to(h(event.name), [:admin, event]) %></td>
         <td><%=pp_date event.date %></td>
         <td><%=h event.location_name %></td>
-        <td><%=h event.organizer.name unless event.organizer.nil? %></td>
-        <td><%= link_to 'Show', [:admin, event] %></td>
         <td><%= link_to 'Edit', edit_admin_event_path(event) %></td>
         <td><%= link_to 'Destroy', [:admin, event], :confirm => 'Are you sure?', :method => :delete %></td>
         <td>

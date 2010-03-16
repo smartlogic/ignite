@@ -1,7 +1,6 @@
 class Event < ActiveRecord::Base
   has_many :speakers, :dependent => :destroy
   has_many :comments, :as => :parent, :dependent => :destroy
-  belongs_to :organizer
   belongs_to :ignite
   has_and_belongs_to_many :sponsors
   has_and_belongs_to_many :organizers

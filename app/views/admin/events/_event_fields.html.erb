@@ -7,16 +7,20 @@
   <%= f.datetime_select :date %>
 </p>
 <p>
-  <%= f.label :is_featured, "Make this event Featured" %><br />
   <%= f.check_box :is_featured %>
+  <%= f.label :is_featured, "Feature this event" %>
 </p>
 <p>
-  <%= f.label :is_complete, "Mark this event as completed (will show up in \"Past Events\" section)" %><br />
   <%= f.check_box :is_complete %>
+  <%= f.label :is_complete, "Mark this event as completed (will show up in \"Past Events\" section)" %>
 </p>
 <p>
-  <%= f.label :accepting_proposals, "Is this event currently accepting proposals?" %>
   <%= f.check_box :accepting_proposals %>
+  <%= f.label :accepting_proposals, "Is this event currently accepting proposals?" %>
+</p>
+<p>
+  Organizers<br />
+  <%= habtm_checkboxes(event, :organizer_ids, @organizers, :name) %>
 </p>
 <p>
   <%= f.label :location_name %><br />
@@ -65,10 +69,6 @@
 <p>
   <%= f.label :map_url, "Map and Directions URL" %><br />
   <%= f.text_field :map_url %>
-</p>
-<p>
-  <%= f.label :organizer_id, "Organizer" %><br />
-  <%= f.collection_select :organizer_id, @organizers, :id, :name %>
 </p>
 <p>
   <%= f.label :summary_image %><br/>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100316144115) do
+ActiveRecord::Schema.define(:version => 20100316172555) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -64,7 +64,6 @@ ActiveRecord::Schema.define(:version => 20100316144115) do
     t.string   "rsvp_url"
     t.string   "map_url"
     t.text     "description"
-    t.integer  "organizer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_complete",           :default => false, :null => false
@@ -78,7 +77,6 @@ ActiveRecord::Schema.define(:version => 20100316144115) do
     t.boolean  "accepting_proposals",   :default => false
   end
 
-  add_index "events", ["organizer_id"], :name => "index_events_on_organizer_id"
   add_index "events", ["ignite_id"], :name => "index_events_on_ignite_id"
 
   create_table "events_organizers", :id => false, :force => true do |t|
@@ -174,14 +172,13 @@ ActiveRecord::Schema.define(:version => 20100316144115) do
 
   add_foreign_key "articles", ["ignite_id"], "ignites", ["id"], :name => "articles_ibfk_1"
 
-  add_foreign_key "events", ["organizer_id"], "organizers", ["id"], :name => "events_ibfk_1"
   add_foreign_key "events", ["ignite_id"], "ignites", ["id"], :name => "events_ibfk_2"
 
-  add_foreign_key "events_organizers", ["event_id"], "events", ["id"], :name => "events_organizers_ibfk_1"
   add_foreign_key "events_organizers", ["organizer_id"], "organizers", ["id"], :name => "events_organizers_ibfk_2"
+  add_foreign_key "events_organizers", ["event_id"], "events", ["id"], :name => "events_organizers_ibfk_1"
 
-  add_foreign_key "events_sponsors", ["sponsor_id"], "sponsors", ["id"], :name => "events_sponsors_ibfk_2"
   add_foreign_key "events_sponsors", ["event_id"], "events", ["id"], :name => "events_sponsors_ibfk_1"
+  add_foreign_key "events_sponsors", ["sponsor_id"], "sponsors", ["id"], :name => "events_sponsors_ibfk_2"
 
   add_foreign_key "organizers", ["ignite_id"], "ignites", ["id"], :name => "organizers_ibfk_2"
 

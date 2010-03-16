@@ -1,7 +1,6 @@
 Factory.define(:event) do |e|
   e.association :ignite
   e.sequence(:name) {|i| "Event #{i}"}
-  e.association :organizer
   e.description "The best Ignite yet"
   e.date { Date.today + 30 }
   e.accepting_proposals true
