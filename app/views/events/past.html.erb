@@ -1,4 +1,4 @@
-<%= ERB::new(@past_events_description).result(@template.send(:binding)) %>
+<h2>Past <%= @ignite.name%> Events</h2>
 <% @events.each do |event| -%>
   <div class="event">
     <h3><%= link_to h(event.name), event %> <span class="date"><%= pp_date event.date %></span></h3>
@@ -14,3 +14,4 @@
     </ul>
   </div>
 <% end -%>
+<br style="clear: both;" />

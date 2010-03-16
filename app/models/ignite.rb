@@ -15,12 +15,16 @@ class Ignite < ActiveRecord::Base
   validates_presence_of :city, :domain
   validates_uniqueness_of :domain
   
+  def name
+    "Ignite #{city}"
+  end
+  
   def featured_event
     events.find(:first, :order => "is_featured DESC, date DESC")
   end
   
   def next_event_default_name
-    "Ignite #{self.city} \##{next_event_position}"
+    "#{name} \##{next_event_position}"
   end
   
   private
