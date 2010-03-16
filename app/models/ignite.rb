@@ -16,8 +16,7 @@ class Ignite < ActiveRecord::Base
   validates_uniqueness_of :domain
   
   def featured_event
-    evt = events.find(:first, :conditions => {:is_featured => true})
-    evt ? evt : events.find(:first, :order => "date DESC")
+    events.find(:first, :order => "is_featured DESC, date DESC")
   end
   
   def next_event_default_name

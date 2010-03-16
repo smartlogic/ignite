@@ -11,7 +11,7 @@
     </tr>
   
     <% for event in @events %>
-      <tr <%= 'style="background-color:#d6ffbf;"' if event.is_featured? %>
+      <tr <%= 'style="background-color:#d6ffbf;"' if @ignite.featured_event == event %>
         <td><%=h event.ignite.city %></td>
         <td><%=h event.name %></td>
         <td><%=pp_date event.date %></td>
@@ -21,7 +21,7 @@
         <td><%= link_to 'Edit', edit_admin_event_path(event) %></td>
         <td><%= link_to 'Destroy', [:admin, event], :confirm => 'Are you sure?', :method => :delete %></td>
         <td>
-          <% if event.is_featured? -%>
+          <% if @ignite.featured_event == event -%>
             Featured
           <% else -%>
             <%= link_to "Set as Featured", set_feature_admin_event_path(event), :method => :put %>
