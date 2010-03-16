@@ -5,6 +5,7 @@
     <th>Name</th>
     <th>Date</th>
     <th>Is news</th>
+    <th>Show in nav</th>
     <th>Is sticky</th>
     <th>Comments allowed</th>
   </tr>
@@ -13,9 +14,10 @@
   <tr>
     <td><%=link_to(h(article.name), admin_article_path(article)) %></td>
     <td nowrap="nowrap"><%= pp_date article.created_at %></td>
-    <td><%=h article.is_news? %></td>
-    <td><%=h article.is_sticky? %></td>
-    <td><%=h article.comments_allowed? %></td>
+    <td><%= article.is_news? %></td>
+    <td><%= article.show_in_navigation? %></td>
+    <td><%= article.is_sticky? %></td>
+    <td><%= article.comments_allowed? %></td>
     <td><%= link_to 'Edit', edit_admin_article_path(article) %></td>
     <td><%= link_to 'Destroy', [:admin, article], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

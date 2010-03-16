@@ -1,0 +1,17 @@
+<ol id="nav">
+	<li><%= link_to "Latest News", news_path %></li>
+  <li><%= link_to "Proposals", proposals_speakers_path %></li>
+	<li><%= link_to "Speakers", speakers_path %></li>
+	<li><%= link_to "Past Ignites", past_events_path %></li>
+	<li><%= link_to "Organizers", organizers_path %></li>
+	<% if @ignite.articles.for_navigation.empty? -%>
+	  <li class="last"><%= link_to "Organizers", organizers_path %></li>
+  <% else -%>
+	  <li><%= link_to "Organizers", organizers_path %></li>
+    <% @ignite.articles.for_navigation.each_with_index do |article, index| -%>
+      <% last = index == @ignite.articles.for_navigation.size - 1 %>
+      <% css_class = last ? "last" : "" %>
+      <li class="<%= css_class %>"><%= link_to h(article.name), article_path(article) %></li>
+    <% end -%>
+  <% end -%>
+</ol>

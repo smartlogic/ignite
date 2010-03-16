@@ -1,0 +1,26 @@
+<%= f.error_messages %>
+
+<p>
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</p>
+<p>
+  <%= f.check_box :is_news %>
+  <%= f.label :is_news %>
+</p>
+<p>
+  <%= f.check_box :show_in_navigation %>
+  <%= f.label :show_in_navigation, "Display article as a link in the sidebar on the Ignite site" %>
+</p>
+<p>
+  <%= f.check_box :is_sticky %>
+  <%= f.label :is_sticky %>
+</p>
+<p>
+  <%= f.check_box :comments_allowed %>
+  <%= f.label :comments_allowed %>
+</p>
+<p>
+  <%= f.label :html_text %><br />
+  <%= f.text_area :html_text, :class => 'htmlEditor' %>
+</p>

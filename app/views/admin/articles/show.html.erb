@@ -1,33 +1,37 @@
 <p>
-  <b>Name:</b>
+  <strong>Name:</strong>
   <%=h @article.name %>
 </p>
 
 <p>
-  <b>Ignite City:</b>
+  <strong>Ignite City:</strong>
   <%=h @article.ignite.city %>
 </p>
 
 <p>
-  <b>Is news:</b>
+  <strong>Is news:</strong>
   <%=h @article.is_news %>
 </p>
 
 <p>
-  <b>Html text:</b>
-  <%=h @article.html_text %>
+  <strong>Show in nav:</strong>
+  <%= @article.show_in_navigation? %>
 </p>
 
 <p>
-  <b>Is sticky:</b>
+  <strong>Is sticky:</strong>
   <%=h @article.is_sticky %>
 </p>
 
 <p>
-  <b>Comments allowed:</b>
+  <strong>Comments allowed:</strong>
   <%=h @article.comments_allowed %>
 </p>
 
+<p>
+  <strong>Html text:</strong>
+  <%=h @article.html_text %>
+</p>
 
 <%= link_to 'Edit', edit_admin_article_path(@article) %> |
 <%= link_to 'Back', admin_articles_path %>

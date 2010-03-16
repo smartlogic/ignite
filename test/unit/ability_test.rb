@@ -46,11 +46,18 @@ class AbilityTest < ActiveSupport::TestCase
     end
         
     # Article
-    should 'edit an article for their ignite' do
-      assert @ability.can?(:manage, Factory(:article, :ignite => @admin.ignite))
-    end
-    should 'not edit an article for another ignite' do
-      assert @ability.cannot?(:manage, Factory(:article))
+    context "" do
+      setup do
+        @article = Factory.build(:article)
+      end
+      should 'edit an article for their ignite' do
+        @article.ignite = @admin.ignite
+        assert @ability.can?(:manage, @article)
+      end
+      should 'not edit an article for another ignite' do
+        @article.ignite = Factory(:ignite)
+        assert @ability.cannot?(:manage, @article)
+      end
     end
   end
   
@@ -71,10 +78,16 @@ class AbilityTest < ActiveSupport::TestCase
       assert @ability.cannot?(:destroy, @superadmin)
     end
     
-    [Ignite, Event, Organizer, Speaker, Article].each do |klass|
+    [Ignite, Event, Organizer, Speaker].each do |klass|
       should "manage #{klass.to_s.pluralize}" do
         assert @ability.can?(:manage, Factory(klass.to_s.underscore))
       end
+    end
+    
+    should "manage an Article" do
+      article = Factory.build(:article)
+      article.ignite = Factory(:ignite)
+      assert @ability.can?(:manage, article)
     end
   end
 end

@@ -3,94 +3,111 @@ require File.dirname(__FILE__) + '/../test_helper'
 class ArticlesControllerTest < ActionController::TestCase
   context "A public visitor to Ignite Baltimore" do
     setup do
-      @baltimore = Factory(:ignite, :city => 'Baltimore', :domain => 'ignitebaltimore.localhost')
-      set_host(@baltimore)
+      @ignite = Factory(:ignite, :city => 'Baltimore', :domain => 'ignitebaltimore.localhost')
+      set_host(@ignite)
     end
     
-    should "render RSVP link in layout when an RSVP URL has been provided" do
-      @ignite.update_attributes!(:rsvp_url => 'http://www.google.com')
-      assert_select 'a', :text => 'RSVP', :count => 1
+    should "render RSVP link in layout when an RSVP URL has been provided, on GET to index" do
+      @ignite.featured_event.update_attributes!(:rsvp_url => 'http://www.google.com')
+      get :index
+      assert_select '#location .links a', :text => 'RSVP', :count => 1
     end
     
-    should "not render RSVP link in layout when an RSVP URL has not been provided" do
-      assert_select 'a', :text => 'RSVP', :count => 0
+    should "not render RSVP link in layout when an RSVP URL has not been provided, on GET to index" do
+      get :index
+      assert_select '#location .links a', :text => 'RSVP', :count => 0
     end
-  end
-  
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_equal Article.all, assigns(:articles)
-    assert_template 'index'
-  end
-
-  test "should get friends" do
-    get :friends
-    assert_response :success
-    assert_equal Article.find_by_name("Affiliates"), assigns(:article)
-    assert_template 'articles/static'
-    assert_equal "Friends", assigns(:page_title)
-  end
-
-  test "should get sponsor_ignite" do
-    get :sponsor_ignite
-    assert_response :success
-    assert_equal Article.find_by_name("Sponsor Ignite"), assigns(:article)
-    assert_template 'articles/static'
-    assert_equal "Sponsor Ignite", assigns(:page_title)
-  end
-  
-  test "should get about" do
-    get :about
-    assert_response :success
-    assert_equal Article.find_by_name("About"), assigns(:article)
-    assert_template 'articles/static'
-    assert_equal "About", assigns(:page_title)
-  end
-
-  test "should get news" do
-    get :news
-    assert_response :success
-    assert_equal Article.find(:all, :conditions => {:is_news => true}), assigns(:articles)
-    assert_template 'index'
-    assert_equal "News", assigns(:page_title)
-  end
-
-  test "should show article" do
-    get :show, :id => news_article.id
-    assert_response :success
-  end
-  
-  test "should show article with comments" do
-    get :show, :id => news_article.id
-    assert_response :success
-    assert news_article.comments_allowed?
     
-  end
-  
-  test "should show article without comments" do
-    get :show, :id => news_article_no_comments.id
-    assert_response :success
-    assert !news_article_no_comments.comments_allowed?
+    context "with an article that has set :show_in_navigation, on GET to index" do
+      setup do
+        @name = 'Article that will show up'
+        @ignite.articles.create!(:name => @name, :show_in_navigation => true)
+        get :index
+      end
+      should 'display article in navigation' do
+        assert_select '#nav a', :text => @name, :count => 1
+      end
+    end
     
-  end
-  
-  test "should post comment to article" do
-    art = Article.find(:first, :conditions => {:comments_allowed => true})
-    exp_comments_cnt = art.comments.size + 1
-    assert_difference 'Comment.count' do
-      post :post_comment, {:id => art.id, :comment => {:author => "me", :email => "none", :url => "none", :content => "asdfasdfasdf"} }
+    context 'with an article that has not set :show_in_navigation, on GET to index' do
+      setup do
+        @name = 'Article that will not show up'
+        @ignite.articles.create!(:name => @name)
+        get :index
+      end
+      should 'not display article in navigation' do
+        assert_select '#nav a', :text => @name, :count => 0
+      end
     end
-    assert_equal art.comments(true).size, exp_comments_cnt
-  end
-  
-  test "should fail to post comment because of no name" do
-    art = Article.find(:first, :conditions => {:comments_allowed => true})
-    exp_comments_cnt = art.comments.size
-    assert_no_difference 'Comment.count' do
-      post :post_comment, {:id => art.id, :comment => {} }
+    
+    context 'With two news articles and a regular article' do
+      setup do
+        @newsone = @ignite.articles.create!(:name => 'News Article', :is_news => true)
+        @newstwo = @ignite.articles.create!(:name => 'News Article', :is_news => true, :comments_allowed => false)
+        @nonnews = @ignite.articles.create!(:name => 'Nonnews Article', :is_news => false)
+      end
+      context 'on GET to top_news' do
+        setup do
+          get :top_news
+        end
+        should_respond_with :success
+        should_render_template 'show'
+      end
+      context 'on GET to news' do
+        setup do
+          get :news
+        end
+        should_respond_with :success
+        should_render_template 'index'
+        should "show 2 articles" do
+          assert_equal 2, assigns(:articles).size
+        end
+      end
+      context 'on GET to index' do
+        setup do
+          get :index
+        end
+        should_respond_with :success
+        should_render_template 'index'
+        should "show 3 articles" do
+          assert_equal 3, assigns(:articles).size
+        end
+      end
+      context 'on GET to show' do
+        setup do
+          get :show, :id => @newsone.id
+        end
+        should_respond_with :success
+        should_render_template 'show'
+      end
+      
+      context 'on POST to post_comment that is successful' do
+        setup do
+          post :post_comment, :id => @newsone.id, :comment => Factory.attributes_for(:comment)
+          @newsone.reload
+        end
+        should_redirect_to("article path") { article_path(@newsone) }
+        should_flash(:notice)
+        should_change("number of comments", :by => 1) { @newsone.comments.size }
+      end
+      
+      context 'on POST to post_comment that fails' do
+        setup do
+          post :post_comment, :id => @newsone.id, :comment => Factory.attributes_for(:comment, :author => nil)
+        end
+        should_respond_with :success
+        should_render_template 'show'
+        should_not_change("number of comments") { @newsone.comments.size }        
+      end
+      
+      context 'on POST to post_comment that fails because it\'s not accepting comments' do
+        setup do
+          post :post_comment, :id => @newstwo.id, :comment => Factory.attributes_for(:comment)
+        end
+        should_redirect_to("article path") { article_path(@newstwo) }
+        should_flash(:error)
+        should_not_change("number of comments") { @newstwo.comments.size }
+      end
     end
-    assert_equal art.comments(true).size, exp_comments_cnt
   end
-
 end

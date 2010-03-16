@@ -28,20 +28,7 @@
 	<!-- logo + nav -->
 	<div id="sidebar">
 		<h1 id="logo"><%= link_to @ignite.logo_image.blank? ? "Ignite #{h(@ignite.city)}" : image_tag(url_for_file_column(@ignite, :logo_image), :alt => "Ignite #{h(@ignite.city)}"), root_url %></h1>
-		<ol id="nav">
-			<li><%= link_to "Latest News", news_path %></li>
-			<li><%= link_to "Speakers", speakers_path %></li>
-			<li><%= link_to "Past Ignites", past_events_path %></li>
-			<li><%= link_to "Organizers", organizers_path %></li>
-			<li><%= link_to "Friends", friends_path %></li>
-			<li><%= link_to "About Ignite", about_path %></li>
-			<% if @ignite.articles.find_by_name('Sponsor Ignite').nil? -%>
-        <li class="last"><%= link_to "Proposals", proposals_speakers_path %></li>
-      <% else -%>
-        <li><%= link_to "Proposals", proposals_speakers_path %></li>
-        <li class="last"><%= link_to "Sponsor Ignite", sponsor_ignite_path %></li>
-      <% end -%>
-		</ol>
+		<%= render(:partial => 'layouts/navigation') %>
 		<!-- widgets -->
 		<%= render :partial => "/widgets/tweeter", :locals => {:tweets => @tweets} %>
 	</div>            

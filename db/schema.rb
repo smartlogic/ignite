@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100316172555) do
+ActiveRecord::Schema.define(:version => 20100316173555) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -29,13 +29,14 @@ ActiveRecord::Schema.define(:version => 20100316172555) do
 
   create_table "articles", :force => true do |t|
     t.string   "name"
-    t.boolean  "is_news",          :default => false
+    t.boolean  "is_news",            :default => false
     t.text     "html_text"
-    t.boolean  "is_sticky",        :default => false
-    t.boolean  "comments_allowed", :default => true
+    t.boolean  "is_sticky",          :default => false
+    t.boolean  "comments_allowed",   :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "ignite_id"
+    t.boolean  "show_in_navigation", :default => false
   end
 
   add_index "articles", ["ignite_id"], :name => "index_articles_on_ignite_id"

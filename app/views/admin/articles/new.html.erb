@@ -1,31 +1,8 @@
 <h1>New article</h1>
 <br/>
 <% form_for([:admin, @article]) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :is_news %><br />
-    <%= f.check_box :is_news %>
-  </p>
-  <p>
-    <%= f.label :html_text %><br />
-    <%= f.text_area :html_text %>
-  </p>
-  <p>
-    <%= f.label :is_sticky %><br />
-    <%= f.check_box :is_sticky %>
-  </p>
-  <p>
-    <%= f.label :comments_allowed %><br />
-    <%= f.check_box :comments_allowed %>
-  </p>
-  <p>
-    <%= f.submit "Create" %>
-  </p>
+  <%= render :partial => 'form', :locals => {:f => f, :article => @article} %>
+  <p><%= f.submit "Create" %></p>
 <% end %>
 
 <%= link_to 'Back', admin_articles_path %>

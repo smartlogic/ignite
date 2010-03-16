@@ -18,7 +18,9 @@ class ArticleTest < ActiveSupport::TestCase
   
   context 'A saved article' do
     setup do
-      @article = Factory(:article)
+      @article = Factory.build(:article)
+      @article.ignite = Factory(:ignite)
+      @article.save!
     end
     subject { @article }
     should_validate_presence_of :ignite_id, :name
