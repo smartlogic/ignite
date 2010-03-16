@@ -3,7 +3,7 @@
 <%= render(:partial => 'speakers/speaker', :locals => {:speaker => @speaker}) %>
 
 <div>
-  <% unless @ignite.proposals_closed? -%>
+  <% if @event.accepting_proposals? -%>
     <%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %>
   <% end -%>
   <%= link_to 'View all Proposals', proposals_path, :class => 'articleTitle tag' %>

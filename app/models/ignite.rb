@@ -20,10 +20,18 @@ class Ignite < ActiveRecord::Base
     evt ? evt : events.find(:first, :order => "date DESC")
   end
   
+  def next_event_default_name
+    "Ignite #{self.city} \##{next_event_position}"
+  end
+  
   private
     def create_default_event
-      Event.create!(:name => "Ignite no. 1", :date => Date.today, :ignite => self, 
-                    :rsvp_url => "http://ignite-dc.com/", :is_featured => true)
+      Event.create!(:name => next_event_default_name, :date => Date.today, 
+                    :ignite => self, :is_featured => true, :accepting_proposals => true)
+    end
+
+    def next_event_position
+      (self.events.maximum("position") || 0) + 1
     end
   
 end

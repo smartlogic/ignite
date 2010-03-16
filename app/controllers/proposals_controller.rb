@@ -4,7 +4,7 @@ class ProposalsController < BaseUserController
   before_filter :load_event
 
   def new
-    unless @ignite.proposals_closed
+    if @event.accepting_proposals?
       @page_title = "Submit a Proposal"
       @proposal = Speaker.new
       @captcha = get_captcha
@@ -19,7 +19,7 @@ class ProposalsController < BaseUserController
 
     respond_to do |format|
       if validate_captcha(params, @proposal) && @proposal.save
-        flash[:notice] = 'Your Proposal was successfully submitted.'
+        flash[:notice] = 'Thank you for your proposal!  You will be contacted by email when your submission has been reviewed.'
         format.html { redirect_to speaker_path(@proposal) }
         format.xml  { render :xml => @proposal, :status => :created, :location => @proposal }
       else

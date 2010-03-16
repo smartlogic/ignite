@@ -19,11 +19,6 @@
 </p>
 
 <p>
-  <b>Proposal Submissions Accepted? </b>
-  <%= @ignite.proposals_closed ? "No" : "Yes" %>
-</p>
-
-<p>
   <b>Logo:</b><br/>
   <%= image_tag(url_for_file_column(@ignite, :logo_image)) unless @ignite.logo_image.blank? %>
 </p>

@@ -11,8 +11,12 @@
   <%= f.check_box :is_featured %>
 </p>
 <p>
-  <%= f.label :is_complete, "Mark this event as completed (will show up in \"Past Events\" seciton)" %><br />
+  <%= f.label :is_complete, "Mark this event as completed (will show up in \"Past Events\" section)" %><br />
   <%= f.check_box :is_complete %>
+</p>
+<p>
+  <%= f.label :accepting_proposals, "Is this event currently accepting proposals?" %>
+  <%= f.check_box :accepting_proposals %>
 </p>
 <p>
   <%= f.label :location_name %><br />

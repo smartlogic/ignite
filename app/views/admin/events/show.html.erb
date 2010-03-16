@@ -15,6 +15,10 @@
   <%=h @event.is_featured %>
 </p>
 <p>
+  <b>Currently Accepting Proposals? </b>
+  <%= @event.accepting_proposals ? "Yes" : "No" %>
+</p>
+<p>
   <b>Location Name: </b>
   <%=h @event.location_name %>
 </p>

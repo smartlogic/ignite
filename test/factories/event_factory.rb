@@ -4,6 +4,7 @@ Factory.define(:event) do |e|
   e.association :organizer
   e.description "The best Ignite yet"
   e.date { Date.today + 30 }
+  e.accepting_proposals true
   e.is_complete false
 end
 

@@ -129,7 +129,7 @@ class SpeakersControllerTest < ActionController::TestCase
     
     context "when proposals have been closed" do
       setup do
-        @ignite.update_attributes!(:proposals_closed => true)
+        @event.update_attributes!(:accepting_proposals => false)
       end
       context "ON GET to proposals" do
         setup do

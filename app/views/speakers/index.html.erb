@@ -8,7 +8,7 @@
 
 <% if @widget_speakers.empty? -%>
   <h2 style="line-height:1.2;">There are no speakers for <%=h @event.name %> yet.
-  <% unless @ignite.proposals_closed %>
+  <% if @event.accepting_proposals %>
     <br/><%= link_to 'Submit a Proposal', new_proposal_path %> if you'd like to be one!
   <% end -%>
   </h2>

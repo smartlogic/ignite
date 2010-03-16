@@ -1,5 +1,5 @@
 <h2>Proposals for <%= @event.name %></h2>
-<% if @ignite.proposals_closed? -%>
+<% if !@event.accepting_proposals? -%>
   <p>Proposals are not currently being accepted for <%= @event.name %>.</p>
 <% else -%>
   <div style="float: right;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div><br style="clear: both" />
@@ -10,6 +10,6 @@
   <% end -%>
 </ul>
 <br />
-<% unless @ignite.proposals_closed? -%>
+<% if @event.accepting_proposals? -%>
   <div style="float: right;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div><br style="clear: both" />
 <% end -%>
