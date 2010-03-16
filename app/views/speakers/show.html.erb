@@ -6,7 +6,7 @@
   <% if @event.accepting_proposals? -%>
     <%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %>
   <% end -%>
-  <%= link_to 'View all Proposals', proposals_path, :class => 'articleTitle tag' %>
+  <%= link_to 'View all Proposals', proposals_speakers_path, :class => 'articleTitle tag' %>
 </div>
 <hr />
 <div class="comments">

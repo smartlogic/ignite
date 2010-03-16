@@ -1,15 +1,16 @@
+<% if @event.accepting_proposals? -%>
+  <div style="float: right;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div>
+<% end -%>
 <h2>Proposals for <%= @event.name %></h2>
 <% if !@event.accepting_proposals? -%>
   <p>Proposals are not currently being accepted for <%= @event.name %>.</p>
-<% else -%>
-  <div style="float: right;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div><br style="clear: both" />
 <% end -%>
-<ul class="indent">
-  <% @proposals.each do |proposal| -%>
-    <li><%= link_to(h(proposal.title), speaker_path(proposal)) %> - <%= h(proposal.name) %></li>
-  <% end -%>
-</ul>
-<br />
-<% if @event.accepting_proposals? -%>
-  <div style="float: right;"><%= link_to 'Submit a Proposal', new_proposal_path, :class => "articleTitle tag" %></div><br style="clear: both" />
+<% if !@proposals.empty? -%>
+  <ul class="indent">
+    <% @proposals.each do |proposal| -%>
+      <li><%= link_to(h(proposal.title), speaker_path(proposal)) %> - <%= h(proposal.name) %></li>
+    <% end -%>
+  </ul>
+<% else -%>
+  <p>No one has submitted a proposal yet.  Be the first!</p>
 <% end -%>

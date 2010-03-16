@@ -69,10 +69,10 @@
 			<% if !(flash[:notice].blank? && flash[:error].blank?) -%>
         <div id="flash">
           <% unless flash[:notice].blank? -%>
-            <span class="notice"><%= flash[:notice] %></span>
+            <div class="notice"><%= flash[:notice] %></div>
           <% end -%>
           <% unless flash[:error].blank? -%>
-            <span class="error"><%= flash[:error] %></span>
+            <div class="error"><%= flash[:error] %></div>
           <% end -%>
         </div>
       <% end -%>
