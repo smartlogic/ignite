@@ -35,6 +35,9 @@ class Admin::EventsControllerTest < ActionController::TestCase
       end
       should_respond_with :success
       should_render_template 'new'
+      should "preset the name to Ignite Baltimore #2" do
+        assert_equal "Ignite Baltimore #2", assigns(:event).name
+      end
     end
   
     context "on POST to create that is successful" do

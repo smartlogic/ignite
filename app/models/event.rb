@@ -20,10 +20,6 @@ class Event < ActiveRecord::Base
     { :conditions => ["is_complete = 1 OR date < ?", Date.today], :order => "date DESC" }
   }
   
-  def name
-    "Ignite #{ignite.city} \##{self.position}"
-  end
-  
   def past?
     self.is_complete? || self.date < Date.today
   end

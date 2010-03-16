@@ -11,7 +11,7 @@ class Admin::EventsController < Admin::BaseAdminController
   end
 
   def new
-    @event = Event.new
+    @event = Event.new(:name => @ignite.next_event_default_name)
   end
 
   def create
