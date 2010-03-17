@@ -14,8 +14,6 @@ gems:
   version: '= 2.9.1'
 - name: recaptcha
   version: '= 0.1.54'
-- name: sanitize
-  version: '= 1.0.4'
 - name: subdomain-fu
   version: '= 0.5.4'
 - name: fastercsv
