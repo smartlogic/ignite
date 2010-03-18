@@ -6,7 +6,8 @@ set(:config_structure, :sls)
 require 'passenger-recipes/passenger'
 
 set :application, "ignite"
-set :repository,  "https://svn.slsdev.net/ignite/trunk"
+set :scm, "git"
+set :repository,  "git://github.com/smartlogic/ignite.git"
 set(:deploy_to) { "/var/vhosts/ignite" }
 set :user, "deploy"
 
