@@ -2,6 +2,10 @@ class ProposalsController < BaseUserController
   include ReCaptcha::ViewHelper
   
   before_filter :load_event
+  
+  def index
+    redirect_to proposals_speakers_path
+  end
 
   def new
     if @event.accepting_proposals?
