@@ -12,11 +12,18 @@
       <%= options_from_collection_for_select(@events, :id, :name, @event.id) %>
     </select>
     <input type="submit" value="Show" />
+    <input type="button" id="btn_csv" value="CSV" />
   </p>
 <% end -%>
-<% if !@proposals.empty? -%>
-  <%= render(:partial => 'speakers', :locals => {:speakers => @proposals}) %>
+<% if !@speakers.empty? -%>
+  <%= render(:partial => 'speakers', :locals => {:speakers => @speakers}) %>
 <% else -%>
   <p>No <%= @state.display_name %>.</p>
 <% end -%>
 
+<% javascript_tag do -%>
+  $('btn_csv').observe('click', function(evt) {
+    var params = "state=" + $F('state') + "&event=" + $F('event');
+    window.location = "<%= csv_admin_speakers_path %>?" + params;
+  });
+<% end -%>

@@ -43,8 +43,8 @@ class Admin::SpeakersControllerTest < ActionController::TestCase
           get :index, :state => 'proposal'
         end
         should "show the two proposals" do
-          assert_equal 2, assigns(:proposals).size
-          assert [@proposal1, @proposal2].all? {|prop| assigns(:proposals).include?(prop)}
+          assert_equal 2, assigns(:speakers).size
+          assert [@proposal1, @proposal2].all? {|prop| assigns(:speakers).include?(prop)}
         end
       end
       
@@ -53,8 +53,8 @@ class Admin::SpeakersControllerTest < ActionController::TestCase
           get :index, :state => 'archived'
         end
         should "show the one archived proposal" do
-          assert_equal 1, assigns(:proposals).size
-          assert assigns(:proposals).include?(@archived)
+          assert_equal 1, assigns(:speakers).size
+          assert assigns(:speakers).include?(@archived)
         end
       end
       
@@ -63,8 +63,8 @@ class Admin::SpeakersControllerTest < ActionController::TestCase
           get :index, :state => 'speaker'
         end
         should "show the one speaker" do
-          assert_equal 1, assigns(:proposals).size
-          assert assigns(:proposals).include?(@speaker)
+          assert_equal 1, assigns(:speakers).size
+          assert assigns(:speakers).include?(@speaker)
         end
       end
       

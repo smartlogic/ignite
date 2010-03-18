@@ -1,4 +1,3 @@
-require 'exportable'
 class Speaker < ActiveRecord::Base
   include AASM
   
@@ -43,9 +42,5 @@ class Speaker < ActiveRecord::Base
     else
       "Speaker"
     end
-  end
-  
-  def export_columns(format=nil)
-    %w[name title aasm_state event_id description bio company_url personal_url blog_url twitter_url linkedin_url]
   end
 end

@@ -31,20 +31,4 @@ class SpeakerTest < ActiveSupport::TestCase
       assert @speaker.proposal?
     end
   end
-  
-  context "With three speakers" do
-    setup do
-      3.times { Factory(:speaker) }  
-    end
-    
-    context "Calling Speaker.to_csv" do
-      setup do
-        @csv = Speaker.to_csv
-      end
-    
-      should "return a csv of speaker data" do
-        assert !@csv.blank?
-      end
-    end
-  end
 end
