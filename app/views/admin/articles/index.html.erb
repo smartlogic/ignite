@@ -10,18 +10,18 @@
     <th>Comments allowed</th>
   </tr>
 
-<% for article in @articles %>
+<% for article in @articles -%>
   <tr>
     <td><%=link_to(h(article.name), admin_article_path(article)) %></td>
     <td nowrap="nowrap"><%= pp_date article.created_at %></td>
-    <td><%= article.is_news? %></td>
-    <td><%= article.show_in_navigation? %></td>
-    <td><%= article.is_sticky? %></td>
-    <td><%= article.comments_allowed? %></td>
+    <td><%= yes_or_no article.is_news? %></td>
+    <td><%= yes_or_no article.show_in_navigation? %></td>
+    <td><%= yes_or_no article.is_sticky? %></td>
+    <td><%= yes_or_no article.comments_allowed? %></td>
     <td><%= link_to 'Edit', edit_admin_article_path(article) %></td>
     <td><%= link_to 'Destroy', [:admin, article], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
-<% end %>
+<% end -%>
 </table>
 
 <br />
