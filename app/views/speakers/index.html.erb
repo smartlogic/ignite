@@ -15,8 +15,8 @@
   <br/><br/>
 <% end -%>
 
-<h2>Ignite <%=h @ignite.city %> Full Speaker Directory</h2>
-<% unless (@left.empty? && @right.empty?) -%>
+<% if !@past_speakers.empty? -%>
+  <h2>Ignite <%=h @ignite.city %> Full Speaker Directory</h2>
   <p>Browse all speakers from past Ignites.</p>
   <hr />
   <ul class="speakers">
@@ -37,6 +37,4 @@
   </ul>  
   <hr />
   <p><%= will_paginate @past_speakers %></p>
-<% else -%>
-  <h3>There are no speakers in the directory.</h3>
 <% end -%>
