@@ -18,6 +18,17 @@ class ArticlesControllerTest < ActionController::TestCase
       assert_select '#location .links a', :text => 'RSVP', :count => 0
     end
     
+    should "not render the Organizers nav link if there are no organizers" do
+      get :index
+      assert_select '#nav a', :text => 'Organizers', :count => 0
+    end
+    
+    should "render the Organizers nav link if there are past events" do
+      Factory(:organizer, :ignite => @ignite, :events => [@ignite.featured_event])
+      get :index
+      assert_select '#nav a', :text => 'Organizers', :count => 1
+    end
+    
     should "not render the Past Ignites nav link if there are no past events" do
       get :index
       assert_select '#nav a', :text => 'Past Ignites', :count => 0
