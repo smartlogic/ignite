@@ -78,8 +78,8 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 end
 
-ExceptionNotifier.exception_recipients = %w(glenn@smartlogicsolutions.com)
-ExceptionNotifier.sender_address = %("Application Error" <ignite.error@slsdev.net>)
+ExceptionNotifier.exception_recipients = %w(john@smartlogicsolutions.com)
+ExceptionNotifier.sender_address = %("Ignite CMS" <ignite.error@slsdev.net>)
 
 require 'will_paginate'
 require 'cancan'
