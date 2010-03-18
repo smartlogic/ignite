@@ -25,7 +25,7 @@ depend(:remote, :gemfile, "config/geminstaller.yml")  # ensure that all of our g
 
 production do
   set :ip, "208.78.102.176"
-  after :symlink, :move_in_database_yml
+  after "deploy:symlink", :move_in_database_yml
 end
 
 staging do
