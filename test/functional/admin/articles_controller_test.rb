@@ -44,7 +44,7 @@ class Admin::ArticlesControllerTest < ActionController::TestCase
       
       context 'on PUT to update' do
         setup do
-          put :update, :id => @article1.id, :article => Factory(:attrs_for_article)
+          put :update, :id => @article1.id, :article => Factory.attributes_for(:article)
         end
         should_redirect_to('article path') { admin_article_path(@article1.reload) }
         should_flash(:notice)

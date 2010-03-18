@@ -18,11 +18,26 @@ class ArticleTest < ActiveSupport::TestCase
   
   context 'A saved article' do
     setup do
-      @article = Factory.build(:article)
-      @article.ignite = Factory(:ignite)
-      @article.save!
+      @article = Factory(:article)
     end
     subject { @article }
     should_validate_presence_of :ignite_id, :name
+  end
+  
+  context 'A saved sticky article' do
+    setup do
+      @article = Factory(:article, :is_sticky => true)
+    end
+    context 'when creating a new article that is sticky' do
+      setup do
+        @new_article = Factory(:article, :ignite => @article.ignite, :is_sticky => true)
+      end
+      should "make the new article sticky" do
+        assert @new_article.reload.is_sticky?
+      end
+      should "make unsticky the old article" do
+        assert !@article.reload.is_sticky?
+      end
+    end
   end
 end

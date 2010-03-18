@@ -44,20 +44,13 @@ class AbilityTest < ActiveSupport::TestCase
     should 'not edit an organizer for another ignite' do
       assert @ability.cannot?(:manage, Factory(:organizer))
     end
-        
+
     # Article
-    context "" do
-      setup do
-        @article = Factory.build(:article)
-      end
-      should 'edit an article for their ignite' do
-        @article.ignite = @admin.ignite
-        assert @ability.can?(:manage, @article)
-      end
-      should 'not edit an article for another ignite' do
-        @article.ignite = Factory(:ignite)
-        assert @ability.cannot?(:manage, @article)
-      end
+    should 'edit an article for their ignite' do
+      assert @ability.can?(:manage, Factory(:article, :ignite => @admin.ignite))
+    end
+    should 'not edit an article for another ignite' do
+      assert @ability.cannot?(:manage, Factory(:article))
     end
   end
   
