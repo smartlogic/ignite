@@ -18,6 +18,17 @@ class ArticlesControllerTest < ActionController::TestCase
       assert_select '#location .links a', :text => 'RSVP', :count => 0
     end
     
+    should "not render the Past Ignites nav link if there are no past events" do
+      get :index
+      assert_select '#nav a', :text => 'Past Ignites', :count => 0
+    end
+    
+    should "render the Past Ignites nav link if there are past events" do
+      Factory(:past_event, :ignite => @ignite)
+      get :index
+      assert_select '#nav a', :text => 'Past Ignites', :count => 1
+    end
+    
     context "with an article that has set :show_in_navigation, on GET to index" do
       setup do
         @name = 'Article that will show up'
