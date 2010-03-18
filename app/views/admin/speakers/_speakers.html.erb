@@ -22,7 +22,7 @@
       <% if speaker.archived? -%>
         <%= link_to 'Unarchive', unarchive_admin_speaker_path(speaker, url_params), :method => :put %><br />
       <% elsif speaker.proposal? -%>
-        <%= link_to 'Choose', choose_admin_speaker_path(speaker, url_params) %><br />
+        <%= link_to 'Choose', choose_admin_speaker_path(speaker, url_params), :method => :put %><br />
         <%= link_to 'Archive', archive_admin_speaker_path(speaker, url_params), :confirm => 'Are you sure? Archiving removes this speaker from the public view.', :method => :put %><br />
       <% elsif speaker.speaker? -%>
         <%= link_to 'Reconsider', reconsider_admin_speaker_path(speaker, url_params), :method => :put %><br/>
