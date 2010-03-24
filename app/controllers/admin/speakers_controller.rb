@@ -56,7 +56,7 @@ class Admin::SpeakersController < Admin::BaseAdminController
   
   def choose
     @speaker.choose!
-    flash[:notice] = "Proposal #{@speaker.title} has been seleted for #{@event.name}."
+    flash[:notice] = "Proposal #{@speaker.title} has been selected for #{@event.name}."
     redirect_to admin_speakers_path(url_params)
   end
 
