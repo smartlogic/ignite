@@ -13,14 +13,14 @@ set(:deploy_to) { "/var/vhosts/ignite" }
 set :user, "deploy"
 
 set :shared_content, {
-  "content/event" => "public/event",
+  "content/event"     => "public/event",
   "content/organizer" => "public/organizer",
-  "content/speaker" => "public/speaker",
-  "content/ignite" => "public/ignite",
-  "content/sponsor" => "public/sponsor"
+  "content/speaker"   => "public/speaker",
+  "content/ignite"    => "public/ignite",
+  "content/sponsor"   => "public/sponsor"
 }
 
-set :copy_exclude, ["Capfile", "cc.sh", "doc", "test", "tmp"]
+set :copy_exclude, ["Capfile", "doc", "test", "tmp"]
 
 depend(:remote, :gemfile, "config/geminstaller.yml")  # ensure that all of our gems are installed
 
@@ -35,7 +35,7 @@ end
 
 desc "Move in database.yml for this environment"
 task :move_in_database_yml, :roles => :app do
-  run "cp #{deploy_to}/shared/system/database.yml #{current_path}/config/"
+  run "cp #{deploy_to}/shared/system/database.yml #{current_path}/config/production/database.yml"
 end
 
 role :web, "#{ip}"
