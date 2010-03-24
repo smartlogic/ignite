@@ -8,6 +8,7 @@ require 'passenger-recipes/passenger'
 set :application, "ignite"
 set :scm, "git"
 set :repository,  "git://github.com/smartlogic/ignite.git"
+set :branch, 'production'
 set(:deploy_to) { "/var/vhosts/ignite" }
 set :user, "deploy"
 
