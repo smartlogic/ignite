@@ -1,4 +1,8 @@
 class Admin::IgnitesController < Admin::BaseAdminController
+  before_filter :local_load_ignite, :only => [:show, :edit, :update]
+  before_filter :require_superadmin, :only => [:index, :new, :create]
+  load_and_authorize_resource :only => [:show, :edit, :update]
+  
   # GET /ignites
   # GET /ignites.xml
   def index
@@ -13,8 +17,6 @@ class Admin::IgnitesController < Admin::BaseAdminController
   # GET /ignites/1
   # GET /ignites/1.xml
   def show
-    @ignite = Ignite.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @ignite }
@@ -30,12 +32,6 @@ class Admin::IgnitesController < Admin::BaseAdminController
       format.html # new.html.erb
       format.xml  { render :xml => @ignite }
     end
-  end
-
-  # GET /ignites/1/edit
-  def edit
-    @ignite = Ignite.find(params[:id])
-    @organizers = Organizer.all
   end
 
   # POST /ignites
@@ -55,11 +51,14 @@ class Admin::IgnitesController < Admin::BaseAdminController
     end
   end
 
+  # GET /ignites/1/edit
+  def edit
+    @organizers = Organizer.all
+  end
+
   # PUT /ignites/1
   # PUT /ignites/1.xml
   def update
-    @ignite = Ignite.find(params[:id])
-
     respond_to do |format|
       if @ignite.update_attributes(params[:ignite])
         flash[:notice] = 'Ignite was successfully updated.'
@@ -71,21 +70,14 @@ class Admin::IgnitesController < Admin::BaseAdminController
       end
     end
   end
-
-  # DELETE /ignites/1
-  # DELETE /ignites/1.xml
-  def destroy
-    @ignite = Ignite.find(params[:id])
-    @ignite.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(admin_ignites_url) }
-      format.xml  { head :ok }
+  
+  private
+    def local_load_ignite
+      @ignite = Ignite.find(params[:id])
     end
-  rescue StandardError => ex
-    flash[:error] = ex
-    @ignites = Ignite.all
-    render :action => 'index'
-  end
+    
+    def require_superadmin
+      unauthorized! if !current_admin.superadmin?
+    end
 
 end

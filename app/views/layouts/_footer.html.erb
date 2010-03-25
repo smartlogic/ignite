@@ -3,27 +3,4 @@
 	<%= link_to image_tag("layout/logo_mission_media.jpg", :alt => "Created by Mission Media"), "http://www.missionmedia.net" %>
 	<%= link_to image_tag("layout/logo_sls.jpg", :alt => "Powered by SmartLogic Solutions"), "http://smartlogicsolutions.com" %>
 </div>
-
-<%# FIX: should be dynamic %>
-<% if @ignite.city == "Baltimore" -%>
-  <script type="text/javascript">
-    //<![CDATA[
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    try {
-      var pageTracker = _gat._getTracker("UA-9222451-1");
-      pageTracker._trackPageview();
-    } catch(err) {}
-    //]]>
-  </script>
-<% elsif @ignite.city == "RailsConf" -%>
-  <script type="text/javascript">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-  </script>
-  <script type="text/javascript">
-    try {
-      var pageTracker = _gat._getTracker("UA-15327626-1");
-      pageTracker._trackPageview();
-    } catch(err) {}</script>
-<% end -%>
+<%= @ignite.footer_html %>

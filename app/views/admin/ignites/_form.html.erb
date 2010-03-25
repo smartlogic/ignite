@@ -1,35 +1,40 @@
 <p>
   <%= f.label :city %><br />
+  <%= f.text_field :city %><br />
   <span class="helptext">Enter the name of the city, e.g. "Baltimore"</span>
-  <%= f.text_field :city %>
 </p>
 <p>
   <%= f.label :domain %><br />
+  <%= f.text_field :domain %><br />
   <span class="helptext">Enter the domain name without http://, e.g. "ignitebaltimore.com"</span>
-  <%= f.text_field :domain %>
 </p>
 <p>
   <%= f.label :twitter_username %><br />
+  <%= f.text_field :twitter_username %><br />
   <span class="helptext">Enter the twitter username associated with this Ignite, e.g. "ignitebaltimore"</span>
-  <%= f.text_field :twitter_username %>
 </p>
 <p>
   <%= f.label :twitter_feed_url, "Twitter RSS Feed URL" %><br />
+  <%= f.text_field :twitter_feed_url %><br />
   <span class="helptext">Enter the URL of the RSS feed for this twitter user's tweets.  To find the URL, go to the user's twitter homepage, view source, and find the RSS feed whose title is "&lt;twitter username's&gt; Tweets", e.g. "http://twitter.com/statuses/user_timeline/15336208.rss"</span>
-  <%= f.text_field :twitter_feed_url %>
 </p>
 <p>
   <%= f.label :logo_image %><br />
+  <%= file_column_field "ignite", :logo_image %><br />
   <span class="helptext">Icon for this ignite site, dimensions = 180x128.  <a href="https://www.ignitebaltimore.com/ignite/logo_image/1/ignite-baltimore-logo.jpg">Sample logo image</a></span>
-  <%= file_column_field "ignite", :logo_image %>
 </p>
 <p>
   <%= f.label :banner_background_image %><br />
+  <%= file_column_field "ignite", :banner_background_image %><br />
   <span class="helptext">Background image for the countdown timer of this Ignite site, dimensions = 614x89.  <a href="https://www.ignitebaltimore.com/ignite/banner_background_image/1/bg.png">Sample banner background image</a></span>
-  <%= file_column_field "ignite", :banner_background_image %>
 </p>
 <p>
   <%= f.label :banner_bottom_image %><br />
+  <%= file_column_field "ignite", :banner_bottom_image %><br />
   <span class="helptext">Image to place beneath the countdown timer, dimensions = 614x128.  <a href="https://www.ignitebaltimore.com/ignite/banner_bottom_image/1/about.gif">Sample image to place beneath the countdown timer</a></span>
-  <%= file_column_field "ignite", :banner_bottom_image %>
+</p>
+<p>
+  <%= f.label :footer_html %><br />
+  <%= f.text_area :footer_html, :rows => 8, :cols => 60 %><br />
+  <span class="helptext">Place Google Analytics or other javascript code snippets here.</span>
 </p>

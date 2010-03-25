@@ -1,4 +1,4 @@
-<h1>Editing ignite</h1>
+<h1>Edit <%= h(@ignite.name) %> Settings</h1>
 
 <% form_for @ignite, :url => admin_ignite_path, :html => {:multipart => true}, :method => :put do |f| %>
   <%= f.error_messages %>

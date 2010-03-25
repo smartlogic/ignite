@@ -20,7 +20,7 @@ ActionController::Routing::Routes.draw do |map|
       :except => [:new, :create],
       :member => {:archive => :put, :unarchive => :put, :reconsider => :put, :choose => :put}, 
       :collection => {:csv => :get}
-    admin.resources :ignites, :has_many => :events
+    admin.resources :ignites, :except => [:destroy], :has_many => :events
     admin.resources :sponsors
   end
 

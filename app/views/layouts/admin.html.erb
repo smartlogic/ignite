@@ -17,8 +17,12 @@
 	<div id="sidebar">
 		<h1 id="logo"><%= link_to image_tag("/images/layout/ignite-baltimore-logo.jpg", :alt => "Ignite Baltimore"), admin_url %></h1>
 		<ol id="nav">
+		  <% if current_admin.superadmin? -%>
+        <li><%= link_to "Ignites",  admin_ignites_path %></li>
+      <% else -%>
+        <li><%= link_to "Ignite Settings", edit_admin_ignite_path(@ignite) %></li>
+      <% end -%>
 			<li><%= link_to "Admins",     admin_admins_path %></li>
-      <li><%= link_to "Ignites",    admin_ignites_path %></li>
 			<li><%= link_to "Organizers", admin_organizers_path %></li>
 			<li><%= link_to "Events",     admin_events_path %></li>
 			<li><%= link_to "Speakers",   admin_speakers_path(:state => 'speaker') %></li>

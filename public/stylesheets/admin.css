@@ -238,6 +238,8 @@ div.select_segment option{
   font-style: normal;
   margin-left: 20px;
 }
+
 .helptext {
-	color: #999999;
+  font-size: 85%;
+  color: #DB8C48;
 }
