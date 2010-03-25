@@ -15,7 +15,7 @@
 
 	<!-- logo + nav -->
 	<div id="sidebar">
-		<h1 id="logo"><%= link_to image_tag("/images/layout/ignite-baltimore-logo.jpg", :alt => "Ignite Baltimore"), admin_url %></h1>
+		<h1 id="logo"><%= link_to @ignite.logo_image.blank? ? "Ignite #{h(@ignite.city)}" : image_tag(url_for_file_column(@ignite, :logo_image), :alt => "Ignite #{h(@ignite.city)}"), admin_url %></h1>
 		<ol id="nav">
 		  <% if current_admin.superadmin? -%>
         <li><%= link_to "Ignites",  admin_ignites_path %></li>
