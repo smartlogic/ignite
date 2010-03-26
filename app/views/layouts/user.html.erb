@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-	<title><%= "#{@page_title} | " if !!@page_title %>Ignite <%= h(@ignite.city) %></title>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<meta name="description" content="Five minutes, 20 slides. What would you say? At every Ignite, 16 artists, technologists, thinkers, and personalities will take the stage to answer this challenge." />
-	<meta name="keywords" content="<%= h(@ignite.city) %>, Ignite, tech, entreprenuers, thought leaders, conference" />
+  <title><%= "#{@page_title} | " if !!@page_title %>Ignite <%= h(@ignite.city) %></title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="description" content="Five minutes, 20 slides. What would you say? At every Ignite, 16 artists, technologists, thinkers, and personalities will take the stage to answer this challenge." />
+  <meta name="keywords" content="<%= h(@ignite.city) %>, Ignite, tech, entreprenuers, thought leaders, conference" />
   <%= stylesheet_link_tag "base", :media => "all" %>
 	<%= javascript_include_tag "prototype" %>
 	<%= javascript_include_tag "swfobject" %>
