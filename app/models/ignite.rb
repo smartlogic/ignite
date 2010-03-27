@@ -14,6 +14,7 @@ class Ignite < ActiveRecord::Base
   
   validates_presence_of :city, :domain
   validates_uniqueness_of :domain
+  validates_size_of :emails, :maximum => 512, :allow_blank => true
   
   def name
     "Ignite #{city}"
@@ -25,6 +26,11 @@ class Ignite < ActiveRecord::Base
   
   def next_event_default_name
     "#{name} \##{next_event_position}"
+  end
+  
+  def emails_as_array
+    return [] if emails.blank?
+    emails.split(",").map(&:strip)
   end
   
   private

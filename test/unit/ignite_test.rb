@@ -14,6 +14,23 @@ class IgniteTest < ActiveSupport::TestCase
     end
   end
   
+  context '#emails_as_array' do
+    should 'return empty array for nil email notification' do
+      @ignite = Factory(:ignite, :emails => nil)
+      assert_equal [], @ignite.emails_as_array
+    end
+    
+    should 'return empty array for empty email notification' do
+      @ignite = Factory(:ignite, :emails => '')
+      assert_equal [], @ignite.emails_as_array
+    end
+    
+    should 'split on commas and strip whitespace' do
+      @ignite = Factory(:ignite, :emails => 'john@slsdev.net, nick@slsdev.net')
+      assert_equal ['john@slsdev.net', 'nick@slsdev.net'], @ignite.emails_as_array
+    end
+  end
+  
   context "With an unsaved ignite" do
     setup do 
       @ignite = Factory.build(:ignite)

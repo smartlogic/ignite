@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100325190827) do
+ActiveRecord::Schema.define(:version => 20100327194534) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(:version => 20100325190827) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "footer_html"
+    t.string   "emails"
   end
 
   create_table "organizers", :force => true do |t|

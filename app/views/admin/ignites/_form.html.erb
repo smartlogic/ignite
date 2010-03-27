@@ -9,6 +9,10 @@
   <span class="helptext">Enter the domain name without http://, e.g. "ignitebaltimore.com"</span>
 </p>
 <p>
+  <%= f.label :emails %><br />
+  <%= f.text_field :emails, :size => 60 %><br />
+  <span class="helptext">Separate multiple email addresses with commas.  The email addresses entered here will be notified when new proposals are submitted or new comments have been posted.</span>
+<p>
   <%= f.label :twitter_username %><br />
   <%= f.text_field :twitter_username %><br />
   <span class="helptext">Enter the twitter username associated with this Ignite, e.g. "ignitebaltimore"</span>
