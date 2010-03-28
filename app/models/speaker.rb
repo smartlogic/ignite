@@ -32,6 +32,10 @@ class Speaker < ActiveRecord::Base
   aasm_event :choose do
     transitions :from => :proposal, :to => :speaker
   end
+  
+  def ignite
+    event.ignite
+  end
 
   # TODO : fix
   def status

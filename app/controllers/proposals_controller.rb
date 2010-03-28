@@ -23,6 +23,8 @@ class ProposalsController < BaseUserController
 
     respond_to do |format|
       if validate_captcha(params, @proposal) && @proposal.save
+        ProposalNotifier.deliver_admin_notification(@proposal) unless @proposal.ignite.emails_as_array.empty?
+        ProposalNotifier.deliver_thank_you(@proposal)          unless @proposal.email.blank?
         flash[:notice] = 'Thank you for your proposal!  You will be contacted by email when your submission has been reviewed.'
         format.html { redirect_to speaker_path(@proposal) }
         format.xml  { render :xml => @proposal, :status => :created, :location => @proposal }

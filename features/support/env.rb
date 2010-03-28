@@ -15,6 +15,15 @@ require 'cucumber/web/tableish'
 require 'webrat'
 require 'webrat/core/matchers'
 
+require 'factory_girl'
+Factory.find_definitions
+
+require 'shoulda'
+require 'shoulda/action_mailer/assertions'
+World(Shoulda::ActionMailer::Assertions)
+
+require 'ruby-debug'
+
 Webrat.configure do |config|
   config.mode = :rails
   config.open_error_files = false # Set to true if you want error pages to pop up in the browser
@@ -55,6 +64,3 @@ if defined?(ActiveRecord::Base)
   rescue LoadError => ignore_if_database_cleaner_not_present
   end
 end
-
-require 'factory_girl'
-Factory.find_definitions
