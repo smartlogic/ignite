@@ -1,0 +1,6 @@
+cucumber:
+  adapter: mysql
+  database: ignite_test
+  username: root
+  password: 
+  host: localhost
