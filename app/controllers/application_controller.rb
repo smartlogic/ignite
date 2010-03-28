@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
       subdomain = current_subdomain =~ /^www\./ ? current_subdomain[4..-1] : current_subdomain
       @ignite = Ignite.find_by_domain(subdomain)
       if !@ignite
-        render :status => 404, :text => "Could not find your Ignite site."
+        render :status => 404, :text => "Could not find an Ignite site at #{subdomain}"
         return false
       end
       
