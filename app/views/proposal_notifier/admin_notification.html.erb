@@ -1,7 +1,7 @@
 <p>Hey <%= h @proposal.ignite.name %> admins,</p>
 <p>
   <%= mail_to(@proposal.email, h(@proposal.name)) %> has submitted the proposal 
-  <%= link_to(h(@proposal.title), speaker_path(@proposal)) %>.  See a summary below.
+  <%= link_to(h(@proposal.title), speaker_url(@proposal, :host => @proposal.ignite.domain)) %>.  See a summary below.
 </p>
 <h2>Abstract</h2>
 <%= Markdown.new(@proposal.description).to_html %>
