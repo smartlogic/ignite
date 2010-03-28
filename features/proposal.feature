@@ -9,3 +9,9 @@ Feature: Submit proposals
     Then I should see "How to give an Ignite Talk"
 
   Scenario: A visitor submits an incomplete proposal
+    Given Ignite "Baltimore"
+    When I submit an incomplete proposal "How to give an Ignite Talk"
+    Then I should see "There were problems with the following fields"
+    
+    When I visit the proposals page
+    Then I should not see "How to give an Ignite Talk"
