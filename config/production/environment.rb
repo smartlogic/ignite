@@ -21,7 +21,7 @@ config.action_controller.perform_caching             = true
 # config.action_controller.asset_host                  = "http://assets.example.com"
 
 # Disable delivery errors, bad email addresses will be ignored
-# config.action_mailer.raise_delivery_errors = false
+config.action_mailer.raise_delivery_errors = false
 
 # Keys for reCaptcha
 RCC_PUB = '6LdZ_wQAAAAAAACER4LvctglwDm__0LVsvZyvPq1'
