@@ -3,5 +3,5 @@
   We have received your <%= h @proposal.ignite.name %> proposal <%= link_to(h(@proposal.title), speaker_url(@proposal, :host => @proposal.ignite.domain)) %>.
   Thank you for submitting.  We will be in contact after the submission deadline regarding selection.
 </p>
-<p>If you have another proposal idea, we'd love to for you to <%= link_to('submit another proposal', new_proposal_url(:host => @proposal.ignite.domain)) %>.</p>
+<p>If you have another proposal idea, we'd love for you to <%= link_to('submit another proposal', new_proposal_url(:host => @proposal.ignite.domain)) %>.</p>
 <p>- <%= h @proposal.ignite.name %></p>
