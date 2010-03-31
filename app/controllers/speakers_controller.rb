@@ -40,6 +40,8 @@ class SpeakersController < BaseUserController
     @comment = Comment.new(params[:comment])
     @comment.parent = @speaker
     if validate_captcha(params, @comment) && @comment.save
+      ProposalNotifier.deliver_comment_notification(@comment, @speaker) unless @speaker.email.blank?
+      ProposalNotifier.deliver_admin_comment_notification(@comment, @speaker) unless @speaker.ignite.emails_as_array.empty?
       flash[:notice] = 'Your comment has been posted.'
       redirect_to speaker_path(@speaker)
     else

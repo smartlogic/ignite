@@ -5,12 +5,11 @@ Feature: Proposal Notifications
   
   Scenario: A visitor submits a proposal
     Given Ignite "Baltimore"
-    And "john@localhost" is receiving email notifications
     When a visitor submits a proposal
-    Then "john@localhost" receives a notification email
+    Then Ignite "Baltimore" admins receive a proposal notification email
     And the submitter receives a thank you email
     
   Scenario: A visitor submits a proposal to an Ignite that is not set up to receive notifications
-    Given Ignite "Baltimore"
+    Given Ignite "Baltimore" without notification emails
     When a visitor submits a proposal
-    Then no one receives a notification email
+    Then no one receives a proposal notification email

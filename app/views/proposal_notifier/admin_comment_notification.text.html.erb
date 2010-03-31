@@ -1,0 +1,6 @@
+<p>Hey <%= h @proposal.ignite.name %> admins,</p>
+<p>
+  <%= mail_to(@comment.email, h(@comment.author)) %> commented on <%= h @proposal.name %>'s proposal <%= link_to(h(@proposal.title), speaker_url(@proposal, :host => @proposal.ignite.domain)) %>.  See the comment below.
+</p>
+<%= Markdown.new(@comment.content).to_html %>
+<p>- <%= h @proposal.ignite.name %></p>

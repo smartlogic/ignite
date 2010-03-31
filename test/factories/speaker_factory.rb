@@ -5,6 +5,7 @@ Factory.define(:speaker) do |s|
   s.bio "Again, we should probably make sure that we add Textile-flavored markup support because my bio should be able to look cool too!"
   s.association :event
   s.aasm_state 'speaker'
+  s.email "john@localhost"
 end
 
 Factory.define(:proposal, :parent => :speaker) do |p|

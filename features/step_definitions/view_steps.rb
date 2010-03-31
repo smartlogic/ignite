@@ -1,8 +1,7 @@
-Given /^Ignite "([^\"]*)"$/ do |city|
-  @current_ignite ||= Factory(:ignite, :city => city)
-  header "host", @current_ignite.domain + ".com"
-end
-
 When /^I visit the proposals page$/ do
   visit proposals_speakers_path
+end
+
+When /^I view the proposal$/ do
+  visit speaker_path(@last_submitted_proposal)
 end
