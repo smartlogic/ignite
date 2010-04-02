@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100327194534) do
+ActiveRecord::Schema.define(:version => 20100402005512) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -160,8 +160,10 @@ ActiveRecord::Schema.define(:version => 20100327194534) do
     t.datetime "updated_at"
     t.string   "widget_image"
     t.string   "video_embed_url"
+    t.string   "key",             :limit => 30
   end
 
+  add_index "speakers", ["key"], :name => "index_speakers_on_key", :unique => true
   add_index "speakers", ["event_id"], :name => "index_speakers_on_event_id"
 
   create_table "sponsors", :force => true do |t|

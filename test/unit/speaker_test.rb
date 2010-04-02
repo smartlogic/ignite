@@ -31,4 +31,19 @@ class SpeakerTest < ActiveSupport::TestCase
       assert @speaker.proposal?
     end
   end
+  
+  context 'With an unsaved proposal' do
+    setup do
+      @speaker = Factory.build(:proposal)
+    end
+    context 'when saved' do
+      setup do
+        assert @speaker.key.blank?
+        @speaker.save!
+      end
+      should 'create a 30-character key' do
+        assert_equal 30, @speaker.key.size
+      end
+    end
+  end
 end

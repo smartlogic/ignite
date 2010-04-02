@@ -3,8 +3,12 @@ class Speaker < ActiveRecord::Base
   
   belongs_to :event
   has_many :comments, :as => :parent, :dependent => :destroy
+  
+  before_create :generate_key
 
   validates_presence_of :name, :title, :description, :bio, :event_id
+  
+  attr_protected :aasm_state, :created_at, :updated_at, :key
   
   acts_as_list :scope => "event_id"
   file_column :image, :magick => {:versions => {"thumb" => "50x50>", "profile" => "180x250>"}}
@@ -47,4 +51,9 @@ class Speaker < ActiveRecord::Base
       "Speaker"
     end
   end
+  
+  private
+    def generate_key
+      write_attribute(:key, (0...30).map{ ('a'..'z').to_a[rand(26)] }.join)
+    end
 end
