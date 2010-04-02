@@ -11,3 +11,7 @@ end
 Given /^a proposal exists for the featured event$/ do
   @last_submitted_proposal = Factory(:proposal, :event => @current_ignite.featured_event)
 end
+
+Given /^a proposal "([^\"]*)" exists for the featured event$/ do |title|
+  @last_submitted_proposal = Factory(:proposal, :event => @current_ignite.featured_event, :title => title)
+end
