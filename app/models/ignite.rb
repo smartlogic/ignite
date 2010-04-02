@@ -14,7 +14,7 @@ class Ignite < ActiveRecord::Base
   
   validates_presence_of :city, :domain
   validates_uniqueness_of :domain
-  validates_size_of :emails, :maximum => 512, :allow_blank => true
+  validates_size_of :emails, :maximum => 255, :allow_blank => true
   
   def name
     "Ignite #{city}"
