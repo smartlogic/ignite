@@ -1,0 +1,41 @@
+<h2>Edit Proposal: <%= h(@proposal.title) %></h2>
+<% form_for(@proposal, :url => url_for(:controller => 'proposals', :action => 'update'), :html => {:multipart => true, :class => "proposal", :method => 'put'}) do |f| -%>
+  <%= f.error_messages %>
+  <%= hidden_field_tag("key", @proposal.key) %>
+  <ul>
+    <li>
+      <%= f.label :name, "Name:" %>
+      <%= f.text_field :name, :class => "long" %>
+    </li>
+    <li>
+      <%= f.label :email, "Email:" %>
+      <%= f.text_field :email, :class => "long" %>
+    </li>
+    <li>
+      <%= f.label :personal_url, "Website:" %>
+      <%= f.text_field :personal_url, :class => "long" %>
+    </li>
+    <li>
+      <%= f.label :title, "Proposal Title:" %>
+      <%= f.text_field :title, :class => "long" %>
+    </li>
+    <li>
+      <%= f.label :description, "Description:" %>
+      <%= f.text_area :description %><br/>
+      <span class="field_note">Markdown is supported for the description</span>
+    </li>
+    <li>
+      <%= f.label :bio, "Brief Bio:" %>
+      <%= f.text_area :bio %>
+    </li>
+    <li>
+      <%= f.label :image, "Profile Picture:" %>
+      <%= file_column_field "speaker", :image, :size => 26 %>
+    </li>
+    <br/>
+    <li><%= @captcha %></li>
+    <li>
+      <input type="submit" value="Update Proposal" />
+    </li>
+  </ul>
+<% end -%>

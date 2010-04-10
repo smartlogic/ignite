@@ -1,7 +1,8 @@
 class ProposalsController < BaseUserController
   include ReCaptcha::ViewHelper
   
-  before_filter :load_event
+  before_filter :load_event, :except => [:edit]
+  before_filter :load_proposal, :only => [:edit, :update]
   
   def index
     redirect_to proposals_speakers_path
@@ -36,9 +37,35 @@ class ProposalsController < BaseUserController
     end
   end
   
+  def edit
+    
+  end
+  
+  def update
+    if validate_captcha(params, @proposal) && @proposal.update_attributes(params[:speaker])
+      flash[:notice] = 'Your proposal has been updated'
+      redirect_to speaker_path(@proposal)
+    else
+      @captcha = get_captcha
+      render :action => 'edit'
+    end
+  end
+  
   private
     def load_event
       @event = @ignite.featured_event
+    end
+    
+    def load_proposal
+      @proposal = Speaker.proposal.find_by_key(params[:key])
+
+      if !@proposal || @proposal.id != params[:id].to_i
+        flash[:error] = "Invalid key"
+        redirect_to proposals_speakers_path
+      elsif !@proposal.event.accepting_proposals?
+        flash[:error] = "Proposal submission is no longer open, you can no longer edit this proposal."
+        redirect_to proposals_speakers_path
+      end
     end
 
 end

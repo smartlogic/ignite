@@ -45,14 +45,14 @@ Feature: Submit proposals
     Then I should be redirected
     
     When I follow the redirect
-    Then I should see "You do not have permission to edit that proposal"
+    Then I should see "Invalid key"
     
   Scenario: A proposal submitter tries to edit a proposal after the deadline has passed
-    Give Ignite "Baltimore"
+    Given Ignite "Baltimore"
     And a proposal "How to give an Ignite Talk" exists for the featured event
     And the featured event is no longer accepting proposals
     When I view the edit proposal page with its edit key
     Then I should be redirected
     
     When I follow the redirect
-    Then I should see "Proposal submission is no longer open, you cannot edit it."
+    Then I should see "Proposal submission is no longer open, you can no longer edit this proposal."

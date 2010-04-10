@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     end
 
     def validate_captcha(params, model)
-      return true if Rails.env.test? || Rails.env.development?
+      return true if Rails.env.test? || Rails.env.development? || Rails.env.cucumber?
       validate_recap(params, model.errors)
     end
     

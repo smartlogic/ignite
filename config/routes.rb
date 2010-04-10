@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :organizers, :only => [:index, :show]
   map.resources :speakers, :only => [:index, :show], 
     :collection => {:post_comment => :post, :proposals => :get}
-  map.resources :proposals, :only => [:new, :create, :index]
+  map.resources :proposals, :except => [:show, :destroy]
 
   map.namespace(:admin) do |admin|
     admin.resources :admins
