@@ -15,7 +15,8 @@ end
 Then /^the submitter receives a thank you email$/ do
   assert_sent_email do |_email|
     _email.subject =~ /Thank you for submitting your proposal/ &&
-      _email.to.include?(@last_submitted_proposal.email)
+      _email.to.include?(@last_submitted_proposal.email) &&
+      _email.body.include?(@last_submitted_proposal.key)
   end
 end
 
