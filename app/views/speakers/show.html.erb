@@ -8,9 +8,3 @@
   <% end -%>
   <%= link_to 'View all Proposals', proposals_speakers_path, :class => 'articleTitle tag' %>
 </div>
-<hr />
-<div class="comments">
-  <a name="comments"></a>
-  <%= render :partial => "comments/list", :locals => {:comments => @comments} %>
-  <%= render :partial => "comments/quick_form", :locals => {:comment => @comment, :captcha => @captcha, :parent => @speaker, :controller_name => 'speakers', :action_name => 'post_comment'} %>
-</div>
