@@ -29,11 +29,3 @@
     <li><%= speaker_list_item(speaker) %></li>
   <% end -%>
 </ul>
-
-<hr />
-
-<div class="comments">
-  <a name="comments"></a>
-  <%= render :partial => "comments/list", :locals => {:comments => @comments} %>
-  <%= render :partial => "comments/quick_form", :locals => {:comment => @comment, :captcha => @captcha, :parent => @event, :controller_name => 'events', :action_name => 'post_comment'} %>
-</div>
