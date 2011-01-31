@@ -27,7 +27,7 @@ class SpeakersController < BaseUserController
   # GET /speakers/1
   # GET /speakers/1.xml
   def show
-    @page_title = "#{@speaker.name} | #{@speaker.title} | #{@ignite.name}"
+    @page_title = "#{@speaker.name} | #{@speaker.title}"
     @comment = Comment.new
     @captcha = get_captcha
     respond_to do |format|
