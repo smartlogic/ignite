@@ -3,7 +3,8 @@
 <div id="bios">
   <% @organizers.each do |organizer| -%>
     <div>
-      <%= image_tag(url_for_file_column(organizer, :image, "profile")) unless organizer.image.blank? %>
+      <%= image_tag(url_for_file_column(organizer, :image, "profile"), :alt => h(organizer.name)) unless organizer.image.blank? %>
+      <h3><%= h(organizer.name) %></h3>
       <p><%= organizer.bio %></p>
     </div>
   <% end -%>
