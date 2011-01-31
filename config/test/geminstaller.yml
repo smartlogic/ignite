@@ -9,7 +9,7 @@ gems:
 - name: leftright
   version: '= 0.0.3'
 - name: cucumber
-  version: '= 0.6.3'
+  version: '= 0.10.0'
 - name: webrat
   version: '= 0.7.0'
 - name: database_cleaner
