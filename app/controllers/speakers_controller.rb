@@ -1,5 +1,7 @@
 class SpeakersController < BaseUserController
-  include ReCaptcha::ViewHelper
+  include Recaptcha::Verify
+  include Recaptcha::ClientHelper
+
   before_filter :load_event, :only => [:index, :proposals]
   before_filter :prepare_show, :only => [:show]
   before_filter :authenticate_url, :only => [:edit, :update, :destroy]
@@ -29,7 +31,7 @@ class SpeakersController < BaseUserController
   def show
     @page_title = "#{@speaker.name} | #{@speaker.title}"
     @comment = Comment.new
-    @captcha = get_captcha
+    @captcha = recaptcha_tags
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @speaker }

@@ -1,5 +1,6 @@
 class EventsController < BaseUserController
-  include ReCaptcha::ViewHelper
+  include Recaptcha::Verify
+  include Recaptcha::ClientHelper
 
   def index
     @events = @ignite.events.by_date_desc
@@ -39,7 +40,7 @@ class EventsController < BaseUserController
     def prepare_show
       @comments = @event.comments
       @speakers = @event.speakers
-      @captcha = get_captcha
+      @captcha = recaptcha_tags
       gii = @ignite.articles.find_by_name('GetInvolvedInfo')
       @get_involved_info = gii ? gii.html_text : "<h3>Create an article named \"GetInvolvedInfo\" to replace this text.</h3>"
     end

@@ -13,7 +13,7 @@ gems:
 - name: rmagick
   version: '= 2.9.1'
 - name: recaptcha
-  version: '= 0.1.54'
+  version: '= 0.2.3'
 - name: subdomain-fu
   version: '= 0.5.4'
 - name: fastercsv

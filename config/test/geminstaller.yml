@@ -10,6 +10,8 @@ gems:
   version: '= 0.0.3'
 - name: cucumber
   version: '= 0.10.0'
+- name: cucumber-rails
+  version: '= 0.3.2'
 - name: webrat
   version: '= 0.7.0'
 - name: database_cleaner

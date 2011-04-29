@@ -22,5 +22,9 @@ config.action_controller.allow_forgery_protection    = false
 config.action_mailer.delivery_method = :test
 
 # Keys for reCaptcha
-RCC_PUB = '6LdWEwMAAAAAAEBGCE8ddKD6odUtz84AECYVPAPd'
-RCC_PRIV = '6LdWEwMAAAAAAO5LkEQTpJDWAqeyVtfPxeE27K-X'
+#RCC_PUB = '6LdWEwMAAAAAAEBGCE8ddKD6odUtz84AECYVPAPd'
+#RCC_PRIV = '6LdWEwMAAAAAAO5LkEQTpJDWAqeyVtfPxeE27K-X'
+
+ENV['RECAPTCHA_PUBLIC_KEY'] = '6LdWEwMAAAAAAEBGCE8ddKD6odUtz84AECYVPAPd'
+ENV['RECAPTCHA_PRIVATE_KEY'] = '6LdWEwMAAAAAAO5LkEQTpJDWAqeyVtfPxeE27K-X'
+

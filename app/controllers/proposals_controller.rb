@@ -1,5 +1,6 @@
 class ProposalsController < BaseUserController
-  include ReCaptcha::ViewHelper
+  include Recaptcha::Verify
+  include Recaptcha::ClientHelper
   
   before_filter :load_event
   
@@ -11,7 +12,7 @@ class ProposalsController < BaseUserController
     if @event.accepting_proposals?
       @page_title = "Submit a Proposal"
       @proposal = Speaker.new
-      @captcha = get_captcha
+      @captcha = recaptcha_tags
     else
       flash[:error] = "Proposals are not currently being accepted.  Stay tuned for the next round!"
       redirect_to proposals_path
@@ -29,7 +30,7 @@ class ProposalsController < BaseUserController
         format.html { redirect_to speaker_path(@proposal) }
         format.xml  { render :xml => @proposal, :status => :created, :location => @proposal }
       else
-        @captcha = get_captcha
+        @captcha = recaptcha_tags
         format.html { render :action => "new" }
         format.xml  { render :xml => @proposal.errors, :status => :unprocessable_entity }
       end

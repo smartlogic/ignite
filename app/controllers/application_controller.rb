@@ -1,6 +1,6 @@
 require 'rdiscount'
 class ApplicationController < ActionController::Base
-  include ReCaptcha::AppHelper
+  include Recaptcha::Verify
   include AuthenticatedSystem
   include ExceptionNotifiable
   
@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
 
     def validate_captcha(params, model)
       return true if Rails.env.test? || Rails.env.development?
-      validate_recap(params, model.errors)
+      validate_recaptcha(params, :model => model)
     end
     
     # [CanCan] override default of current_user

@@ -24,5 +24,9 @@ config.action_controller.perform_caching             = true
 config.action_mailer.raise_delivery_errors = false
 
 # Keys for reCaptcha
-RCC_PUB = '6LdZ_wQAAAAAAACER4LvctglwDm__0LVsvZyvPq1'
-RCC_PRIV = '6LdZ_wQAAAAAAH50IYGyfT1ZZn3k0pnihOK8D4_6'
+#RCC_PUB = '6LdZ_wQAAAAAAACER4LvctglwDm__0LVsvZyvPq1'
+#RCC_PRIV = '6LdZ_wQAAAAAAH50IYGyfT1ZZn3k0pnihOK8D4_6'
+
+ENV['RECAPTCHA_PUBLIC_KEY'] = '6LdWEwMAAAAAAEBGCE8ddKD6odUtz84AECYVPAPd'
+ENV['RECAPTCHA_PRIVATE_KEY'] = '6LdWEwMAAAAAAO5LkEQTpJDWAqeyVtfPxeE27K-X'
+

@@ -1,5 +1,6 @@
 class ArticlesController < BaseUserController
-  include ReCaptcha::ViewHelper
+  include Recaptcha::Verify
+  include Recaptcha::ClientHelper
   
   def index
     @articles = sticky_sort(@ignite.articles)
@@ -22,7 +23,7 @@ class ArticlesController < BaseUserController
     if @article
       @comments = @article.comments
       @comment = Comment.new
-      @captcha = get_captcha
+      @captcha = recaptcha_tags
       render :action => 'show'
     else
       redirect_to :action => 'index'
@@ -33,7 +34,7 @@ class ArticlesController < BaseUserController
     @article = @ignite.articles.find(params[:id])
     @comments = @article.comments
     @comment = Comment.new
-    @captcha = get_captcha
+    @captcha = recaptcha_tags
   end
   
   def post_comment
@@ -50,7 +51,7 @@ class ArticlesController < BaseUserController
       redirect_to article_path(@article)
     else
       @comments = @article.comments
-      @captcha = get_captcha
+      @captcha = recaptcha_tags
       render :action => "show"
     end
   end
