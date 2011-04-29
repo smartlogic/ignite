@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
 
     def validate_captcha(params, model)
       return true if Rails.env.test? || Rails.env.development?
-      validate_recaptcha(params, :model => model)
+      verify_recaptcha(params.merge({:model => model}))
     end
     
     # [CanCan] override default of current_user
