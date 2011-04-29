@@ -1,0 +1,22 @@
+== Install
+
+= Geminstaller
+geminstaller
+geminstaller -c config/test/geminstaller.yml
+
+= Databases
+Set up development/database.yml and test/database.yml
+
+rake db:create db:reset
+
+= Setup a ignite city
+Load up script/console
+> require 'factory_girl'
+> Dir['test/factories/*.rb'].each do |f| require f; end
+> Factory(:ignite)
+
+Edit the hosts file to use the created ignite's domain
+
+
+== Tests
+RAILS_ENV=test rake
