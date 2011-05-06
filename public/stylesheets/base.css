@@ -438,6 +438,15 @@ div.post ul, div.post ol{
 	margin-left: 14px;
 }  
 
+#new_speaker .counter {
+  float: right;
+  padding-right: 75px;
+}
+
+#new_speaker div.counter_div {
+  height: 10px;
+}
+
 #events div.event {
 	border-top: 2px solid #ccc;
 	clear: left;

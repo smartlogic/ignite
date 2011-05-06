@@ -22,11 +22,17 @@
     <li>
       <%= f.label :description, "Description:" %>
       <%= f.text_area :description %><br/>
-      <span class="field_note">Markdown is supported for the description</span>
+      <div class='counter_div'>
+        <span class="field_note">Markdown is supported for the description</span>
+        <span class='field_note counter' id='counter-speaker_description'/>
+      </div>
     </li>
     <li>
       <%= f.label :bio, "Brief Bio:" %>
       <%= f.text_area :bio %>
+      <div class='counter_div'>
+        <span class='field_note counter' id='counter-speaker_bio' />
+      </div>
     </li>
     <li>
       <%= f.label :image, "Profile Picture:" %>
@@ -39,3 +45,9 @@
     </li>
   </ul>
 <% end -%>
+<script>
+  Event.observe(window, "load", function(){
+    makeItCount("speaker_description", 750);
+    makeItCount("speaker_bio", 750);
+  });
+</script>
